@@ -1,19 +1,7 @@
 <template>
   <div class="navbar-start">
-    <router-link to="/login" class="navbar-item">Login</router-link>
-    <a class="navbar-item">Documentation</a>
-
-    <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">More</a>
-
-      <div class="navbar-dropdown">
-        <a class="navbar-item">About</a>
-        <a class="navbar-item">Jobs</a>
-        <a class="navbar-item">Contact</a>
-        <hr class="navbar-divider">
-        <a class="navbar-item">Report an issue</a>
-      </div>
-    </div>
+    <router-link to="/customers" class="navbar-item">Customers</router-link>
+    <router-link to="/login" class="navbar-item">Calandar</router-link>
   </div>
 </template>
 

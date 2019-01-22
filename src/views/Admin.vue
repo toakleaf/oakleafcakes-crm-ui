@@ -2,6 +2,10 @@
 
 <script>
 export default {
-  name: "home"
+  name: "customers"
 };
 </script>
+
+<style lang="scss" scoped>
+</style>
+

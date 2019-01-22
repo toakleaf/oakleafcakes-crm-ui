@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import Customers from './views/Customers.vue';
 
 Vue.use(Router);
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'customers',
+      component: Customers
     },
     {
       path: '/login',
@@ -19,6 +19,20 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "login" */ './views/Login.vue')
+    },
+    {
+      path: '/customers',
+      name: 'customers',
+      component: Customers
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      // route level code-splitting
+      // this generates a separate chunk (login.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "login" */ './views/Admin.vue')
     }
   ]
 });

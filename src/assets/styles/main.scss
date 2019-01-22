@@ -9,5 +9,16 @@ $family-secondary: $family-serif;
   font-family: $family-serif;
 }
 // Colors
+$grey-darker: #6b6051;
+$light: #fff6dc;
+$turquoise: #08be95;
+$blue: #436799;
+$green: #5ec538;
+$yellow: #e9cb59;
+$red: #dc556a;
+$orange: #feddc9; //peach
+$info: $orange;
+// $primary: $green;
+// $primary: #cbf5bc;
 //add overrides above this point.
 @import '~bulma/bulma';

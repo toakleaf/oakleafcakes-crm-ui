@@ -1,7 +1,8 @@
 <template>
-  <nav class="navbar is-link is-fixed-top" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-primary is-fixed-top" role="navigation" aria-label="main navigation">
     <nav-brand/>
     <div class="navbar-menu">
+      <nav-start/>
       <nav-end/>
     </div>
   </nav>
