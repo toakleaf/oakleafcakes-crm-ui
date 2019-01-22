@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Slab:600|Open+Sans');
+@import '~bulma/sass/utilities/mixins'; //gets initial variables
+// Fonts
+$family-serif: 'Josefin Slab', serif;
+$family-sans-serif: 'Open Sans', sans-serif;
+$family-primary: $family-sans-serif;
+$family-secondary: $family-serif;
+.title {
+  font-family: $family-serif;
+}
+// Colors
+//add overrides above this point.
+@import '~bulma/bulma';
