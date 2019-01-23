@@ -5,9 +5,6 @@
         <div class="columns is-centered">
           <div class="column is-one-third">
             <div class="box">
-              <section class="section has-text-centered">
-                <img src="@/assets/img/logo_full.svg">
-              </section>
               <div class="field">
                 <p class="control has-icons-left has-icons-right">
                   <input class="input" type="email" placeholder="Email">
@@ -19,21 +16,13 @@
                   </span>
                 </p>
               </div>
-              <div class="field">
-                <p class="control has-icons-left">
-                  <input class="input" type="password" placeholder="Password">
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-lock"></i>
-                  </span>
-                </p>
-              </div>
               <div class="field is-grouped is-grouped-centered">
                 <p class="control">
-                  <button class="button is-primary">Login</button>
+                  <button class="button is-primary">Send Me a Reset Email</button>
                 </p>
               </div>
             </div>
-            <router-link to="/forgot" class="has-text-light is-size-7">Lost your password?</router-link>
+            <router-link to="/login" class="has-text-light is-size-7">Return to Login Page</router-link>
           </div>
         </div>
       </div>

@@ -19,13 +19,22 @@ export default new Router({
       component: Customers
     },
     {
+      path: '/forgot',
+      name: 'forgot',
+      // route level code-splitting
+      // this generates a separate chunk (forgot.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "forgot" */ './views/Forgot.vue')
+    },
+    {
       path: '/admin',
       name: 'admin',
       // route level code-splitting
-      // this generates a separate chunk (login.[hash].js) for this route
+      // this generates a separate chunk (admin.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () =>
-        import(/* webpackChunkName: "login" */ './views/Admin.vue')
+        import(/* webpackChunkName: "admin" */ './views/Admin.vue')
     }
   ]
 });
