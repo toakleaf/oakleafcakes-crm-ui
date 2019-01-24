@@ -1,40 +1,26 @@
 <template>
-  <section class="section pad-navbar">
-    <div class="container">
-      <div class="box">
-        <h1 class="title">Calendar</h1>
-        <div class="buttons">
-          <a
-            class="button is-dark"
-            :class="{'is-outlined': !showLastWeek}"
-            @click="toggleLastWeek"
-          >Last Week</a>
-          <a
-            class="button is-dark"
-            :class="{'is-outlined': !showThisWeek}"
-            @click="toggleThisWeek"
-          >This Week</a>
-          <a
-            class="button is-dark"
-            :class="{'is-outlined': !showNextWeek}"
-            @click="toggleNextWeek"
-          >Next Week</a>
-        </div>
-        <app-date-picker :start="start" :end="end"></app-date-picker>
-        <app-week/>
-      </div>
-    </div>
-  </section>
+  <div class="buttons">
+    <a
+      class="button is-dark"
+      :class="{'is-outlined': !showLastWeek}"
+      @click="toggleLastWeek"
+    >Last Week</a>
+    <a
+      class="button is-dark"
+      :class="{'is-outlined': !showThisWeek}"
+      @click="toggleThisWeek"
+    >This Week</a>
+    <a
+      class="button is-dark"
+      :class="{'is-outlined': !showNextWeek}"
+      @click="toggleNextWeek"
+    >Next Week</a>
+  </div>
 </template>
+
 <script>
-import Week from "@/components/Calendar/Week.vue";
-import DatePicker from "@/components/Calendar/DatePicker.vue";
 export default {
-  name: "calendar",
-  components: {
-    "app-week": Week,
-    "app-date-picker": DatePicker
-  },
+  name: "WeekPicker",
   data: function() {
     return {
       today: new Date(),
@@ -89,6 +75,8 @@ export default {
       if (this.showLastWeek) this.end = this.lastWeekEnd;
       if (this.showThisWeek) this.end = this.thisWeekEnd;
       if (this.showNextWeek) this.end = this.nextWeekEnd;
+      this.$emit("update:start", this.start);
+      this.$emit("update:end", this.end);
     }
   },
   methods: {
@@ -114,6 +102,6 @@ export default {
 };
 </script>
 
-<style lang="scss" >
-</style>
 
+<style lang="scss" scoped>
+</style>
