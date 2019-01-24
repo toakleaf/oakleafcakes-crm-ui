@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section pad-navbar">
     <div class="container">
       <app-customer-form/>
     </div>
@@ -17,8 +17,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.section {
-  margin-top: 28px;
-}
 </style>
 

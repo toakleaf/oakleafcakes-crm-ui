@@ -21,6 +21,9 @@ export default {
 // @import "./assets/styles/debug.css";
 body {
   background-color: #6b6051;
-  height: 100vh;
+  min-height: 100vh;
+}
+.pad-top {
+  padding-top: 72px;
 }
 </style>

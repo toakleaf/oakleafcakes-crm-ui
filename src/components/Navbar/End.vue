@@ -2,11 +2,11 @@
   <div class="navbar-end">
     <div class="navbar-item has-dropdown is-hoverable">
       <!-- <a class="navbar-link">More</a> -->
-      <router-link to="/admin" class="navbar-link">Lookin' fine, {{firstName}}!</router-link>
+      <router-link to="/profile" class="navbar-link">Lookin' fine, {{firstName}}!</router-link>
 
       <div class="navbar-dropdown">
-        <a class="navbar-item">My Deets</a>
-        <a class="navbar-item">Manage Users</a>
+        <router-link to="/profile" class="navbar-item">My Deets</router-link>
+        <router-link to="/admin" class="navbar-item">User Admin</router-link>
         <hr class="navbar-divider">
         <a class="navbar-item">Log Out</a>
       </div>

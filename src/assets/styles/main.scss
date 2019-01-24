@@ -22,3 +22,7 @@ $info: $orange;
 // $primary: #cbf5bc;
 //add overrides above this point.
 @import '~bulma/bulma';
+
+.pad-navbar {
+  padding-top: 72px;
+}
