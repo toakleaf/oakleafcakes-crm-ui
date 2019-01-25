@@ -26,3 +26,9 @@ $info: $orange;
 .pad-navbar {
   padding-top: 72px;
 }
+@media print {
+  .no-print,
+  .no-print * {
+    display: none !important;
+  }
+}

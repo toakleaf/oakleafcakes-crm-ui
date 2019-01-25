@@ -4,10 +4,10 @@
       <div class="box">
         <h1 class="title">Calendar</h1>
         <div class="columns">
-          <div class="column">
+          <div class="column no-print">
             <div class="columns is-centered">
               <div class="column has-text-centered">
-                <app-range-picker :start.sync="start" :end.sync="end"/>
+                <app-range-buttons :start.sync="start" :end.sync="end"/>
               </div>
             </div>
           </div>
@@ -19,21 +19,21 @@
             </div>
           </div>
         </div>
-        <app-week :start="start" :end="end"/>
+        <app-days :start="start" :end="end"/>
       </div>
     </div>
   </section>
 </template>
 <script>
-import Week from "@/components/Calendar/Week.vue";
+import Days from "@/components/Calendar/Days.vue";
 import DatePicker from "@/components/Calendar/DatePicker.vue";
-import RangePicker from "@/components/Calendar/RangePicker.vue";
+import RangeButtons from "@/components/Calendar/RangeButtons.vue";
 export default {
   name: "calendar",
   components: {
-    "app-week": Week,
+    "app-days": Days,
     "app-date-picker": DatePicker,
-    "app-range-picker": RangePicker
+    "app-range-buttons": RangeButtons
   },
   data: function() {
     return {

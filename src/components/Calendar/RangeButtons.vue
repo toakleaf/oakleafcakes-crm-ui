@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: "RangePicker",
+  name: "RangeButtons",
   props: ["start", "end"],
   data: function() {
     return {
@@ -56,8 +56,8 @@ export default {
         this.clearTodayButton();
         this.clearMonthButton();
       }
-        // console.log('start: ' + this.start)
-        // console.log('localStart: ' + this.localStart)
+      // console.log('start: ' + this.start)
+      // console.log('localStart: ' + this.localStart)
     },
     end: function() {
       if (this.end != this.localEnd) {
@@ -65,14 +65,14 @@ export default {
         this.clearTodayButton();
         this.clearMonthButton();
       }
-        // console.log('end: ' + this.end)
-        // console.log('localEnd: ' + this.localEnd)
+      // console.log('end: ' + this.end)
+      // console.log('localEnd: ' + this.localEnd)
     }
   },
   computed: {
     today: function() {
       const now = new Date();
-      now.setHours(0,0,0,0);
+      now.setHours(0, 0, 0, 0);
       return now;
     },
     thisWeekStart: function() {
