@@ -19,7 +19,7 @@
             </div>
           </div>
         </div>
-        <app-week/>
+        <app-week :start="start" :end="end"/>
       </div>
     </div>
   </section>

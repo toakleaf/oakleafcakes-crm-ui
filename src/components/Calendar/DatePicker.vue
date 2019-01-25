@@ -12,7 +12,7 @@
         <input
           @focus="showStartInput = !showStartInput"
           @keyup.enter="$event.currentTarget.blur()"
-          @blur="showStartInput = !showStartInput; startInput = $event.target.value; update()"
+          @blur="showStartInput = !showStartInput; startInput = $event.target.value; updateStart()"
           class="input"
           type="text"
           :value="showStartInput? startString : localStart.toDateString()"
@@ -24,7 +24,7 @@
         <input
           @focus="showEndInput = !showEndInput"
           @keyup.enter="$event.currentTarget.blur()"
-          @blur="showEndInput = !showEndInput; endInput = $event.target.value; update()"
+          @blur="showEndInput = !showEndInput; endInput = $event.target.value; updateEnd();"
           class="input"
           type="text"
           :value="showEndInput? endString : localEnd.toDateString()"
@@ -65,10 +65,16 @@ export default {
   },
   watch: {
     start: function() {
-      this.localStart = this.start;
+      this.localStart = new Date(this.start);
+      this.localStart.setHours(0,0,0,0);
+      console.log('start: ' + this.start);
+      console.log('localStart: ' + this.localStart);
     },
     end: function() {
-      this.localEnd = this.end;
+      this.localEnd = new Date(this.end);
+      this.localEnd.setHours(0,0,0,0);
+      console.log('end: ' + this.end);
+      console.log('localEnd: ' + this.localEnd);
     }
   },
   computed: {
@@ -90,13 +96,24 @@ export default {
           60 *
           1000;
       let oneDay = 1000 * 60 * 60 * 24;
+      console.log('difS: '+ this.localStart)
+      console.log('difE: '+ this.localEnd)
+      console.log(diff/oneDay)
       return Math.floor(diff / oneDay);
     }
   },
   methods: {
-    update: function() {
+    updateStart: function() {
       try {
+        console.log('updateS')
         this.localStart = new Date(this.startInput || this.localStart);
+      } catch (err) {
+        this.error = err;
+      }
+    },
+    updateEnd: function() {
+      try {
+        console.log('updateE')
         this.localEnd = new Date(this.endInput || this.localEnd);
       } catch (err) {
         this.error = err;
@@ -122,7 +139,7 @@ export default {
     },
     jumpBack: function() {
       try {
-        this.update();
+        // this.update();
         if (this.localStart.getDate() === 1 && this.localEnd.getDate() >= 28) {
           return this.jumpMonthBack();
         }
@@ -140,7 +157,7 @@ export default {
     },
     jumpAhead: function() {
       try {
-        this.update();
+        // this.update();
         if (this.localStart.getDate() === 1 && this.localEnd.getDate() >= 28) {
           return this.jumpMonthAhead();
         }

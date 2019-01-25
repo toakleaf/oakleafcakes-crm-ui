@@ -30,7 +30,6 @@ export default {
   props: ["start", "end"],
   data: function() {
     return {
-      today: new Date(),
       showToday: false,
       showThisWeek: true,
       showLastWeek: false,
@@ -57,6 +56,8 @@ export default {
         this.clearTodayButton();
         this.clearMonthButton();
       }
+        // console.log('start: ' + this.start)
+        // console.log('localStart: ' + this.localStart)
     },
     end: function() {
       if (this.end != this.localEnd) {
@@ -64,9 +65,16 @@ export default {
         this.clearTodayButton();
         this.clearMonthButton();
       }
+        // console.log('end: ' + this.end)
+        // console.log('localEnd: ' + this.localEnd)
     }
   },
   computed: {
+    today: function() {
+      const now = new Date();
+      now.setHours(0,0,0,0);
+      return now;
+    },
     thisWeekStart: function() {
       let thisWeekStart = new Date(this.today);
       thisWeekStart.setDate(

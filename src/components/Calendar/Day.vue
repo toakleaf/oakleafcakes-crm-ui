@@ -2,11 +2,12 @@
   <div class="column">
     <div
       class="box is-radiusless is-paddingless is-marginless has-background-dark has-text-centered"
+      :class="{'is-hidden-tablet': !isFirstRow}"
     >
-      <h6 class="subtitle is-5 has-text-light pad-day">Sunday</h6>
+      <h6 class="subtitle is-5 has-text-light pad-day">{{date && date.toDateString().substring(0,3)}}</h6>
     </div>
     <div class="box date-box is-radiusless is-paddingless is-marginless">
-      <p class="pad-number">{{date}}</p>
+      <p class="pad-number">{{date && date.getDate()}}</p>
       <div class="pad-bottom">
         <div
           class="pill has-background-primary has-text-white is-clipped"
@@ -19,7 +20,7 @@
 <script>
 export default {
   name: "Day",
-  props: ["date"]
+  props: ["date", "isFirstRow"]
 };
 </script>
 
