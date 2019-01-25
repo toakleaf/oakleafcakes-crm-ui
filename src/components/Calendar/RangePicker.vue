@@ -1,5 +1,6 @@
 <template>
   <div class="buttons is-centered">
+    <a class="button is-dark" :class="{'is-outlined': !showToday}" @click="toggleToday">Today</a>
     <a
       class="button is-dark"
       :class="{'is-outlined': !showLastWeek}"
@@ -15,6 +16,11 @@
       :class="{'is-outlined': !showNextWeek}"
       @click="toggleNextWeek"
     >Next Week</a>
+    <a
+      class="button is-dark"
+      :class="{'is-outlined': !showThisMonth}"
+      @click="toggleThisMonth"
+    >This Month</a>
   </div>
 </template>
 
@@ -25,9 +31,11 @@ export default {
   data: function() {
     return {
       today: new Date(),
+      showToday: false,
       showThisWeek: true,
       showLastWeek: false,
       showNextWeek: false,
+      showThisMonth: false,
       localStart: null,
       localEnd: null,
       WEEK_BEGINS: {
@@ -45,16 +53,16 @@ export default {
   watch: {
     start: function() {
       if (this.start != this.localStart || this.end != this.localEnd) {
-        this.showThisWeek = false;
-        this.showLastWeek = false;
-        this.showNextWeek = false;
+        this.clearWeekButtons();
+        this.clearTodayButton();
+        this.clearMonthButton();
       }
     },
     end: function() {
       if (this.end != this.localEnd) {
-        this.showThisWeek = false;
-        this.showLastWeek = false;
-        this.showNextWeek = false;
+        this.clearWeekButtons();
+        this.clearTodayButton();
+        this.clearMonthButton();
       }
     }
   },
@@ -102,12 +110,15 @@ export default {
           this.WEEK_BEGINS.MONDAY
       );
       return nextWeekEnd;
-    },
+    }
+  },
+  methods: {
     toggleLock: function() {
       if (this.showLastWeek && this.showNextWeek) this.showThisWeek = true;
     },
     setWeeks: function() {
-      //weeks always start on monday.
+      this.clearTodayButton();
+      this.clearMonthButton();
       //set start dates via overwrite
       if (this.showNextWeek) this.localStart = this.nextWeekStart;
       if (this.showThisWeek) this.localStart = this.thisWeekStart;
@@ -118,27 +129,57 @@ export default {
       if (this.showNextWeek) this.localEnd = this.nextWeekEnd;
       this.$emit("update:start", this.localStart);
       this.$emit("update:end", this.localEnd);
-    }
-  },
-  methods: {
+    },
+    clearWeekButtons: function() {
+      this.showToday = false;
+      this.showLastWeek = false;
+      this.showThisWeek = false;
+      this.showNextWeek = false;
+      this.showThisMonth = false;
+    },
+    clearTodayButton: function() {
+      this.showToday = false;
+    },
+    clearMonthButton: function() {
+      this.showThisMonth = false;
+    },
+    toggleToday: function() {
+      this.clearWeekButtons();
+      this.clearMonthButton();
+      this.showToday = !this.showToday;
+      this.$emit("update:start", this.today);
+      this.$emit("update:end", this.today);
+    },
+    toggleThisMonth: function() {
+      this.clearWeekButtons();
+      this.clearTodayButton();
+      this.showThisMonth = !this.showThisMonth;
+      this.localStart = new Date(this.today);
+      this.localStart.setDate(1);
+      this.localEnd = new Date(this.today);
+      this.localEnd.setMonth(this.localEnd.getMonth() + 1);
+      this.localEnd.setDate(0);
+      this.$emit("update:start", this.localStart);
+      this.$emit("update:end", this.localEnd);
+    },
     toggleLastWeek: function() {
       this.showLastWeek = !this.showLastWeek;
-      this.toggleLock;
-      this.setWeeks;
+      this.toggleLock();
+      this.setWeeks();
     },
     toggleThisWeek: function() {
-      if (this.showLastWeek && this.showNextWeek) this.showThisWeek = true;
-      else this.showThisWeek = !this.showThisWeek;
-      this.setWeeks;
+      this.showThisWeek = !this.showThisWeek;
+      this.toggleLock();
+      this.setWeeks();
     },
     toggleNextWeek: function() {
       this.showNextWeek = !this.showNextWeek;
-      this.toggleLock;
-      this.setWeeks;
+      this.toggleLock();
+      this.setWeeks();
     }
   },
   created: function() {
-    this.setWeeks;
+    this.setWeeks();
   }
 };
 </script>
