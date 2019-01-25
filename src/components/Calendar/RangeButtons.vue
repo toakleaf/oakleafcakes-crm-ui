@@ -21,7 +21,6 @@
       :class="{'is-outlined': !showThisMonth}"
       @click="toggleThisMonth"
     >This Month</a>
-    {{showToday}}
   </div>
 </template>
 
