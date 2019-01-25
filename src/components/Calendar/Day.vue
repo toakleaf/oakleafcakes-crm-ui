@@ -1,7 +1,7 @@
 <template>
   <div class="column" :class="{'is-hidden-mobile': isEmptyCell}">
     <div
-      class="box is-radiusless is-paddingless is-marginless has-background-dark has-text-centered date-heading"
+      class="box is-radiusless is-paddingless is-marginless has-background-dark has-text-centered"
       :class="{'is-hidden-tablet': !isFirstRow}"
     >
       <h6 class="subtitle is-5 has-text-light pad-day">{{day.toDateString().substring(0,3)}}</h6>
@@ -10,8 +10,11 @@
       <p v-if="!isEmptyCell" class="pad-number">{{date.getDate()}}</p>
       <div class="pad-bottom">
         <div
+          v-show="!isEmptyCell"
+          v-for="n in Math.floor(Math.random() * 3)"
+          :key="n"
           class="pill has-background-primary has-text-white is-clipped"
-        >hi this is a lot of text to put</div>
+        >This is an event</div>
       </div>
     </div>
   </div>
@@ -41,18 +44,27 @@ export default {
 .pad-number {
   padding: 0 0 0 0.5em;
 }
-.date-heading {
-  min-height: 2.25em;
-}
 .date-box {
-  min-height: 8em;
+  min-height: 9em;
 }
 .pill {
   border: 1px solid white;
   border-radius: 0.75em;
   padding: 0px 0.5em;
   width: 100%;
-  max-height: 1.5em;
+  height: 1.5em;
+  font-size: 0.85em;
   overflow: hidden;
+  cursor: pointer;
+}
+.pill:hover {
+  border: 1px solid lightgrey;
+  border-radius: 0.75em;
+  padding: 0px 0.5em;
+  width: 100%;
+  height: 1.5em;
+  font-size: 0.85em;
+  overflow: hidden;
+  cursor: pointer;
 }
 </style>

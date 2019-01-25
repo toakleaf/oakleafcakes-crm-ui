@@ -21,6 +21,7 @@
       :class="{'is-outlined': !showThisMonth}"
       @click="toggleThisMonth"
     >This Month</a>
+    {{showToday}}
   </div>
 </template>
 
@@ -51,7 +52,7 @@ export default {
   },
   watch: {
     start: function() {
-      if (this.start != this.localStart || this.end != this.localEnd) {
+      if (this.start != this.localStart) {
         this.clearWeekButtons();
         this.clearTodayButton();
         this.clearMonthButton();
@@ -64,6 +65,7 @@ export default {
         this.clearWeekButtons();
         this.clearTodayButton();
         this.clearMonthButton();
+        console.log("ho");
       }
       // console.log('end: ' + this.end)
       // console.log('localEnd: ' + this.localEnd)
@@ -139,11 +141,9 @@ export default {
       this.$emit("update:end", this.localEnd);
     },
     clearWeekButtons: function() {
-      this.showToday = false;
       this.showLastWeek = false;
       this.showThisWeek = false;
       this.showNextWeek = false;
-      this.showThisMonth = false;
     },
     clearTodayButton: function() {
       this.showToday = false;
@@ -152,16 +152,19 @@ export default {
       this.showThisMonth = false;
     },
     toggleToday: function() {
+      this.showToday = !this.showToday;
       this.clearWeekButtons();
       this.clearMonthButton();
-      this.showToday = !this.showToday;
-      this.$emit("update:start", this.today);
-      this.$emit("update:end", this.today);
+      this.localStart = this.today;
+      this.localEnd = this.today;
+      this.$emit("update:start", this.localStart);
+      this.$emit("update:end", this.localEnd);
     },
     toggleThisMonth: function() {
       this.clearWeekButtons();
       this.clearTodayButton();
       this.showThisMonth = !this.showThisMonth;
+      if (!this.showThisMonth) return;
       this.localStart = new Date(this.today);
       this.localStart.setDate(1);
       this.localEnd = new Date(this.today);
