@@ -66,15 +66,15 @@ export default {
   watch: {
     start: function() {
       this.localStart = new Date(this.start);
-      this.localStart.setHours(0,0,0,0);
-      console.log('start: ' + this.start);
-      console.log('localStart: ' + this.localStart);
+      this.localStart.setHours(0, 0, 0, 0);
+      // console.log('start: ' + this.start);
+      // console.log('localStart: ' + this.localStart);
     },
     end: function() {
       this.localEnd = new Date(this.end);
-      this.localEnd.setHours(0,0,0,0);
-      console.log('end: ' + this.end);
-      console.log('localEnd: ' + this.localEnd);
+      this.localEnd.setHours(0, 0, 0, 0);
+      // console.log('end: ' + this.end);
+      // console.log('localEnd: ' + this.localEnd);
     }
   },
   computed: {
@@ -96,16 +96,16 @@ export default {
           60 *
           1000;
       let oneDay = 1000 * 60 * 60 * 24;
-      console.log('difS: '+ this.localStart)
-      console.log('difE: '+ this.localEnd)
-      console.log(diff/oneDay)
+      // console.log('difS: '+ this.localStart)
+      // console.log('difE: '+ this.localEnd)
+      // console.log(diff/oneDay)
       return Math.floor(diff / oneDay);
     }
   },
   methods: {
     updateStart: function() {
       try {
-        console.log('updateS')
+        // console.log('updateS')
         this.localStart = new Date(this.startInput || this.localStart);
       } catch (err) {
         this.error = err;
@@ -113,7 +113,7 @@ export default {
     },
     updateEnd: function() {
       try {
-        console.log('updateE')
+        // console.log('updateE')
         this.localEnd = new Date(this.endInput || this.localEnd);
       } catch (err) {
         this.error = err;

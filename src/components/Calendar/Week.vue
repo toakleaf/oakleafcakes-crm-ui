@@ -2,12 +2,32 @@
   <div class="columns">
     <div class="column">
       <div class="columns is-gapless is-marginless">
-        <app-day v-for="date in weeksArray[0]" :key="date.valueOf()" :date="date" :isFirstRow="true"/>
+        <app-day
+          v-for="date in weeksArray[0]"
+          :key="date.valueOf()"
+          :date="date"
+          :isFirstRow="true"
+        />
       </div>
-      <div v-if="weeksArray.length > 0" v-for="index in weeksArray.length - 1" :key="index" class="columns is-gapless is-marginless">
-        <app-day v-for="date in weeksArray[index]" :key="date.valueOf()" :date="date" :isFirstRow="false"/>
+      <div
+        v-show="weeksArray.length > 0"
+        v-for="index in weeksArray.length - 1"
+        :key="index"
+        class="columns is-gapless is-marginless"
+      >
+        <app-day
+          v-for="date in weeksArray[index]"
+          :key="date.valueOf()"
+          :date="date"
+          :isFirstRow="false"
+        />
         <!-- shoot blanks to fill out row -->
-        <app-day v-for="remainder in 7 - weeksArray[index].length" :key="remainder" :date="null" :isFirstRow="false"/>
+        <app-day
+          v-for="remainder in 7 - weeksArray[index].length"
+          :key="remainder"
+          :date="null"
+          :isFirstRow="false"
+        />
       </div>
     </div>
   </div>
@@ -27,13 +47,16 @@ export default {
         const dates = [new Date(this.start)];
         for (let i = 0; i < this.difference; i++) {
           const date = new Date(this.start);
+          // set all anew to fix date rollover bug
+          date.setFullYear(dates[i].getFullYear());
+          date.setMonth(dates[i].getMonth());
           date.setDate(dates[i].getDate() + 1);
           dates.push(date);
         }
-        const weeks = []
+        const weeks = [];
         for (let i = 0; i < dates.length; i += 7) {
-          const temp = dates.slice(i,i + 7)
-          weeks.push(temp)
+          const temp = dates.slice(i, i + 7);
+          weeks.push(temp);
         }
         return weeks;
       }
