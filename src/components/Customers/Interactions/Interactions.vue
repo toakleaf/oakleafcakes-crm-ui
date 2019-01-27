@@ -1,12 +1,12 @@
 <template>
   <div>
-    <p class="has-text-grey-light is-size-7">Linked Customers:</p>
+    <p class="has-text-grey-light is-size-7">Interactions:</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "LinkedCustomers"
+  name: "Interactions"
 };
 </script>
 

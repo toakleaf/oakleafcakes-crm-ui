@@ -1,5 +1,5 @@
 <template>
-  <section class="section pad-navbar">
+  <section class="pad-route">
     <div class="container">
       <div class="box">
         <h1 class="title">Calendar</h1>

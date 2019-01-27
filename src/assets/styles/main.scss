@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Slab:600|Open+Sans');
-@import '~bulma/sass/utilities/mixins'; //gets initial variables
+// Import Bulma's core
+@import '~bulma/sass/utilities/_all';
+
 // Fonts
 $family-serif: 'Josefin Slab', serif;
 $family-sans-serif: 'Open Sans', sans-serif;
@@ -8,7 +9,8 @@ $family-secondary: $family-serif;
 .title {
   font-family: $family-serif;
 }
-// Colors
+
+// Set your colors
 $grey-darker: #6b6051;
 $light: #fff6dc;
 $turquoise: #08be95;
@@ -18,17 +20,90 @@ $yellow: #e9cb59;
 $red: #dc556a;
 $orange: #feddc9; //peach
 $info: $orange;
-// $primary: $blue;
-// $primary: #cbf5bc;
-//add overrides above this point.
-@import '~bulma/bulma';
+$info-invert: findColorInvert($info);
 
-.pad-navbar {
-  padding-top: 72px;
-}
+$primary: $turquoise;
+$primary-invert: findColorInvert($primary);
+$twitter: #4099ff;
+$twitter-invert: findColorInvert($twitter);
+// Links
+$link: $blue;
+$link-invert: findColorInvert($blue);
+$link-focus-border: $blue;
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+  'white': (
+    $white,
+    $black
+  ),
+  'black': (
+    $black,
+    $white
+  ),
+  'light': (
+    $light,
+    $grey-darker
+  ),
+  'dark': (
+    $grey-darker,
+    $light
+  ),
+  'primary': (
+    $primary,
+    $primary-invert
+  ),
+  'info': (
+    $info,
+    $info-invert
+  ),
+  'success': (
+    $success,
+    $success-invert
+  ),
+  'warning': (
+    $warning,
+    $warning-invert
+  ),
+  'danger': (
+    $danger,
+    $danger-invert
+  ),
+  'twitter': (
+    $twitter,
+    $twitter-invert
+  )
+);
+
+// Animation
+
+$speed-slow: 150ms !default; //hides
+$speed-slower: 300ms !default; //tabs
+
+// Import Bulma and Buefy styles
+@import '~bulma';
+@import '~buefy/src/scss/buefy';
+
+// Custom CSS
+
 @media print {
   .no-print,
   .no-print * {
     display: none !important;
+  }
+}
+.pad-route {
+  padding: 4.5rem 1.5rem 1.5rem 1.5rem;
+}
+@include mobile {
+  .pad-route {
+    padding: 4rem 0.25rem 0.5rem 0.25rem;
+  }
+  .tabs ul {
+    flex-direction: column;
+
+    li {
+      width: 100%;
+    }
   }
 }

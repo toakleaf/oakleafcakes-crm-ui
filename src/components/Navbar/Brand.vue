@@ -5,6 +5,7 @@
     </router-link>
 
     <a
+      @click="$emit('toggle-menu')"
       role="button"
       class="navbar-burger burger"
       aria-label="menu"

@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-primary is-fixed-top" role="navigation" aria-label="main navigation">
-    <nav-brand/>
-    <div class="navbar-menu">
+    <nav-brand @toggle-menu="showMenu = !showMenu"/>
+    <div class="navbar-menu" :class="{'is-active' : showMenu}">
       <nav-start/>
       <nav-end/>
     </div>
@@ -18,6 +18,16 @@ export default {
     "nav-brand": Brand,
     "nav-start": Start,
     "nav-end": End
+  },
+  data: function() {
+    return {
+      showMenu: false
+    };
+  },
+  watch: {
+    $route(to, from) {
+      this.showMenu = false;
+    }
   }
 };
 </script>

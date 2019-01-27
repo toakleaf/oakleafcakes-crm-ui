@@ -1,10 +1,10 @@
 <template>
-  <div class="column is-three-quarters"></div>
+  <div></div>
 </template>
 
 <script>
 export default {
-  name: "Orderform"
+  name: "Payments"
 };
 </script>
 

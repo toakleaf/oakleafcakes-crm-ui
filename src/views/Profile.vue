@@ -1,5 +1,5 @@
 <template>
-  <section class="section pad-navbar">
+  <section class="pad-route">
     <div class="columns is-centered">
       <div class="column is-two-thirds">
         <div class="box">
