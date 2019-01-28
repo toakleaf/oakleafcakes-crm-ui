@@ -4,7 +4,7 @@
       <app-primary-info/>
       <section>
         <!-- <b-icon pack="fas" icon="user" class="is-pulled-right"></b-icon> -->
-        <b-tabs v-model="activeTab" size="is-small">
+        <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
           <b-tab-item label="Details" icon-pack="fas" icon="info-circle">
             <app-details/>
           </b-tab-item>
@@ -15,6 +15,9 @@
             <app-orders/>
           </b-tab-item>
           <b-tab-item label="Classes" icon-pack="fas" icon="graduation-cap">
+            <app-classes/>
+          </b-tab-item>
+          <b-tab-item label="Appointments" icon-pack="fas" icon="calendar-alt">
             <app-classes/>
           </b-tab-item>
           <b-tab-item label="Paymentts" icon-pack="fas" icon="hand-holding-usd">

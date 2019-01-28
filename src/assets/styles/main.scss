@@ -18,9 +18,8 @@ $blue: #436799;
 $green: #5ec538;
 $yellow: #e9cb59;
 $red: #dc556a;
-$orange: #feddc9; //peach
-$info: $orange;
-$info-invert: findColorInvert($info);
+$peach: #feddc9;
+$peach-invert: findColorInvert($peach);
 
 $primary: $turquoise;
 $primary-invert: findColorInvert($primary);
@@ -40,6 +39,10 @@ $colors: (
   'black': (
     $black,
     $white
+  ),
+  'peach': (
+    $peach,
+    $peach-invert
   ),
   'light': (
     $light,
@@ -69,6 +72,10 @@ $colors: (
     $danger,
     $danger-invert
   ),
+  'link': (
+    $link,
+    $link-invert
+  ),
   'twitter': (
     $twitter,
     $twitter-invert
@@ -82,6 +89,8 @@ $speed-slower: 300ms !default; //tabs
 
 // Import Bulma and Buefy styles
 @import '~bulma';
+@import '~bulma-extensions/bulma-timeline/dist/css/bulma-timeline.min.css';
+@import '~bulma-extensions/bulma-badge/dist/css/bulma-badge.min.css';
 @import '~buefy/src/scss/buefy';
 
 // Custom CSS
