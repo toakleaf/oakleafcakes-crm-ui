@@ -27,7 +27,7 @@
 <script>
 export default {
   name: "RangeButtons",
-  props: ["start", "end"],
+  props: ["start", "end", "weekBegins"],
   data: function() {
     return {
       showToday: false,
@@ -37,7 +37,6 @@ export default {
       showThisMonth: false,
       localStart: null,
       localEnd: null,
-      WEEK_BEGINS: "MONDAY",
       WEEK_DAYS: {
         SUNDAY: 0,
         MONDAY: 1,
@@ -64,19 +63,41 @@ export default {
         this.clearTodayButton();
         this.clearMonthButton();
       }
+    },
+    weekBegins: function() {
+      if (this.showThisWeek) {
+        this.toggleThisWeek();
+        this.toggleThisWeek();
+      }
+      if (this.showLastWeek) {
+        this.toggleLastWeek();
+        this.toggleLastWeek();
+      }
+      if (this.showNextWeek) {
+        this.toggleNextWeek();
+        this.toggleNextWeek();
+      }
+      this.$emit("update:start", this.localStart);
+      this.$emit("update:end", this.localEnd);
     }
   },
   computed: {
+    WEEK_BEGINS: function() {
+      return this.weekBegins ? this.weekBegins.toUpperCase() : "MONDAY";
+    },
     today: function() {
       const now = new Date();
       now.setHours(0, 0, 0, 0);
       return now;
     },
+    weekShift: function() {
+      let shift = this.WEEK_DAYS[this.WEEK_BEGINS] - this.today.getDay();
+      if (shift > 0) shift -= this.WEEK_LENGTH;
+      return shift;
+    },
     thisWeekStart: function() {
-      let thisWeekStart = new Date("2/1/19");
-      thisWeekStart.setDate(
-        this.WEEK_DAYS[this.WEEK_BEGINS] - thisWeekStart.getDay() + 1
-      );
+      let thisWeekStart = new Date(this.today);
+      thisWeekStart.setDate(thisWeekStart.getDate() + this.weekShift);
       return thisWeekStart;
     },
     thisWeekEnd: function() {
@@ -150,6 +171,7 @@ export default {
       this.showToday = !this.showToday;
       this.clearWeekButtons();
       this.clearMonthButton();
+      if (!this.showToday) return;
       this.localStart = this.today;
       this.localEnd = this.today;
       this.$emit("update:start", this.localStart);
@@ -168,16 +190,19 @@ export default {
     toggleLastWeek: function() {
       this.showLastWeek = !this.showLastWeek;
       this.toggleLock();
+      // if (!this.showLastWeek) return;
       this.setWeeks();
     },
     toggleThisWeek: function() {
       this.showThisWeek = !this.showThisWeek;
       this.toggleLock();
+      // if (!this.showThisWeek) return;
       this.setWeeks();
     },
     toggleNextWeek: function() {
       this.showNextWeek = !this.showNextWeek;
       this.toggleLock();
+      // if (!this.showNextWeek) return;
       this.setWeeks();
     }
   },
