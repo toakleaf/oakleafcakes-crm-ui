@@ -3,32 +3,32 @@
     <div class="column is-three-quarters">
       <div class="box has-background-white-ter">
         <div class="column">
-          <app-date-picker :date.sync="dueDate" label="Due Date"/>
+          <app-date-picker :date.sync="dueDate" :size="size" label="Due Date"/>
           <div class="field is-horizontal">
-            <div class="field-label is-normal">
+            <div class="field-label">
               <label class="label"></label>
             </div>
             <div class="field-body">
               <b-switch
                 :value="showEventDate"
                 @input="showEventDate = !showEventDate"
+                :size="size"
               >Event Date is different</b-switch>
             </div>
           </div>
-          <b-collapse :open="showEventDate">
-            <app-date-picker :date.sync="dueDate" label="Event Date"/>
+          <b-collapse :open="showEventDate" :class="{'b-collapse': showEventDate}">
+            <app-date-picker :date.sync="dueDate" label="Event Date" :size="size"/>
           </b-collapse>
-          <!-- here -->
-          <app-time-picker :time.sync="eventTime" label="Event Time"/>
+          <app-time-field :time.sync="eventTime" label="Event Time" :size="size"/>
         </div>
 
         <b-tabs position="is-centered" class="is-marginless">
           <b-tab-item label="Pick up">
-            <app-time-picker :time.sync="dueTime" label="Pickup Time"/>
+            <app-time-field :time.sync="dueTime" label="Pickup Time" :size="size"/>
           </b-tab-item>
           <b-tab-item label="Delivery">
-            <app-time-picker :time.sync="dueTime" label="Deliver From"/>
-            <app-time-picker :time.sync="dueTimeEnd" label="Deliver To"/>
+            <app-time-field :time.sync="dueTime" label="Deliver From" :size="size"/>
+            <app-time-field :time.sync="dueTimeEnd" label="Deliver To" :size="size"/>
           </b-tab-item>
         </b-tabs>
 
@@ -48,14 +48,14 @@
 
 <script>
 import Gourmet from "@/components/Customers/Orders/Gourmet.vue";
-import TimePicker from "@/components/Customers/Orders/TimePicker.vue";
+import TimeField from "@/components/Customers/Orders/TimeField.vue";
 import DatePicker from "@/components/Customers/Orders/DatePicker.vue";
 
 export default {
   name: "OrderForm",
   components: {
     "app-gourmet": Gourmet,
-    "app-time-picker": TimePicker,
+    "app-time-field": TimeField,
     "app-date-picker": DatePicker
   },
   data: function() {
@@ -65,7 +65,8 @@ export default {
       eventDate: null,
       dueTime: null,
       dueTimeEnd: null,
-      eventTime: null
+      eventTime: null,
+      size: ""
     };
   }
 };
@@ -73,8 +74,8 @@ export default {
 
 
 <style lang="scss" scoped>
-.common-fields {
-  padding: 0 0.25em 5px 0.25em;
+.b-collapse {
+  padding: 0 0 1em 0;
 }
 select {
   -webkit-appearance: none;

@@ -1,6 +1,6 @@
 <template>
   <div class="field is-horizontal">
-    <div class="field-label is-normal">
+    <div class="field-label">
       <label class="label">{{label}}</label>
     </div>
     <div class="field-body">
@@ -9,6 +9,7 @@
         color="is-dark"
         resetStyle="is-outlined"
         clearStyle="is-outlined"
+        :size="size"
       ></app-time-picker>
     </div>
   </div>
@@ -22,7 +23,7 @@ export default {
   components: {
     "app-time-picker": TimePicker
   },
-  props: ["time", "label"],
+  props: ["time", "label", "size"],
   computed: {
     localTime: {
       get: function() {

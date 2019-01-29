@@ -4,13 +4,16 @@
       <div :class="['input', size]">
         <div class="select-container">
           <select v-model="hours" class="select-hours">
+            <option :value="null" disabled hidden>––</option>
             <option v-for="n in hoursArray" :value="n" :key="n" :selected="hours">{{n}}</option>
           </select>
           <span>:</span>
           <select v-model="minutes">
+            <option :value="null" disabled hidden>––</option>
             <option v-for="n in minutesArray" :value="n" :key="n" :selected="minutes">{{n}}</option>
           </select>
           <select v-model="meridiem">
+            <option :value="null" disabled hidden>––</option>
             <option value="AM">AM</option>
             <option value="PM">PM</option>
           </select>

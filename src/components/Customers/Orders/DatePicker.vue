@@ -1,6 +1,6 @@
 <template>
-  <div class="field is-horizontal common-fields">
-    <div class="field-label is-normal">
+  <div class="field is-horizontal">
+    <div class="field-label">
       <label class="label">{{label}}</label>
     </div>
     <div class="field-body">
@@ -13,6 +13,7 @@
             placeholder="Type or select a date..."
             editable
             @input="update"
+            :size="size"
           ></b-datepicker>
         </div>
       </div>
@@ -23,7 +24,7 @@
 <script>
 export default {
   name: "DatePicker",
-  props: ["date", "label"],
+  props: ["date", "label", "size"],
   data: function() {
     return {
       localDate: this.date
