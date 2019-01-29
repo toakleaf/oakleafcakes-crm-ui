@@ -37,7 +37,8 @@ export default {
       showThisMonth: false,
       localStart: null,
       localEnd: null,
-      WEEK_BEGINS: {
+      WEEK_BEGINS: "MONDAY",
+      WEEK_DAYS: {
         SUNDAY: 0,
         MONDAY: 1,
         TUESDAY: 2,
@@ -56,18 +57,13 @@ export default {
         this.clearTodayButton();
         this.clearMonthButton();
       }
-      // console.log('start: ' + this.start)
-      // console.log('localStart: ' + this.localStart)
     },
     end: function() {
       if (this.end != this.localEnd) {
         this.clearWeekButtons();
         this.clearTodayButton();
         this.clearMonthButton();
-        console.log("ho");
       }
-      // console.log('end: ' + this.end)
-      // console.log('localEnd: ' + this.localEnd)
     }
   },
   computed: {
@@ -77,19 +73,15 @@ export default {
       return now;
     },
     thisWeekStart: function() {
-      let thisWeekStart = new Date(this.today);
+      let thisWeekStart = new Date("2/1/19");
       thisWeekStart.setDate(
-        this.today.getDate() - this.today.getDay() + this.WEEK_BEGINS.MONDAY
+        this.WEEK_DAYS[this.WEEK_BEGINS] - thisWeekStart.getDay() + 1
       );
       return thisWeekStart;
     },
     thisWeekEnd: function() {
-      let thisWeekEnd = new Date(this.today);
-      thisWeekEnd.setDate(
-        this.thisWeekStart.getDate() +
-          this.WEEK_LENGTH -
-          this.WEEK_BEGINS.MONDAY
-      );
+      let thisWeekEnd = new Date(this.thisWeekStart);
+      thisWeekEnd.setDate(this.thisWeekStart.getDate() + this.WEEK_LENGTH - 1);
       return thisWeekEnd;
     },
     lastWeekStart: function() {
@@ -98,27 +90,31 @@ export default {
       return lastWeekStart;
     },
     lastWeekEnd: function() {
-      let lastWeekEnd = new Date(this.today);
-      lastWeekEnd.setDate(
-        this.lastWeekStart.getDate() +
-          this.WEEK_LENGTH -
-          this.WEEK_BEGINS.MONDAY
-      );
+      let lastWeekEnd = new Date(this.lastWeekStart);
+      lastWeekEnd.setDate(this.lastWeekStart.getDate() + this.WEEK_LENGTH - 1);
       return lastWeekEnd;
     },
     nextWeekStart: function() {
-      let nextWeekStart = new Date(this.thisWeekStart);
-      nextWeekStart.setDate(this.thisWeekStart.getDate() + this.WEEK_LENGTH);
+      let nextWeekStart = new Date(this.thisWeekEnd);
+      nextWeekStart.setDate(this.thisWeekEnd.getDate() + 1);
       return nextWeekStart;
     },
     nextWeekEnd: function() {
-      let nextWeekEnd = new Date(this.today);
-      nextWeekEnd.setDate(
-        this.nextWeekStart.getDate() +
-          this.WEEK_LENGTH -
-          this.WEEK_BEGINS.MONDAY
-      );
+      let nextWeekEnd = new Date(this.nextWeekStart);
+      nextWeekEnd.setDate(this.nextWeekStart.getDate() + this.WEEK_LENGTH - 1);
       return nextWeekEnd;
+    },
+    thisMonthStart: function() {
+      let thisMonthStart = new Date(this.today);
+      thisMonthStart.setDate(1);
+      return thisMonthStart;
+    },
+    thisMonthEnd: function() {
+      let thisMonthEnd = new Date(this.today);
+      thisMonthEnd.setDate(1);
+      thisMonthEnd.setMonth(thisMonthEnd.getMonth() + 1);
+      thisMonthEnd.setDate(0);
+      return thisMonthEnd;
     }
   },
   methods: {
@@ -164,11 +160,8 @@ export default {
       this.clearTodayButton();
       this.showThisMonth = !this.showThisMonth;
       if (!this.showThisMonth) return;
-      this.localStart = new Date(this.today);
-      this.localStart.setDate(1);
-      this.localEnd = new Date(this.today);
-      this.localEnd.setMonth(this.localEnd.getMonth() + 1);
-      this.localEnd.setDate(0);
+      this.localStart = this.thisMonthStart;
+      this.localEnd = this.thisMonthEnd;
       this.$emit("update:start", this.localStart);
       this.$emit("update:end", this.localEnd);
     },

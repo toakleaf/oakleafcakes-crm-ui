@@ -130,7 +130,6 @@ export default {
     },
     jumpBack: function() {
       try {
-        // this.update();
         if (this.localStart.getDate() === 1 && this.localEnd.getDate() >= 28) {
           return this.jumpMonthBack();
         }
@@ -148,7 +147,6 @@ export default {
     },
     jumpAhead: function() {
       try {
-        // this.update();
         if (this.localStart.getDate() === 1 && this.localEnd.getDate() >= 28) {
           return this.jumpMonthAhead();
         }
