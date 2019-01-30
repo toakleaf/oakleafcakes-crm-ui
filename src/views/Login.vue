@@ -9,19 +9,16 @@
                 <img src="@/assets/img/logo_full.svg">
               </section>
               <div class="field">
-                <p class="control has-icons-left has-icons-right">
-                  <input class="input" type="email" placeholder="Email">
+                <p class="control has-icons-left">
+                  <input v-model="email" class="input" type="email" placeholder="Email">
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
-                  </span>
-                  <span class="icon is-small is-right">
-                    <i class="fas fa-check"></i>
                   </span>
                 </p>
               </div>
               <div class="field">
                 <p class="control has-icons-left">
-                  <input class="input" type="password" placeholder="Password">
+                  <input v-model="password" class="input" type="password" placeholder="Password">
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                   </span>
@@ -29,7 +26,7 @@
               </div>
               <div class="field is-grouped is-grouped-centered">
                 <p class="control">
-                  <button class="button is-primary">Login</button>
+                  <button @click.prevent="login({email, password})" class="button is-primary">Login</button>
                 </p>
               </div>
             </div>
@@ -40,6 +37,29 @@
     </div>
   </section>
 </template>
+
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  data() {
+    return {
+      email: null,
+      password: null,
+      res: {}
+    };
+  },
+  computed: {
+    jwt() {
+      return this.$store.getters.authToken;
+    }
+  },
+  methods: {
+    ...mapActions(["login"])
+  }
+};
+</script>
+
 
 <style lang="scss" scoped>
 </style>

@@ -4,6 +4,10 @@ import router from './router';
 import store from './store/store';
 import Buefy from 'buefy';
 import './registerServiceWorker';
+// import axios from 'axios';
+
+// axios.defaults.baseURL = 'http://localhost:3000';
+// axios.defaults.headers.common['Authorization'] = '';
 
 Vue.use(Buefy);
 

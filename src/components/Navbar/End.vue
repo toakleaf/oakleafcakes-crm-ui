@@ -8,7 +8,7 @@
         <router-link to="/profile" class="navbar-item">My Deets</router-link>
         <router-link to="/admin" class="navbar-item">User Admin</router-link>
         <hr class="navbar-divider">
-        <a class="navbar-item">Log Out</a>
+        <a @click="$store.dispatch('logout')" class="navbar-item">Log Out</a>
       </div>
     </div>
   </div>

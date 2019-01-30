@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-primary is-fixed-top" role="navigation" aria-label="main navigation">
     <nav-brand @toggle-menu="showMenu = !showMenu"/>
-    <div class="navbar-menu" :class="{'is-active' : showMenu}">
+    <div v-if="auth" class="navbar-menu" :class="{'is-active' : showMenu}">
       <nav-start/>
       <nav-end/>
     </div>
@@ -28,10 +28,14 @@ export default {
     $route(to, from) {
       this.showMenu = false;
     }
+  },
+  computed: {
+    auth() {
+      return this.$store.getters.isAuthenticated;
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 </style>
