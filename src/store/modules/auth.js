@@ -1,4 +1,4 @@
-import axios from '../../axios-auth';
+import axios from '../../axiosAPI';
 import router from '../../router';
 
 const state = {
@@ -12,7 +12,7 @@ const getters = {
 };
 
 const mutations = {
-  updateAuthToken: (state, payload) => {
+  setAuthToken: (state, payload) => {
     state.authToken = payload;
   },
   clearAuthData: state => {
@@ -26,31 +26,34 @@ const actions = {
       state.authToken
     }`;
   },
-  register({ commit }, userData) {},
   login({ commit, dispatch }, payload) {
     axios
       .post(`/user/login`, payload)
       .then(res => {
-        commit('updateAuthToken', res.headers['x-auth-token']);
+        commit('setAuthToken', res.headers['x-auth-token']);
         dispatch('setAuthHeaders');
-        router.replace('/customers');
         localStorage.setItem('token', res.headers['x-auth-token']);
       })
+      .then(() => dispatch('fetchUserData'))
+      .then(() => router.replace('/'))
       .catch(err => console.error(err));
   },
-  persistSession({ commit }) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      return;
-    }
-    commit('updateAuthToken', token);
-    router.replace('/customers');
-  },
+  // persistSession({ commit, dispatch }) {
+  //   console.log('yoyoyo');
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     return;
+  //   }
+  //   commit('setAuthToken', token);
+  //   dispatch('setAuthHeaders');
+  //   // router.replace('/');
+  //   router.back();
+  // },
   logout({ commit }) {
     commit('clearAuthData');
     axios.defaults.headers.common['Authorization'] = null;
     localStorage.removeItem('token');
-    router.replace('/');
+    router.replace('/login');
   }
 };
 

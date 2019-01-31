@@ -10,7 +10,13 @@
               </section>
               <div class="field">
                 <p class="control has-icons-left">
-                  <input v-model="email" class="input" type="email" placeholder="Email">
+                  <input
+                    @keyup.enter="login({email, password})"
+                    v-model="email"
+                    class="input"
+                    type="email"
+                    placeholder="Email"
+                  >
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -18,7 +24,13 @@
               </div>
               <div class="field">
                 <p class="control has-icons-left">
-                  <input v-model="password" class="input" type="password" placeholder="Password">
+                  <input
+                    @keyup.enter="login({email, password})"
+                    v-model="password"
+                    class="input"
+                    type="password"
+                    placeholder="Password"
+                  >
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                   </span>
@@ -48,11 +60,6 @@ export default {
       password: null,
       res: {}
     };
-  },
-  computed: {
-    jwt() {
-      return this.$store.getters.authToken;
-    }
   },
   methods: {
     ...mapActions(["login"])

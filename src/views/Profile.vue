@@ -7,12 +7,12 @@
           <div class="columns is-centered">
             <div class="column is-three-quarters">
               <div class="field">
-                <label class="label">User ID: 1</label>
+                <label class="label">User ID: {{id}}</label>
               </div>
               <div class="field">
                 <label class="label">Display Name</label>
                 <p class="control has-icons-left">
-                  <input class="input" type="text" placeholder="Display Name">
+                  <input v-model="displayName" class="input" type="text" placeholder="Display Name">
                   <span class="icon is-left">
                     <i class="fas fa-crow"></i>
                   </span>
@@ -21,7 +21,7 @@
               <div class="field">
                 <label class="label">First Name</label>
                 <p class="control has-icons-left">
-                  <input class="input" type="text" placeholder="First Name">
+                  <input v-model="firstName" class="input" type="text" placeholder="First Name">
                   <span class="icon is-left">
                     <i class="fas fa-user-astronaut"></i>
                   </span>
@@ -30,7 +30,7 @@
               <div class="field">
                 <label class="label">Last Name</label>
                 <p class="control has-icons-left">
-                  <input class="input" type="text" placeholder="Last Name">
+                  <input v-model="lastName" class="input" type="text" placeholder="Last Name">
                   <span class="icon is-left">
                     <i class="fas fa-user-astronaut"></i>
                   </span>
@@ -39,7 +39,7 @@
               <div class="field">
                 <label class="label">Email</label>
                 <p class="control has-icons-left">
-                  <input class="input" type="text" placeholder="@mail">
+                  <input v-model="email" class="input" type="text" placeholder="@mail">
                   <span class="icon is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -63,7 +63,75 @@
 
 <script>
 export default {
-  name: "profile"
+  name: "profile",
+  computed: {
+    id: {
+      get() {
+        return this.$store.getters.userID;
+      },
+      set(id) {
+        this.$store.dispatch("setUserData", { id });
+      }
+    },
+    firstName: {
+      get() {
+        return this.$store.getters.userFirstName;
+      },
+      set(firstName) {
+        this.$store.dispatch("setUserData", { firstName });
+      }
+    },
+    lastName: {
+      get() {
+        return this.$store.getters.userLastName;
+      },
+      set(lastName) {
+        this.$store.dispatch("setUserData", { lastName });
+      }
+    },
+    displayName: {
+      get() {
+        return this.$store.getters.userDisplayName;
+      },
+      set(displayName) {
+        this.$store.dispatch("setUserData", { displayName });
+      }
+    },
+    email: {
+      get() {
+        return this.$store.getters.userEmail;
+      },
+      set(email) {
+        this.$store.dispatch("setUserData", { email });
+      }
+    },
+    createdAt: {
+      get() {
+        return this.$store.getters.userCreatedAt;
+      },
+      set(createdAt) {
+        this.$store.dispatch("setUserData", { createdAt });
+      }
+    },
+    updatedAt: {
+      get() {
+        return this.$store.getters.userUpdatedAt;
+      },
+      set(updatedAt) {
+        this.$store.dispatch("setUserData", { id });
+      }
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    const answer = window.confirm(
+      "Do you really want to leave? you have unsaved changes!"
+    );
+    if (answer) {
+      next();
+    } else {
+      next(false);
+    }
+  }
 };
 </script>
 

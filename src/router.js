@@ -1,17 +1,30 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Customers from './views/Customers.vue';
+
+// import axios from '../../axiosAPI';
 
 Vue.use(Router);
 import store from './store/store';
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
+      name: 'home',
+      component: Home,
+      beforeEnter(to, from, next) {
+        if (store.getters['isAuthenticated']) {
+          return next();
+        }
+        next('/login');
+      }
+    },
+    {
+      path: '/login',
       name: 'login',
-      alias: '/login',
       component: Login
     },
     {
@@ -19,11 +32,9 @@ export default new Router({
       name: 'customers',
       component: Customers,
       beforeEnter(to, from, next) {
-        if (store.state.auth.authToken) {
-          console.log('hi');
+        if (store.getters['isAuthenticated']) {
           return next();
         }
-        console.log('fail');
         next('/login');
       }
     },
@@ -45,7 +56,7 @@ export default new Router({
       component: () =>
         import(/* webpackChunkName: "profile" */ './views/Profile.vue'),
       beforeEnter(to, from, next) {
-        if (store.state.auth.authToken) {
+        if (store.getters['isAuthenticated']) {
           return next();
         }
         next('/login');
@@ -60,7 +71,7 @@ export default new Router({
       component: () =>
         import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
       beforeEnter(to, from, next) {
-        if (store.state.auth.authToken) {
+        if (store.getters['isAuthenticated']) {
           return next();
         }
         next('/login');
@@ -75,7 +86,7 @@ export default new Router({
       component: () =>
         import(/* webpackChunkName: "calendar" */ './views/Calendar.vue'),
       beforeEnter(to, from, next) {
-        if (store.state.auth.authToken) {
+        if (store.getters['isAuthenticated']) {
           return next();
         }
         next('/login');
@@ -83,3 +94,18 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (!store.getters['isAuthenticated']) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      next();
+      return;
+    }
+    store.commit('setAuthToken', token);
+    store.dispatch('setAuthHeaders');
+  }
+  next();
+});
+
+export default router;

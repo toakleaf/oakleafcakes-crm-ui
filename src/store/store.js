@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './modules/auth';
+import user from './modules/user';
 
 import * as getters from './getters';
 import * as actions from './actions';
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   actions,
   mutations,
   modules: {
-    auth
+    auth,
+    user
   }
 });
