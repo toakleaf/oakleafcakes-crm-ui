@@ -10,15 +10,6 @@
                 <label class="label">Account ID: {{id}}</label>
               </div>
               <div class="field">
-                <label class="label">Display Name</label>
-                <p class="control has-icons-left">
-                  <input v-model="displayName" class="input" type="text" placeholder="Display Name">
-                  <span class="icon is-left">
-                    <i class="fas fa-crow"></i>
-                  </span>
-                </p>
-              </div>
-              <div class="field">
                 <label class="label">First Name</label>
                 <p class="control has-icons-left">
                   <input v-model="firstName" class="input" type="text" placeholder="First Name">
@@ -33,6 +24,15 @@
                   <input v-model="lastName" class="input" type="text" placeholder="Last Name">
                   <span class="icon is-left">
                     <i class="fas fa-user-astronaut"></i>
+                  </span>
+                </p>
+              </div>
+              <div class="field">
+                <label class="label">Company Name</label>
+                <p class="control has-icons-left">
+                  <input v-model="companyName" class="input" type="text" placeholder="Company Name">
+                  <span class="icon is-left">
+                    <i class="fas fa-crow"></i>
                   </span>
                 </p>
               </div>
@@ -89,12 +89,12 @@ export default {
         this.$store.dispatch("setAccountData", { lastName });
       }
     },
-    displayName: {
+    companyName: {
       get() {
-        return this.$store.getters.accountDisplayName;
+        return this.$store.getters.accountCompanyName;
       },
-      set(displayName) {
-        this.$store.dispatch("setAccountData", { displayName });
+      set(companyName) {
+        this.$store.dispatch("setAccountData", { companyName });
       }
     },
     email: {

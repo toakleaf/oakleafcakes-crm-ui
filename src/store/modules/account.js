@@ -5,7 +5,7 @@ const state = {
   accountID: null,
   accountFirstName: null,
   accountLastName: null,
-  accountDisplayName: null,
+  accountCompanyName: null,
   accountEmail: null,
   accountCreatedAt: null,
   accountUpdatedAt: null
@@ -21,8 +21,8 @@ const getters = {
   accountLastName: state => {
     return state.accountLastName;
   },
-  accountDisplayName: state => {
-    return state.accountDisplayName;
+  accountCompanyName: state => {
+    return state.accountCompanyName;
   },
   accountEmail: state => {
     return state.accountEmail;
@@ -37,13 +37,16 @@ const getters = {
 
 const mutations = {
   setAccountData: (state, payload) => {
+    console.log(payload['company_name']);
     payload['id'] ? (state.accountID = payload['id']) : null;
     payload['first_name']
       ? (state.accountFirstName = payload['first_name'])
       : null;
-    payload['last_name'] ? (state.accountLastName = payload['last_name']) : null;
-    payload['display_name']
-      ? (state.accountDisplayName = payload['display_name'])
+    payload['last_name']
+      ? (state.accountLastName = payload['last_name'])
+      : null;
+    payload['company_name']
+      ? (state.accountCompanyName = payload['company_name'])
       : null;
     payload['email'] ? (state.accountEmail = payload['email']) : null;
     payload['created_at']
@@ -60,7 +63,8 @@ const actions = {
     axios
       .get('/account')
       .then(res => {
-        commit('setAccountData', res.data);
+        console.log(res.data[0]);
+        commit('setAccountData', res.data[0]);
       })
       .catch(err => console.error(err));
   },

@@ -2,7 +2,7 @@
   <div class="navbar-end">
     <div class="navbar-item has-dropdown is-hoverable">
       <!-- <a class="navbar-link">More</a> -->
-      <router-link to="/profile" class="navbar-link">Lookin' fine, {{displayName}}!</router-link>
+      <router-link to="/profile" class="navbar-link">Lookin' fine, {{firstName}}!</router-link>
 
       <div class="navbar-dropdown">
         <router-link to="/profile" class="navbar-item">My Deets</router-link>
@@ -20,11 +20,11 @@ import { mapActions } from "vuex";
 export default {
   name: "End",
   computed: {
-    displayName: function() {
-      if (!this.$store.getters.accountDisplayName) {
+    firstName: function() {
+      if (!this.$store.getters.accountFirstName) {
         this.fetchAccountData();
       }
-      return this.$store.getters.accountDisplayName;
+      return this.$store.getters.accountFirstName;
     }
   },
   methods: {
