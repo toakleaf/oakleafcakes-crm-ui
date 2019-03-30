@@ -64,6 +64,11 @@
 <script>
 export default {
   name: "profile",
+  data: function() {
+    return {
+      stateChanged: false
+    };
+  },
   computed: {
     id: {
       get() {
@@ -71,6 +76,7 @@ export default {
       },
       set(id) {
         this.$store.dispatch("setAuthorData", { id });
+        this.stateChanged = true;
       }
     },
     firstName: {
@@ -79,6 +85,7 @@ export default {
       },
       set(firstName) {
         this.$store.dispatch("setAuthorData", { firstName });
+        this.stateChanged = true;
       }
     },
     lastName: {
@@ -87,6 +94,7 @@ export default {
       },
       set(lastName) {
         this.$store.dispatch("setAuthorData", { lastName });
+        this.stateChanged = true;
       }
     },
     companyName: {
@@ -95,6 +103,7 @@ export default {
       },
       set(companyName) {
         this.$store.dispatch("setAuthorData", { companyName });
+        this.stateChanged = true;
       }
     },
     email: {
@@ -103,6 +112,7 @@ export default {
       },
       set(email) {
         this.$store.dispatch("setAuthorData", { email });
+        this.stateChanged = true;
       }
     },
     createdAt: {
@@ -111,6 +121,7 @@ export default {
       },
       set(createdAt) {
         this.$store.dispatch("setAuthorData", { createdAt });
+        this.stateChanged = true;
       }
     },
     updatedAt: {
@@ -119,10 +130,12 @@ export default {
       },
       set(updatedAt) {
         this.$store.dispatch("setAuthorData", { id });
+        this.stateChanged = true;
       }
     }
   },
   beforeRouteLeave(to, from, next) {
+    if (this.stateChanged === false) return next();
     const answer = window.confirm(
       "Do you really want to leave? you have unsaved changes!"
     );
