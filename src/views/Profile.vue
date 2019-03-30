@@ -3,11 +3,11 @@
     <div class="columns is-centered">
       <div class="column is-two-thirds">
         <div class="box">
-          <h1 class="title">User Profile</h1>
+          <h1 class="title">Account Profile</h1>
           <div class="columns is-centered">
             <div class="column is-three-quarters">
               <div class="field">
-                <label class="label">User ID: {{id}}</label>
+                <label class="label">Account ID: {{id}}</label>
               </div>
               <div class="field">
                 <label class="label">Display Name</label>
@@ -67,58 +67,58 @@ export default {
   computed: {
     id: {
       get() {
-        return this.$store.getters.userID;
+        return this.$store.getters.accountID;
       },
       set(id) {
-        this.$store.dispatch("setUserData", { id });
+        this.$store.dispatch("setAccountData", { id });
       }
     },
     firstName: {
       get() {
-        return this.$store.getters.userFirstName;
+        return this.$store.getters.accountFirstName;
       },
       set(firstName) {
-        this.$store.dispatch("setUserData", { firstName });
+        this.$store.dispatch("setAccountData", { firstName });
       }
     },
     lastName: {
       get() {
-        return this.$store.getters.userLastName;
+        return this.$store.getters.accountLastName;
       },
       set(lastName) {
-        this.$store.dispatch("setUserData", { lastName });
+        this.$store.dispatch("setAccountData", { lastName });
       }
     },
     displayName: {
       get() {
-        return this.$store.getters.userDisplayName;
+        return this.$store.getters.accountDisplayName;
       },
       set(displayName) {
-        this.$store.dispatch("setUserData", { displayName });
+        this.$store.dispatch("setAccountData", { displayName });
       }
     },
     email: {
       get() {
-        return this.$store.getters.userEmail;
+        return this.$store.getters.accountEmail;
       },
       set(email) {
-        this.$store.dispatch("setUserData", { email });
+        this.$store.dispatch("setAccountData", { email });
       }
     },
     createdAt: {
       get() {
-        return this.$store.getters.userCreatedAt;
+        return this.$store.getters.accountCreatedAt;
       },
       set(createdAt) {
-        this.$store.dispatch("setUserData", { createdAt });
+        this.$store.dispatch("setAccountData", { createdAt });
       }
     },
     updatedAt: {
       get() {
-        return this.$store.getters.userUpdatedAt;
+        return this.$store.getters.accountUpdatedAt;
       },
       set(updatedAt) {
-        this.$store.dispatch("setUserData", { id });
+        this.$store.dispatch("setAccountData", { id });
       }
     }
   },

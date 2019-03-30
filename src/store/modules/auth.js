@@ -28,13 +28,13 @@ const actions = {
   },
   login({ commit, dispatch }, payload) {
     axios
-      .post(`/user/login`, payload)
+      .post(`/account/login`, payload)
       .then(res => {
         commit('setAuthToken', res.headers['x-auth-token']);
         dispatch('setAuthHeaders');
         localStorage.setItem('token', res.headers['x-auth-token']);
       })
-      .then(() => dispatch('fetchUserData'))
+      .then(() => dispatch('fetchAccountData'))
       .then(() => router.replace('/'))
       .catch(err => console.error(err));
   },

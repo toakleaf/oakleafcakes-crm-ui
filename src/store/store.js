@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './modules/auth';
-import user from './modules/user';
+import account from './modules/account';
 
 import * as getters from './getters';
 import * as actions from './actions';
@@ -16,6 +16,6 @@ export default new Vuex.Store({
   mutations,
   modules: {
     auth,
-    user
+    account
   }
 });

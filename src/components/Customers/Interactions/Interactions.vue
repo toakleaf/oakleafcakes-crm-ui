@@ -12,13 +12,13 @@
         <app-timeline-item
           type="payment"
           :date="dates[2]"
-          user="Amanda"
+          account="Amanda"
           content="Timeline content - Can include any HTML element"
         />
         <app-timeline-item
           type="in-person"
           :date="dates[1]"
-          user="Sarah"
+          account="Sarah"
           content="Timeline content - Can include any HTML element. Timeline content - Can include any HTML element. Timeline content - Can include any HTML element. Timeline content - Can include any HTML element."
         />
         <header class="timeline-header">
@@ -27,7 +27,7 @@
         <app-timeline-item
           type="email"
           :date="dates[0]"
-          user="Liz"
+          account="Liz"
           content="Timeline content - Can include any HTML element. Timeline content - Can include any HTML element."
         />
         <div class="timeline-header">

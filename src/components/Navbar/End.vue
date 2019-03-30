@@ -6,7 +6,7 @@
 
       <div class="navbar-dropdown">
         <router-link to="/profile" class="navbar-item">My Deets</router-link>
-        <router-link to="/admin" class="navbar-item">User Admin</router-link>
+        <router-link to="/admin" class="navbar-item">Account Admin</router-link>
         <hr class="navbar-divider">
         <a @click="$store.dispatch('logout')" class="navbar-item">Log Out</a>
       </div>
@@ -21,14 +21,14 @@ export default {
   name: "End",
   computed: {
     displayName: function() {
-      if (!this.$store.getters.userDisplayName) {
-        this.fetchUserData();
+      if (!this.$store.getters.accountDisplayName) {
+        this.fetchAccountData();
       }
-      return this.$store.getters.userDisplayName;
+      return this.$store.getters.accountDisplayName;
     }
   },
   methods: {
-    ...mapActions(["fetchUserData"])
+    ...mapActions(["fetchAccountData"])
   }
 };
 </script>

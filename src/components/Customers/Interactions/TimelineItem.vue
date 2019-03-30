@@ -5,7 +5,7 @@
         <i class="fa fa-dollar-sign"></i>
       </div>
       <div class="timeline-content">
-        <p class="heading">{{date.toDateString()}} : {{user}}</p>
+        <p class="heading">{{date.toDateString()}} : {{account}}</p>
         {{content}}
       </div>
     </div>
@@ -15,7 +15,7 @@
         <i class="fas fa-user-friends"></i>
       </div>
       <div class="timeline-content">
-        <p class="heading">{{date.toDateString()}} : {{user}}</p>
+        <p class="heading">{{date.toDateString()}} : {{account}}</p>
         {{content}}
       </div>
     </div>
@@ -25,7 +25,7 @@
         <i class="fas fa-envelope"></i>
       </div>
       <div class="timeline-content">
-        <p class="heading">{{date.toDateString()}} : {{user}}</p>
+        <p class="heading">{{date.toDateString()}} : {{account}}</p>
         {{content}}
       </div>
     </div>
@@ -35,14 +35,14 @@
         <i class="fas fa-phone"></i>
       </div>
       <div class="timeline-content">
-        <p class="heading">{{date.toDateString()}} : {{user}}</p>
+        <p class="heading">{{date.toDateString()}} : {{account}}</p>
         {{content}}
       </div>
     </div>
     <div v-else class="timeline-item">
       <div class="timeline-marker"></div>
       <div class="timeline-content">
-        <p class="heading">{{date.toDateString()}} : {{user}}</p>
+        <p class="heading">{{date.toDateString()}} : {{account}}</p>
         {{content}}
       </div>
     </div>
@@ -52,7 +52,7 @@
 <script>
 export default {
   name: "TimelineItem",
-  props: ["date", "user", "type", "content"]
+  props: ["date", "account", "type", "content"]
 };
 </script>
 

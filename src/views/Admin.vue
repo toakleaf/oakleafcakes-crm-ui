@@ -2,7 +2,7 @@
   <section class="pad-route">
     <div class="container">
       <div class="box">
-        <h1 class="title">Users</h1>
+        <h1 class="title">Accounts</h1>
         <h2 class="subtitle is-6">
           <a>+ Add New</a>
         </h2>
