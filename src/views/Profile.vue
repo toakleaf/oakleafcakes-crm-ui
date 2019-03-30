@@ -123,15 +123,6 @@ export default {
         this.$store.dispatch("setAuthorData", { createdAt });
         this.stateChanged = true;
       }
-    },
-    updatedAt: {
-      get() {
-        return this.$store.getters.authorUpdatedAt;
-      },
-      set(updatedAt) {
-        this.$store.dispatch("setAuthorData", { id });
-        this.stateChanged = true;
-      }
     }
   },
   beforeRouteLeave(to, from, next) {

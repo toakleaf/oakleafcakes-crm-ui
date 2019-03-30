@@ -10,8 +10,7 @@ const state = {
   authorLastName: null,
   authorCompanyName: null,
   authorEmail: null,
-  authorCreatedAt: null,
-  authorUpdatedAt: null
+  authorCreatedAt: null
 };
 
 const getters = {
@@ -32,9 +31,6 @@ const getters = {
   },
   authorCreatedAt: state => {
     return state.authorCreatedAt;
-  },
-  authorUpdatedAt: state => {
-    return state.authorUpdatedAt;
   }
 };
 
@@ -51,9 +47,6 @@ const mutations = {
     payload['email'] ? (state.authorEmail = payload['email']) : null;
     payload['created_at']
       ? (state.authorCreatedAt = payload['created_at'])
-      : null;
-    payload['updated_at']
-      ? (state.authorUpdatedAt = payload['updated_at'])
       : null;
   }
 };
