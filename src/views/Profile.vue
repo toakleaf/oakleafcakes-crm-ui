@@ -67,58 +67,58 @@ export default {
   computed: {
     id: {
       get() {
-        return this.$store.getters.accountID;
+        return this.$store.getters.authorID;
       },
       set(id) {
-        this.$store.dispatch("setAccountData", { id });
+        this.$store.dispatch("setAuthorData", { id });
       }
     },
     firstName: {
       get() {
-        return this.$store.getters.accountFirstName;
+        return this.$store.getters.authorFirstName;
       },
       set(firstName) {
-        this.$store.dispatch("setAccountData", { firstName });
+        this.$store.dispatch("setAuthorData", { firstName });
       }
     },
     lastName: {
       get() {
-        return this.$store.getters.accountLastName;
+        return this.$store.getters.authorLastName;
       },
       set(lastName) {
-        this.$store.dispatch("setAccountData", { lastName });
+        this.$store.dispatch("setAuthorData", { lastName });
       }
     },
     companyName: {
       get() {
-        return this.$store.getters.accountCompanyName;
+        return this.$store.getters.authorCompanyName;
       },
       set(companyName) {
-        this.$store.dispatch("setAccountData", { companyName });
+        this.$store.dispatch("setAuthorData", { companyName });
       }
     },
     email: {
       get() {
-        return this.$store.getters.accountEmail;
+        return this.$store.getters.authorEmail;
       },
       set(email) {
-        this.$store.dispatch("setAccountData", { email });
+        this.$store.dispatch("setAuthorData", { email });
       }
     },
     createdAt: {
       get() {
-        return this.$store.getters.accountCreatedAt;
+        return this.$store.getters.authorCreatedAt;
       },
       set(createdAt) {
-        this.$store.dispatch("setAccountData", { createdAt });
+        this.$store.dispatch("setAuthorData", { createdAt });
       }
     },
     updatedAt: {
       get() {
-        return this.$store.getters.accountUpdatedAt;
+        return this.$store.getters.authorUpdatedAt;
       },
       set(updatedAt) {
-        this.$store.dispatch("setAccountData", { id });
+        this.$store.dispatch("setAuthorData", { id });
       }
     }
   },

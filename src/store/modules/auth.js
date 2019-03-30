@@ -34,7 +34,7 @@ const actions = {
         dispatch('setAuthHeaders');
         localStorage.setItem('token', res.headers['x-auth-token']);
       })
-      .then(() => dispatch('fetchAccountData'))
+      .then(() => dispatch('fetchAuthorData'))
       .then(() => router.replace('/'))
       .catch(err => console.error(err));
   },
