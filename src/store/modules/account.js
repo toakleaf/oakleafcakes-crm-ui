@@ -37,7 +37,6 @@ const getters = {
 
 const mutations = {
   setAccountData: (state, payload) => {
-    console.log(payload['company_name']);
     payload['id'] ? (state.accountID = payload['id']) : null;
     payload['first_name']
       ? (state.accountFirstName = payload['first_name'])
@@ -63,7 +62,6 @@ const actions = {
     axios
       .get('/account')
       .then(res => {
-        console.log(res.data[0]);
         commit('setAccountData', res.data[0]);
       })
       .catch(err => console.error(err));
