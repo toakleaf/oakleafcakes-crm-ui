@@ -7,7 +7,7 @@
           <div class="columns is-centered">
             <div class="column is-three-quarters">
               <div class="field">
-                <label class="label">Account ID: {{id}}</label>
+                <label class="label">Account ID: {{storeId}}</label>
               </div>
               <div class="field">
                 <label class="label">First Name</label>
