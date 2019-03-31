@@ -39,7 +39,7 @@
               <div class="field">
                 <label class="label">Email</label>
                 <p class="control has-icons-left">
-                  <input v-model="email" class="input" type="text" placeholder="@mail">
+                  <input v-model="storeEmail" class="input" type="text" placeholder="@mail">
                   <span class="icon is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -47,7 +47,7 @@
               </div>
               <div class="field is-grouped">
                 <div class="control">
-                  <button class="button is-primary">Update Profile</button>
+                  <button @click="pushUpdates" class="button is-primary">Update Profile</button>
                 </div>
                 <div class="control">
                   <button class="button is-text">change password</button>
@@ -62,21 +62,30 @@
 </template>
 
 <script>
+import axios from "../axiosAPI";
 export default {
   name: "profile",
   data: function() {
     return {
-      stateChanged: false
+      unsavedChanges: false,
+      password: null,
+      passwordConfirm: null,
+      id: null,
+      first_name: null,
+      last_name: null,
+      company_name: null,
+      email: null,
+      created_at: null
     };
   },
   computed: {
-    id: {
+    storeId: {
       get() {
         return this.$store.getters.authorID;
       },
       set(id) {
-        this.$store.dispatch("setAuthorData", { id });
-        this.stateChanged = true;
+        this.id = id;
+        this.unsavedChanges = true;
       }
     },
     firstName: {
@@ -84,8 +93,8 @@ export default {
         return this.$store.getters.authorFirstName;
       },
       set(firstName) {
-        this.$store.dispatch("setAuthorData", { firstName });
-        this.stateChanged = true;
+        this.first_name = firstName;
+        this.unsavedChanges = true;
       }
     },
     lastName: {
@@ -93,8 +102,8 @@ export default {
         return this.$store.getters.authorLastName;
       },
       set(lastName) {
-        this.$store.dispatch("setAuthorData", { lastName });
-        this.stateChanged = true;
+        this.last_name = lastName;
+        this.unsavedChanges = true;
       }
     },
     companyName: {
@@ -102,31 +111,55 @@ export default {
         return this.$store.getters.authorCompanyName;
       },
       set(companyName) {
-        this.$store.dispatch("setAuthorData", { companyName });
-        this.stateChanged = true;
+        this.company_name = companyName;
+        this.unsavedChanges = true;
       }
     },
-    email: {
+    storeEmail: {
       get() {
         return this.$store.getters.authorEmail;
       },
       set(email) {
-        this.$store.dispatch("setAuthorData", { email });
-        this.stateChanged = true;
+        this.email = email;
+        this.unsavedChanges = true;
       }
     },
+
     createdAt: {
       get() {
         return this.$store.getters.authorCreatedAt;
       },
       set(createdAt) {
-        this.$store.dispatch("setAuthorData", { createdAt });
-        this.stateChanged = true;
+        this.created_at = createdAt;
+        this.unsavedChanges = true;
       }
     }
   },
+  methods: {
+    pushUpdates: function() {
+      this.$store.dispatch("setAuthorData", {
+        first_name: this.first_name,
+        last_name: this.last_name,
+        company_name: this.company_name,
+        email: this.email
+      });
+      axios
+        .put(`/account/${this.storeId}`, {
+          first_name: this.first_name ? this.first_name : this.firstName,
+          last_name: this.last_name ? this.last_name : this.lastName,
+          company_name: this.company_name
+            ? this.company_name
+            : this.companyName,
+          email: this.email ? this.email : this.storeEmail
+        })
+        .then(res => {
+          this.unsavedChanges = false;
+        })
+        .catch(err => console.error(err));
+    }
+  },
   beforeRouteLeave(to, from, next) {
-    if (this.stateChanged === false) return next();
+    if (this.unsavedChanges === false) return next();
     const answer = window.confirm(
       "Do you really want to leave? You have unsaved changes!"
     );
