@@ -103,6 +103,7 @@ router.beforeEach((to, from, next) => {
       return;
     }
     store.commit('setAuthToken', token);
+    store.dispatch('setLogoutTimer', store.getters['tokenExp']);
     store.dispatch('setAuthHeaders');
   }
   next();

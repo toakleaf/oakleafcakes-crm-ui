@@ -58,7 +58,7 @@ const actions = {
       .then(res => {
         commit('setAuthorData', res.data[0]);
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error('hi: ' + err));
   },
   setAuthorData({ commit }, payload) {
     commit('setAuthorData', payload);
