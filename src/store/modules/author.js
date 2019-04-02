@@ -10,6 +10,7 @@ const state = {
   authorLastName: null,
   authorCompanyName: null,
   authorEmail: null,
+  authorRole: null,
   authorCreatedAt: null
 };
 
@@ -29,6 +30,9 @@ const getters = {
   authorEmail: state => {
     return state.authorEmail;
   },
+  authorRole: state => {
+    return state.authorRole;
+  },
   authorCreatedAt: state => {
     return state.authorCreatedAt;
   }
@@ -45,6 +49,7 @@ const mutations = {
       ? (state.authorCompanyName = payload['company_name'])
       : null;
     payload['email'] ? (state.authorEmail = payload['email']) : null;
+    payload['role'] ? (state.authorRole = payload['role']) : null;
     payload['created_at']
       ? (state.authorCreatedAt = payload['created_at'])
       : null;

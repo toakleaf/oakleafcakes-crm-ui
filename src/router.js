@@ -71,6 +71,9 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
       beforeEnter(to, from, next) {
+        if (store.getters['authorRole'] !== 'ADMIN') {
+          return next(false);
+        }
         if (store.getters['isAuthenticated']) {
           return next();
         }

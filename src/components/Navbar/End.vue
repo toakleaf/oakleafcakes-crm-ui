@@ -6,7 +6,8 @@
 
       <div class="navbar-dropdown">
         <router-link to="/profile" class="navbar-item">My Deets</router-link>
-        <router-link to="/admin" class="navbar-item">Employee Admin</router-link>
+        <router-link v-if="role === 'ADMIN'" to="/admin" class="navbar-item">Employee Admin</router-link>
+        <router-link v-if="role === 'ADMIN'" to="/admin" class="navbar-item">System Admin</router-link>
         <hr class="navbar-divider">
         <a @click="$store.dispatch('logout')" class="navbar-item">Log Out</a>
       </div>
@@ -25,6 +26,12 @@ export default {
         this.fetchAuthorData();
       }
       return this.$store.getters.authorFirstName;
+    },
+    role: function() {
+      if (!this.$store.getters.authorRole) {
+        this.fetchAuthorData();
+      }
+      return this.$store.getters.authorRole;
     }
   },
   methods: {
