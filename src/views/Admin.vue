@@ -2,7 +2,7 @@
   <section class="pad-route">
     <div class="container">
       <div class="box">
-        <h1 class="title">Accounts</h1>
+        <h1 class="title">Employee Accounts</h1>
         <h2 class="subtitle is-6">
           <a>+ Add New</a>
         </h2>
@@ -13,38 +13,26 @@
                 <input type="checkbox">
               </th>
               <th>ID</th>
-              <th>Display Name</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th>Email</th>
+              <th>Phone</th>
               <th>Role</th>
-              <th>Status</th>
+              <th>Created</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-for="account in accounts" :key="account.id">
               <td>
                 <input type="checkbox">
               </td>
-              <td>1</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
-            </tr>
-            <tr>
-              <td>
-                <input type="checkbox">
-              </td>
-              <td>2</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
-              <td>Test</td>
+              <td>{{ account.id }}</td>
+              <td>{{ account.first_name }}</td>
+              <td>{{ account.last_name }}</td>
+              <td>{{ account.email }}</td>
+              <td>{{ account.phone }}</td>
+              <td>{{ account.role }}</td>
+              <td>{{ account.created_at.toDateString() }}</td>
             </tr>
           </tbody>
         </table>
@@ -54,8 +42,32 @@
 </template>
 
 <script>
+import axios from "../axiosAPI";
+
 export default {
-  name: "admin"
+  name: "admin",
+  data: function() {
+    return {
+      accounts: []
+    };
+  },
+  methods: {
+    getAccounts: function() {
+      axios
+        .get("/account/search/?role=ADMIN&role=EMPLOYEE")
+        .then(result => {
+          this.accounts = result.data;
+          for (let i = 0; i < this.accounts.length; i++) {
+            this.accounts[i].created_at = new Date(this.accounts[i].created_at);
+            this.accounts[i].updated_at = new Date(this.accounts[i].updated_at);
+          }
+        })
+        .catch(err => console.error("error: " + err));
+    }
+  },
+  created: function() {
+    this.getAccounts();
+  }
 };
 </script>
 
