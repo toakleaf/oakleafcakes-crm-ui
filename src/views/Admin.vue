@@ -11,84 +11,7 @@
           <div class="modal-content">
             <div class="columns is-tablet is-centered">
               <div class="column is-half">
-                <div class="box">
-                  <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                      <input class="input" type="text" placeholder="First Name">
-                      <span class="icon is-left">
-                        <i class="fas fa-user-astronaut"></i>
-                      </span>
-                      <span class="icon is-small is-right">
-                        <i class="fas fa-check"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                      <input class="input is-success" type="text" placeholder="Last Name">
-                      <span class="icon is-left">
-                        <i class="fas fa-user-astronaut"></i>
-                      </span>
-                      <span class="icon is-small is-right">
-                        <i class="fas fa-check"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left">
-                      <input class="input" type="text" placeholder="Company Name">
-                      <span class="icon is-left">
-                        <i class="fas fa-crow"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                      <input class="input" type="text" placeholder="@mail">
-                      <span class="icon is-left">
-                        <i class="fas fa-envelope"></i>
-                      </span>
-                      <span class="icon is-small is-right">
-                        <i class="fas fa-check"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left">
-                      <input class="input" type="text" placeholder="Phone">
-                      <span class="icon is-left">
-                        <i class="fas fa-phone"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                      <input class="input" type="text" placeholder="Password">
-                      <span class="icon is-left">
-                        <i class="fas fa-lock"></i>
-                      </span>
-                      <span class="icon is-small is-right">
-                        <i class="fas fa-check"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                      <input class="input" type="text" placeholder="Password Confirm">
-                      <span class="icon is-left">
-                        <i class="fas fa-lock"></i>
-                      </span>
-                      <span class="icon is-small is-right">
-                        <i class="fas fa-check"></i>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="field">
-                    <div class="control">
-                      <button class="button is-primary">Update Profile</button>
-                    </div>
-                  </div>
-                </div>
+                <app-new-employee-form/>
               </div>
             </div>
           </div>
@@ -148,14 +71,19 @@
 
 <script>
 import axios from "../axiosAPI";
+import NewEmployeeForm from "@/components/Admin/NewEmployeeForm.vue";
 
 export default {
   name: "admin",
+  components: {
+    "app-new-employee-form": NewEmployeeForm
+  },
   data: function() {
     return {
       accounts: [],
       showAddNewModal: false,
-      defaultOpenedDetails: []
+      defaultOpenedDetails: [],
+      addNewFormErrors: []
     };
   },
   methods: {

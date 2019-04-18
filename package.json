@@ -8,6 +8,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "awesome-phonenumber": "^2.9.0",
     "axios": "^0.18.0",
     "buefy": "^0.7.3",
     "bulma-extensions": "^6.2.4",
