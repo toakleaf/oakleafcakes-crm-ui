@@ -42,7 +42,7 @@
     </div>
     <div class="field">
       <p class="control has-icons-left">
-        <input class="input" type="text" placeholder="Company Name">
+        <input class="input" type="text" placeholder="Company Name" v-model="company_name">
         <span class="icon is-left">
           <i class="fas fa-crow"></i>
         </span>
@@ -134,10 +134,13 @@
         </span>
       </p>
     </div>
-    <div class="field">
-      <div class="control">
+    <div class="field is-grouped">
+      <p class="control">
         <button class="button is-primary" :disabled="$v.$invalid">Create New Account</button>
-      </div>
+      </p>
+      <p class="control">
+        <button class="button" @click="clearFields">Clear Fields</button>
+      </p>
     </div>
   </div>
 </template>
@@ -163,7 +166,6 @@ export default {
       role: "EMPLOYEE",
       password: null,
       confirmPassword: null,
-      pants: "hi",
       regions: listRegions,
       country: "US",
       phoneInput: null,
@@ -244,7 +246,23 @@ export default {
           .catch(err => {
             console.error("error hi: " + err);
           });
-      }, 700);
+      }, 1000);
+    },
+    clearFields: function() {
+      this.first_name = null;
+      this.last_name = null;
+      this.company_name = null;
+      this.email = null;
+      this.role = "EMPLOYEE";
+      this.password = null;
+      this.confirmPassword = null;
+      this.country = "US";
+      this.phoneInput = null;
+      this.checkingEmail = false;
+      this.emailCheckedForDuplicate = null;
+      this.emailIsUnique = true;
+      this.timeout = null;
+      this.$v.$reset();
     }
   }
 };
