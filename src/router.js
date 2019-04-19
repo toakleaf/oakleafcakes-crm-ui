@@ -2,9 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
-import Customers from './views/Customers.vue';
 
-// import axios from '../../axiosAPI';
+import axios from './axiosAPI';
 
 Vue.use(Router);
 import store from './store/store';
@@ -30,7 +29,11 @@ const router = new Router({
     {
       path: '/customers',
       name: 'customers',
-      component: Customers,
+      // route level code-splitting
+      // this generates a separate chunk (forgot.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "forgot" */ './views/Customers.vue'),
       beforeEnter(to, from, next) {
         if (store.getters['isAuthenticated']) {
           return next();
@@ -93,6 +96,28 @@ const router = new Router({
           return next();
         }
         next('/login');
+      }
+    },
+    {
+      path: '/account/verify/:id/:hash',
+      name: 'verify',
+      beforeEnter(to, from, next) {
+        store.dispatch('logout');
+        axios
+          .post(`/account/verify/${to.params.id}/${to.params.hash}`)
+          .then(res => {
+            console.log(res.headers['x-auth-token']);
+            localStorage.setItem('token', res.headers['x-auth-token']);
+            store.commit('setAuthToken', res.headers['x-auth-token']);
+            store.dispatch('setLogoutTimer', store.getters['tokenExp']);
+            store.dispatch('setAuthHeaders');
+            next('/profile');
+          })
+          .catch(err => {
+            console.error(err);
+            alert('Failed to verify your account. ' + err);
+            next('/login');
+          });
       }
     }
   ]

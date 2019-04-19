@@ -55,6 +55,7 @@ const actions = {
   },
   logout({ commit }) {
     commit('clearAuthData');
+    commit('clearAuthorData');
     axios.defaults.headers.common['Authorization'] = null;
     localStorage.removeItem('token');
     router.replace('/login');

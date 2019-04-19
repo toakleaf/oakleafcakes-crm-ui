@@ -53,6 +53,17 @@ const mutations = {
     payload['created_at']
       ? (state.authorCreatedAt = payload['created_at'])
       : null;
+    return;
+  },
+  clearAuthorData: state => {
+    state.authorID = null;
+    state.authorFirstName = null;
+    state.authorLastName = null;
+    state.authorCompanyName = null;
+    state.authorEmail = null;
+    state.authorRole = null;
+    state.authorCreatedAt = null;
+    return;
   }
 };
 

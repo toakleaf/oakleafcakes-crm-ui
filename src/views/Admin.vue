@@ -52,6 +52,8 @@
                   <br>
                   {{ props.row.role }}
                   <br>
+                  is_active: {{ props.row.is_active }}
+                  <br>
                   <time>Created: {{ props.row.created_at.toLocaleString() }}</time>
                   <br>
                   <time>Last Updated: {{ props.row.updated_at.toLocaleString() }}</time>
