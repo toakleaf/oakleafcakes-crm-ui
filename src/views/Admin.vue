@@ -11,7 +11,7 @@
           <div class="modal-content">
             <div class="columns is-tablet is-centered">
               <div class="column is-half">
-                <app-new-employee-form/>
+                <app-new-employee-form @success="newAccountAdded()"/>
               </div>
             </div>
           </div>
@@ -101,6 +101,10 @@ export default {
     },
     toggleAddNewModal: function() {
       this.showAddNewModal = !this.showAddNewModal;
+    },
+    newAccountAdded: function() {
+      this.showAddNewModal = false;
+      this.getAccounts();
     }
   },
   created: function() {

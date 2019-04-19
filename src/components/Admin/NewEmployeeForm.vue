@@ -136,12 +136,18 @@
     </div>
     <div class="field is-grouped">
       <p class="control">
-        <button class="button is-primary" :disabled="$v.$invalid">Create New Account</button>
+        <button
+          class="button is-primary"
+          :class="{'is-loading': submitting}"
+          :disabled="$v.$invalid"
+          @click="submitForm"
+        >Create New Account</button>
       </p>
       <p class="control">
         <button class="button" @click="clearFields">Clear Fields</button>
       </p>
     </div>
+    <p class="is-danger" v-if="error">{{error}}</p>
   </div>
 </template>
 
@@ -172,7 +178,9 @@ export default {
       checkingEmail: false,
       emailCheckedForDuplicate: null,
       emailIsUnique: true,
-      timeout: null
+      timeout: null,
+      submitting: false,
+      error: null
     };
   },
   computed: {
@@ -244,7 +252,7 @@ export default {
             this.$v.email.$touch(); //because async
           })
           .catch(err => {
-            console.error("error hi: " + err);
+            console.error("error: " + err);
           });
       }, 1000);
     },
@@ -262,7 +270,29 @@ export default {
       this.emailCheckedForDuplicate = null;
       this.emailIsUnique = true;
       this.timeout = null;
+      this.submitting = false;
       this.$v.$reset();
+    },
+    submitForm: function() {
+      this.submitting = true;
+      if (this.$v.$invalid) return;
+      axios
+        .post(`/account/register/`, {
+          first_name: this.first_name,
+          last_name: this.last_name,
+          company_name: this.company_name,
+          email: this.email,
+          phone: this.phone,
+          role: this.role,
+          password: this.password
+        })
+        .then(result => {
+          this.clearFields();
+          this.$emit("success");
+        })
+        .catch(err => {
+          this.error = `Oh no! Something went wrong!\n${err}`;
+        });
     }
   }
 };
