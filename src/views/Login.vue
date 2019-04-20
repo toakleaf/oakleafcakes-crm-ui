@@ -14,8 +14,10 @@
                     @keyup.enter="login({email, password})"
                     v-model="email"
                     class="input"
+                    :class="{'is-success': !$v.email.$invalid, 'is-danger': $v.email.$error}"
                     type="email"
                     placeholder="Email"
+                    @blur="$v.email.$touch();"
                   >
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
@@ -25,11 +27,13 @@
               <div class="field">
                 <p class="control has-icons-left">
                   <input
-                    @keyup.enter="login({email, password})"
+                    @keyup.enter="attemptLogin"
                     v-model="password"
+                    :class="{'is-success': !$v.password.$invalid, 'is-danger': $v.password.$error}"
                     class="input"
                     type="password"
                     placeholder="Password"
+                    @blur="$v.password.$touch()"
                   >
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
@@ -38,7 +42,12 @@
               </div>
               <div class="field is-grouped is-grouped-centered">
                 <p class="control">
-                  <button @click.prevent="login({email, password})" class="button is-primary">Login</button>
+                  <button
+                    @click.prevent="attemptLogin"
+                    class="button is-primary"
+                    :class="{'is-loading': submitting}"
+                    :disabled="$v.$invalid"
+                  >Login</button>
                 </p>
               </div>
             </div>
@@ -51,18 +60,47 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { required, email, minLength } from "vuelidate/lib/validators";
 
 export default {
   data() {
     return {
       email: null,
       password: null,
-      res: {}
+      submitting: false
     };
   },
+  validations: {
+    email: {
+      required,
+      email
+    },
+    password: {
+      required,
+      minLen: minLength(12)
+    }
+  },
   methods: {
-    ...mapActions(["login"])
+    clearForm: function() {
+      this.email = null;
+      this.password = null;
+    },
+    attemptLogin: function() {
+      if (this.$v.$invalid) return;
+      this.submitting = true;
+      try {
+        this.$store.dispatch("login", {
+          email: this.email,
+          password: this.password
+        });
+      } catch (err) {
+        this.clearForm();
+        alert(
+          "Login attempt failed. Please check your credentials and try again."
+        );
+      }
+      this.submitting = false;
+    }
   }
 };
 </script>

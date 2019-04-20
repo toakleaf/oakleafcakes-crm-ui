@@ -50,6 +50,10 @@
                   <br>
                   {{ props.row.phone }}
                   <br>
+                  {{ props.row.phone_type }}
+                  <br>
+                  {{ props.row.phone_country }}
+                  <br>
                   {{ props.row.role }}
                   <br>
                   is_active: {{ props.row.is_active }}

@@ -51,14 +51,16 @@ const actions = {
       .then(() => dispatch('fetchAuthorData'))
       .then(() => router.replace('/'))
       .then(() => dispatch('setLogoutTimer', jwt.decode(state.authToken).exp))
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+      });
   },
-  logout({ commit }) {
+  logout({ commit }, redirect = true) {
     commit('clearAuthData');
     commit('clearAuthorData');
     axios.defaults.headers.common['Authorization'] = null;
     localStorage.removeItem('token');
-    router.replace('/login');
+    if (redirect) router.replace('/login');
   }
 };
 

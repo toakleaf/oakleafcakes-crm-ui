@@ -85,7 +85,13 @@
         </span>
       </p>
       <p class="control">
-        <a class="button is-static">Country</a>
+        <span class="select">
+          <select v-model="phone_type" @change="$v.phone.$touch()">
+            <option value="mobile">Mobile</option>
+            <option value="home">Home</option>
+            <option value="work">Work</option>
+          </select>
+        </span>
       </p>
       <p class="control has-icons-left">
         <span class="select">
@@ -174,6 +180,7 @@ export default {
       confirmPassword: null,
       regions: listRegions,
       country: "US",
+      phone_type: "mobile",
       phoneInput: null,
       checkingEmail: false,
       emailCheckedForDuplicate: null,
@@ -266,6 +273,7 @@ export default {
       this.confirmPassword = null;
       this.country = "US";
       this.phoneInput = null;
+      this.phone_type = "mobile";
       this.checkingEmail = false;
       this.emailCheckedForDuplicate = null;
       this.emailIsUnique = true;
@@ -283,6 +291,8 @@ export default {
           company_name: this.company_name,
           email: this.email,
           phone: this.phone,
+          phone_type: this.phone_type,
+          phone_country: this.country,
           role: this.role,
           password: this.password
         })

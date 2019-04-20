@@ -51,6 +51,15 @@ const router = new Router({
         import(/* webpackChunkName: "forgot" */ './views/Forgot.vue')
     },
     {
+      path: '/account/reset/:id/:hash',
+      name: 'reset',
+      // route level code-splitting
+      // this generates a separate chunk (forgot.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "reset" */ './views/Reset.vue')
+    },
+    {
       path: '/profile',
       name: 'profile',
       // route level code-splitting
