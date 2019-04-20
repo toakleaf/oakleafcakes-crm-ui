@@ -24,7 +24,14 @@ const router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      //once logged in you shouldn't access this page
+      beforeEnter(to, from, next) {
+        if (store.getters['isAuthenticated']) {
+          return next('/profile');
+        }
+        next();
+      }
     },
     {
       path: '/customers',
@@ -68,6 +75,24 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "profile" */ './views/Profile.vue'),
       beforeEnter(to, from, next) {
+        if (store.getters['isAuthenticated']) {
+          return next();
+        }
+        next('/login');
+      }
+    },
+    {
+      path: '/employees',
+      name: 'employees',
+      // route level code-splitting
+      // this generates a separate chunk (admin.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "employees" */ './views/Employees.vue'),
+      beforeEnter(to, from, next) {
+        if (store.getters['authorRole'] !== 'ADMIN') {
+          return next(false);
+        }
         if (store.getters['isAuthenticated']) {
           return next();
         }
