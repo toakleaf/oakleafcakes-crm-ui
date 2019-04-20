@@ -29,44 +29,98 @@
           icon-pack="fas"
         >
           <template slot-scope="props">
-            <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column>
-            <b-table-column field="first_name" label="First Name">{{ props.row.first_name }}</b-table-column>
-            <b-table-column field="last_name" label="Last Name">{{ props.row.last_name }}</b-table-column>
-            <b-table-column field="role" label="Role">{{ props.row.role }}</b-table-column>
+            <b-table-column field="id" label="ID" width="40" numeric>
+              <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.id }}</p>
+            </b-table-column>
+            <b-table-column field="first_name" label="First Name">
+              <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.first_name }}</p>
+            </b-table-column>
+            <b-table-column field="last_name" label="Last Name">
+              <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.last_name }}</p>
+            </b-table-column>
+            <b-table-column field="role" label="Role">
+              <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.role }}</p>
+            </b-table-column>
           </template>
 
           <template slot="detail" slot-scope="props">
-            <div class="card">
-              <div class="card-content">
-                <div class="content">
-                  ID: {{ props.row.id }}
-                  <br>
-                  {{ props.row.first_name }}
-                  {{ props.row.last_name }}
-                  <br>
-                  {{ props.row.company_name }}
-                  <br>
-                  {{ props.row.email }}
-                  <br>
-                  {{ props.row.phone }}
-                  <br>
-                  {{ props.row.phone_type }}
-                  <br>
-                  {{ props.row.phone_country }}
-                  <br>
-                  {{ props.row.role }}
-                  <br>
-                  is_active: {{ props.row.is_active }}
-                  <br>
-                  <time>Created: {{ props.row.created_at.toLocaleString() }}</time>
-                  <br>
-                  <time>Last Updated: {{ props.row.updated_at.toLocaleString() }}</time>
+            <div class="columns is-centered">
+              <div class="column is-two-thirds">
+                <h2
+                  v-if="!props.row.is_active"
+                  class="heading has-text-weight-semibold has-text-danger"
+                >Account is currently deactivated</h2>
+                <table class="table is-bordered">
+                  <tbody>
+                    <tr>
+                      <td class="has-text-weight-semibold">ID</td>
+                      <td>{{props.row.id}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Is Active</td>
+                      <td>{{props.row.is_active}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Role</td>
+                      <td>{{props.row.role}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">First Name</td>
+                      <td>{{props.row.first_name}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Last Name</td>
+                      <td>{{props.row.last_name}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Company Name</td>
+                      <td>{{props.row.company_name}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Primary Email</td>
+                      <td>{{props.row.email}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Primary Phone</td>
+                      <td>{{props.row.phone}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Phone Type</td>
+                      <td>{{props.row.phone_type}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Phone Country</td>
+                      <td>{{props.row.phone_country}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Account Created</td>
+                      <td>{{props.row.created_at.toLocaleString()}}</td>
+                    </tr>
+                    <tr>
+                      <td class="has-text-weight-semibold">Account Last Updated</td>
+                      <td>{{props.row.updated_at.toLocaleString()}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+                <div class="field is-grouped">
+                  <p class="control">
+                    <a class="button is-primary is-outlined">Edit Account Details</a>
+                  </p>
+                  <p class="control">
+                    <a
+                      class="button is-danger is-outlined"
+                      v-if="props.row.is_active"
+                    >Deactivate Account</a>
+                  </p>
+                  <p class="control">
+                    <a
+                      class="button is-dark is-outlined"
+                      v-if="!props.row.is_active"
+                    >Reactivate Account</a>
+                  </p>
                 </div>
               </div>
-              <footer class="card-footer">
-                <a href="#" class="card-footer-item">Edit Account</a>
-                <a href="#" class="card-footer-item has-text-danger">Delete Account</a>
-              </footer>
             </div>
           </template>
         </b-table>
@@ -95,7 +149,7 @@ export default {
   methods: {
     getAccounts: function() {
       axios
-        .get("/account/search/?role=ADMIN&role=EMPLOYEE")
+        .get("/account/search/?role=ADMIN&role=EMPLOYEE&orderby=last_name")
         .then(result => {
           this.accounts = result.data;
           for (let i = 0; i < this.accounts.length; i++) {
