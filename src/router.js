@@ -106,7 +106,6 @@ const router = new Router({
         axios
           .post(`/account/verify/${to.params.id}/${to.params.hash}`)
           .then(res => {
-            console.log(res.headers['x-auth-token']);
             localStorage.setItem('token', res.headers['x-auth-token']);
             store.commit('setAuthToken', res.headers['x-auth-token']);
             store.dispatch('setLogoutTimer', store.getters['tokenExp']);
