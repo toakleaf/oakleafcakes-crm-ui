@@ -7,12 +7,30 @@
           <div class="columns is-centered">
             <div class="column is-three-quarters">
               <div class="field">
-                <label class="label">Account ID: {{storeId}}</label>
+                <table class="table is-bordered is-narrow">
+                  <tbody>
+                    <tr>
+                      <td>Account ID</td>
+                      <td>{{storeId}}</td>
+                    </tr>
+                    <tr>
+                      <td>Active Since</td>
+                      <td>{{createdAt.toLocaleDateString()}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+
               <div class="field">
                 <label class="label">First Name</label>
                 <p class="control has-icons-left">
-                  <input v-model="firstName" class="input" type="text" placeholder="First Name">
+                  <input
+                    v-model="firstName"
+                    class="input"
+                    type="text"
+                    placeholder="First Name"
+                    :disabled="!editing"
+                  >
                   <span class="icon is-left">
                     <i class="fas fa-user-astronaut"></i>
                   </span>
@@ -21,7 +39,13 @@
               <div class="field">
                 <label class="label">Last Name</label>
                 <p class="control has-icons-left">
-                  <input v-model="lastName" class="input" type="text" placeholder="Last Name">
+                  <input
+                    v-model="lastName"
+                    class="input"
+                    type="text"
+                    placeholder="Last Name"
+                    :disabled="!editing"
+                  >
                   <span class="icon is-left">
                     <i class="fas fa-user-astronaut"></i>
                   </span>
@@ -30,7 +54,13 @@
               <div class="field">
                 <label class="label">Company Name</label>
                 <p class="control has-icons-left">
-                  <input v-model="companyName" class="input" type="text" placeholder="Company Name">
+                  <input
+                    v-model="companyName"
+                    class="input"
+                    type="text"
+                    placeholder="Company Name"
+                    :disabled="!editing"
+                  >
                   <span class="icon is-left">
                     <i class="fas fa-crow"></i>
                   </span>
@@ -39,18 +69,34 @@
               <div class="field">
                 <label class="label">Email</label>
                 <p class="control has-icons-left">
-                  <input v-model="storeEmail" class="input" type="text" placeholder="@mail">
+                  <input
+                    v-model="storeEmail"
+                    class="input"
+                    type="text"
+                    placeholder="@mail"
+                    :disabled="!editing"
+                  >
                   <span class="icon is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
                 </p>
               </div>
               <div class="field is-grouped">
-                <div class="control">
-                  <button @click="pushUpdates" class="button is-primary">Update Profile</button>
+                <div class="control" v-if="!editing">
+                  <button @click="editing = true" class="button is-primary is-outlined">Edit Profile</button>
+                </div>
+                <div class="control" v-if="editing">
+                  <button
+                    @click="pushUpdates; editing = false"
+                    class="button is-primary"
+                  >Update Profile</button>
                 </div>
                 <div class="control">
-                  <button class="button is-text">change password</button>
+                  <button
+                    @click="editing = false"
+                    class="button is-outlined"
+                    v-if="editing"
+                  >cancel edits</button>
                 </div>
               </div>
             </div>
@@ -67,6 +113,7 @@ export default {
   name: "profile",
   data: function() {
     return {
+      editing: false,
       unsavedChanges: false,
       password: null,
       passwordConfirm: null,

@@ -51,7 +51,7 @@ const mutations = {
     payload['email'] ? (state.authorEmail = payload['email']) : null;
     payload['role'] ? (state.authorRole = payload['role']) : null;
     payload['created_at']
-      ? (state.authorCreatedAt = payload['created_at'])
+      ? (state.authorCreatedAt = new Date(payload['created_at']))
       : null;
     return;
   },
