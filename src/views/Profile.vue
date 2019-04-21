@@ -3,7 +3,7 @@
     <div class="columns is-centered">
       <div class="column is-two-thirds">
         <div class="box">
-          <h1 class="title">Account Profile</h1>
+          <h1 class="title">My Account Profile</h1>
           <div class="columns is-centered">
             <div class="column is-three-quarters">
               <div class="field">
