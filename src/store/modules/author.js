@@ -11,7 +11,11 @@ const state = {
   authorCompanyName: null,
   authorEmail: null,
   authorRole: null,
-  authorCreatedAt: null
+  authorPhone: null,
+  authorPhoneCountry: null,
+  authorPhoneType: null,
+  authorCreatedAt: null,
+  authorUpdatedAt: null
 };
 
 const getters = {
@@ -33,8 +37,20 @@ const getters = {
   authorRole: state => {
     return state.authorRole;
   },
+  authorPhone: state => {
+    return state.authorPhone;
+  },
+  authorPhoneCountry: state => {
+    return state.authorPhoneCountry;
+  },
+  authorPhoneType: state => {
+    return state.authorPhoneType;
+  },
   authorCreatedAt: state => {
     return state.authorCreatedAt;
+  },
+  authorUpdatedAt: state => {
+    return state.authorUpdatedAt;
   }
 };
 
@@ -49,9 +65,19 @@ const mutations = {
       ? (state.authorCompanyName = payload['company_name'])
       : null;
     payload['email'] ? (state.authorEmail = payload['email']) : null;
+    payload['phone'] ? (state.authorPhone = payload['phone']) : null;
+    payload['phone_country']
+      ? (state.authorPhoneCountry = payload['phone_country'])
+      : null;
+    payload['phone_type']
+      ? (state.authorPhoneType = payload['phone_type'])
+      : null;
     payload['role'] ? (state.authorRole = payload['role']) : null;
     payload['created_at']
       ? (state.authorCreatedAt = new Date(payload['created_at']))
+      : null;
+    payload['updated_at']
+      ? (state.authorUpdatedAt = new Date(payload['updated_at']))
       : null;
     return;
   },
@@ -63,6 +89,7 @@ const mutations = {
     state.authorEmail = null;
     state.authorRole = null;
     state.authorCreatedAt = null;
+    state.authorUpdatedAt = null;
     return;
   }
 };
