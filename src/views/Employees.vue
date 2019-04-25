@@ -11,7 +11,7 @@
           <div class="modal-content">
             <div class="columns is-tablet is-centered">
               <div class="column is-half">
-                <app-new-employee-form @success="newAccountAdded()"/>
+                <app-new-employee-form @submitted="newAccountAdded()"/>
               </div>
             </div>
           </div>
@@ -44,84 +44,7 @@
           </template>
 
           <template slot="detail" slot-scope="props">
-            <div class="columns is-centered">
-              <div class="column is-two-thirds">
-                <h2
-                  v-if="!props.row.is_active"
-                  class="heading has-text-weight-semibold has-text-danger"
-                >Account is currently deactivated</h2>
-                <table class="table is-bordered">
-                  <tbody>
-                    <tr>
-                      <td class="has-text-weight-semibold">ID</td>
-                      <td>{{props.row.id}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Is Active</td>
-                      <td>{{props.row.is_active}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Role</td>
-                      <td>{{props.row.role}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">First Name</td>
-                      <td>{{props.row.first_name}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Last Name</td>
-                      <td>{{props.row.last_name}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Company Name</td>
-                      <td>{{props.row.company_name}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Primary Email</td>
-                      <td>{{props.row.email}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Primary Phone</td>
-                      <td>{{props.row.phone}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Phone Type</td>
-                      <td>{{props.row.phone_type}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Phone Country</td>
-                      <td>{{props.row.phone_country}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Account Created</td>
-                      <td>{{props.row.created_at.toLocaleString()}}</td>
-                    </tr>
-                    <tr>
-                      <td class="has-text-weight-semibold">Account Last Updated</td>
-                      <td>{{props.row.updated_at.toLocaleString()}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <br>
-                <div class="field is-grouped">
-                  <p class="control">
-                    <a class="button is-primary is-outlined">Edit Account Details</a>
-                  </p>
-                  <p class="control">
-                    <a
-                      class="button is-danger is-outlined"
-                      v-if="props.row.is_active"
-                    >Deactivate Account</a>
-                  </p>
-                  <p class="control">
-                    <a
-                      class="button is-dark is-outlined"
-                      v-if="!props.row.is_active"
-                    >Reactivate Account</a>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <app-employee-details :props="props" @submitted="getAccounts()"/>
           </template>
         </b-table>
       </div>
@@ -131,12 +54,14 @@
 
 <script>
 import axios from "../axiosAPI";
-import NewEmployeeForm from "@/components/Admin/NewEmployeeForm.vue";
+import NewEmployeeForm from "@/components/Employees/NewEmployeeForm.vue";
+import EmployeeDetails from "@/components/Employees/EmployeeDetails.vue";
 
 export default {
   name: "employees",
   components: {
-    "app-new-employee-form": NewEmployeeForm
+    "app-new-employee-form": NewEmployeeForm,
+    "app-employee-details": EmployeeDetails
   },
   data: function() {
     return {

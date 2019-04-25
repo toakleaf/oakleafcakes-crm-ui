@@ -95,7 +95,7 @@
       </p>
       <p class="control has-icons-left">
         <span class="select">
-          <select v-model="country" @change="$v.phone.$touch()">
+          <select v-model="phone_country" @change="$v.phone.$touch()">
             <option v-for="region in regions" v-bind:value="region" :key="region">{{ region }}</option>
           </select>
         </span>
@@ -140,7 +140,7 @@
         </span>
       </p>
     </div>
-    <div class="field is-grouped">
+    <div class="field is-grouped is-grouped-multiline">
       <p class="control">
         <button
           class="button is-primary"
@@ -179,7 +179,7 @@ export default {
       password: null,
       confirmPassword: null,
       regions: listRegions,
-      country: "US",
+      phone_country: "US",
       phone_type: "mobile",
       phoneInput: null,
       checkingEmail: false,
@@ -196,7 +196,7 @@ export default {
         this.phoneInput = val;
       },
       get: function() {
-        let ayt = PhoneNumber.getAsYouType(this.country);
+        let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(this.phoneInput);
         if (ayt.getPhoneNumber().a.valid) {
           return ayt.getPhoneNumber().a.number.national;
@@ -223,7 +223,7 @@ export default {
     phone: {
       phone: function(val) {
         if (!val) return true;
-        let ayt = PhoneNumber.getAsYouType(this.country);
+        let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(val);
         return ayt.getPhoneNumber().a.valid;
       }
@@ -271,7 +271,7 @@ export default {
       this.role = "EMPLOYEE";
       this.password = null;
       this.confirmPassword = null;
-      this.country = "US";
+      this.phone_country = "US";
       this.phoneInput = null;
       this.phone_type = "mobile";
       this.checkingEmail = false;
@@ -292,13 +292,13 @@ export default {
           email: this.email,
           phone: this.phone,
           phone_type: this.phone_type,
-          phone_country: this.country,
+          phone_country: this.phone_country,
           role: this.role,
           password: this.password
         })
         .then(result => {
           this.clearFields();
-          this.$emit("success");
+          this.$emit("submitted");
         })
         .catch(err => {
           this.error = `Oh no! Something went wrong!\n${err}`;
