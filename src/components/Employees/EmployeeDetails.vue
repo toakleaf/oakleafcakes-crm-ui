@@ -316,7 +316,9 @@ export default {
           current_phone: this.props.row.phone,
           phone_type: this.phone_type,
           phone_country: this.phone_country,
-          role: this.role
+          role: this.role,
+          email_is_primary: true,
+          phone_is_primary: true
         })
         .then(() => {
           this.$v.$reset();

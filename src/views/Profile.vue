@@ -353,7 +353,9 @@ export default {
           current_phone: this.$store.getters.authorPhone,
           phone_type: this.phone_type,
           phone_country: this.phone_country,
-          ...(this.password ? { password: this.password } : {})
+          ...(this.password ? { password: this.password } : {}),
+          email_is_primary: true,
+          phone_is_primary: true
         })
         .then(() => {
           this.$store.dispatch("fetchAuthorData");
