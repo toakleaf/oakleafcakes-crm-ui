@@ -59,7 +59,6 @@
                 NOT retroactive to already-logged in accounts. Therefore, if switching from a very long to shorter session
                 length it is strongly recommended that you also mannually force the logout of all current user account sessions.
               </p>
-              <p>{{quantity}}{{units}}</p>
             </div>
           </div>
         </div>
@@ -114,12 +113,6 @@ export default {
           quantity: this.quantity
         })
         .then(() => {
-          this.$toast.open({
-            message: "Successfully Updated Session Lengths!",
-            type: "is-success"
-          });
-          this.units = null;
-          this.quantity = null;
           this.submitting = false;
           this.$toast.open({
             message: "Session Length Updated Successfully!",
@@ -131,7 +124,21 @@ export default {
           console.error(err);
           this.submitting = false;
         });
+    },
+    getSessionLength: function() {
+      axios
+        .get("/system/jwt/expires")
+        .then(res => {
+          this.quantity = parseInt(res.data.expiration);
+          this.units = res.data.expiration.slice(-1);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
+  },
+  created() {
+    this.getSessionLength();
   }
 };
 </script>
