@@ -91,7 +91,7 @@ const router = new Router({
         import(/* webpackChunkName: "employees" */ './views/Employees.vue'),
       beforeEnter(to, from, next) {
         if (store.getters['authorRole'] !== 'ADMIN') {
-          return next(false);
+          return next('/');
         }
         if (store.getters['isAuthenticated']) {
           return next();
@@ -109,7 +109,7 @@ const router = new Router({
         import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
       beforeEnter(to, from, next) {
         if (store.getters['authorRole'] !== 'ADMIN') {
-          return next(false);
+          return next('/');
         }
         if (store.getters['isAuthenticated']) {
           return next();
@@ -167,6 +167,10 @@ router.beforeEach((to, from, next) => {
     store.dispatch('setLogoutTimer', store.getters['tokenExp']);
     store.dispatch('setAuthHeaders');
   }
+  if (!store.getters.authorFirstName) {
+    store.dispatch('fetchAuthorData');
+  }
+
   next();
 });
 
