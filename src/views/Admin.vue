@@ -37,6 +37,7 @@
                     <select v-model="units">
                       <option value="s">seconds</option>
                       <option value="m">minutes</option>
+                      <option value="h">hours</option>
                       <option value="d">days</option>
                       <option value="w">weeks</option>
                     </select>
