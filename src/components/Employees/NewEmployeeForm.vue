@@ -377,6 +377,10 @@ export default {
         .then(result => {
           this.clearFields();
           this.$emit("submitted");
+          this.$toast.open({
+            message: "Account Created Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => {
           this.error = `Oh no! Something went wrong!\n${err}`;
@@ -389,6 +393,10 @@ export default {
         })
         .then(result => {
           this.$emit("submitted");
+          this.$toast.open({
+            message: "Account Role Changed Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => {
           this.error = `Oh no! Something went wrong!\n${err}`;

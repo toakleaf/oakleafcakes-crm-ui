@@ -172,6 +172,20 @@
             :class="{'is-loading': submitting}"
           >Reactivate Account</button>
         </p>
+        <p class="control" v-if="props.row.is_active && editing">
+          <button
+            class="button is-danger is-outlined"
+            :class="{'is-loading': submitting}"
+            @click="resetAccount(false)"
+          >Send Password Reset</button>
+        </p>
+        <p class="control">
+          <button
+            class="button is-danger is-outlined"
+            :class="{'is-loading': submitting}"
+            @click="resetAccount(true)"
+          >Lock Account</button>
+        </p>
         <p class="control" v-if="!props.row.is_active && !editing">
           <button
             class="button is-danger is-outlined"
@@ -325,6 +339,10 @@ export default {
           this.editing = false;
           this.$emit("submitted");
           this.submitting = false;
+          this.$toast.open({
+            message: "Account Updated Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => {
           console.error(err);
@@ -336,6 +354,18 @@ export default {
         });
     },
     flipIsActive: function() {
+      let proceed = this.props.row.is_active
+        ? confirm(
+            "Deactivating an account will block a user's ability to login to the site.\n" +
+              "If you have security conerns with this account's access, after downgrading the account's privilages " +
+              "please consider Logging Out All Users from the system admin pannel to prevent user from logging in " +
+              "with locally saved session token. Do you wish to continue?"
+          )
+        : confirm(
+            "Activating an account will restore the user's access to the site. Are you sure you wish to proceed?"
+          );
+      if (!proceed) return;
+
       this.submitting = true;
       axios
         .put(`/account/${this.props.row.id}`, {
@@ -345,6 +375,10 @@ export default {
         .then(() => {
           this.$emit("submitted");
           this.submitting = false;
+          this.$toast.open({
+            message: "Account Settings Updated Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => {
           console.error(err);
@@ -373,10 +407,50 @@ export default {
         .then(res => {
           this.$emit("submitted");
           this.submitting = false;
+          this.$toast.open({
+            message: "Account Deleted Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => {
           console.error(err);
           alert("Failed to delete account.");
+          this.submitting = false;
+        });
+    },
+    resetAccount: function(lock) {
+      let proceed = lock
+        ? confirm(
+            "Locking an account will delete the user's password without their notice, and will make the account inactive, " +
+              "thus preventing them from logging into the site.\nIf security is a concern you should consider Logging Out All Users " +
+              "from the system admin pannel to prevent account from logging in with the locally stored browser token. Do you wish to continue?"
+          )
+        : confirm(
+            "You are about to delete the account's password. The user will be emailed a link to reset their password. " +
+              "Are you sure you wish to proceed?"
+          );
+      if (!proceed) return;
+
+      axios
+        .delete("/account/password", {
+          data: { email: this.props.row.email, lock }
+        })
+        .then(res => {
+          this.$emit("submitted");
+          this.submitting = false;
+          lock
+            ? this.$toast.open({
+                message: "Account Locked Successfully!",
+                type: "is-success"
+              })
+            : this.$toast.open({
+                message: "Password Reset Sent!",
+                type: "is-success"
+              });
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Failed to complete action.");
           this.submitting = false;
         });
     }

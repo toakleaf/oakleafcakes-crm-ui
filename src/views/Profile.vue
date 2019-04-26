@@ -362,6 +362,10 @@ export default {
           this.$v.$reset();
           this.editing = false;
           this.submitting = false;
+          this.$toast.open({
+            message: "Account Updated Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => console.error(err));
     }
