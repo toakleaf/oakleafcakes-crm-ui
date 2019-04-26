@@ -92,6 +92,10 @@ export default {
         .then(() => {
           this.submitting = false;
           this.$store.dispatch("logout", true);
+          this.$toast.open({
+            message: "JWT's Reset Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => {
           alert("Failed to reset JWT's");
@@ -117,6 +121,10 @@ export default {
           this.units = null;
           this.quantity = null;
           this.submitting = false;
+          this.$toast.open({
+            message: "Session Length Updated Successfully!",
+            type: "is-success"
+          });
         })
         .catch(err => {
           alert("Failed to update session lengths.");
