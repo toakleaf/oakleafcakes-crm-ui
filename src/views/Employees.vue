@@ -6,6 +6,20 @@
         <h2 class="subtitle is-6">
           <a @click="toggleAddNewModal">+ Add New</a>
         </h2>
+        <div class="field is-grouped is-grouped-multiline">
+          <p class="control">
+            <b-switch v-model="showAdmin" @input="getAccounts()">Admins</b-switch>
+          </p>
+          <p class="control">
+            <b-switch v-model="showEmployee" @input="getAccounts()">Employees</b-switch>
+          </p>
+          <p class="control">
+            <b-switch v-model="showActive" type="is-link" @input="getAccounts()">Active Accounts</b-switch>
+          </p>
+          <p class="control">
+            <b-switch v-model="showInactive" type="is-link" @input="getAccounts()">Inactive Accounts</b-switch>
+          </p>
+        </div>
         <div class="modal" v-bind:class="{'is-active': showAddNewModal}">
           <div class="modal-background" @click="toggleAddNewModal"></div>
           <div class="modal-content">
@@ -22,6 +36,10 @@
           mobile-cards
           narrowed
           striped
+          :paginated="true"
+          :per-page="20"
+          :current-page.sync="currentPage"
+          :pagination-simple="true"
           :opened-detailed="defaultOpenedDetails"
           detailed
           detail-key="id"
@@ -29,16 +47,16 @@
           icon-pack="fas"
         >
           <template slot-scope="props">
-            <b-table-column field="id" label="ID" width="40" numeric>
+            <b-table-column field="id" label="ID" width="40" sortable numeric>
               <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.id }}</p>
             </b-table-column>
-            <b-table-column field="first_name" label="First Name">
+            <b-table-column field="first_name" label="First Name" sortable>
               <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.first_name }}</p>
             </b-table-column>
-            <b-table-column field="last_name" label="Last Name">
+            <b-table-column field="last_name" label="Last Name" sortable>
               <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.last_name }}</p>
             </b-table-column>
-            <b-table-column field="role" label="Role">
+            <b-table-column field="role" label="Role" sortable>
               <p :class="{'has-text-grey-light': !props.row.is_active}">{{ props.row.role }}</p>
             </b-table-column>
           </template>
@@ -47,6 +65,9 @@
             <app-employee-details :props="props" @submitted="getAccounts()"/>
           </template>
         </b-table>
+        <h2 class="subtitle is-6 has-text-centered">
+          <a @click="toggleAddNewModal">+ Add New</a>
+        </h2>
       </div>
     </div>
   </section>
@@ -68,13 +89,24 @@ export default {
       accounts: [],
       showAddNewModal: false,
       defaultOpenedDetails: [],
-      addNewFormErrors: []
+      addNewFormErrors: [],
+      currentPage: 1,
+      showAdmin: true,
+      showEmployee: true,
+      showActive: true,
+      showInactive: true
     };
   },
   methods: {
     getAccounts: function() {
       axios
-        .get("/account/search/?role=ADMIN&role=EMPLOYEE&orderby=last_name")
+        .get(
+          `/account/search/?orderby=last_name${
+            this.showAdmin ? "&role=ADMIN" : ""
+          }${this.showEmployee ? "&role=EMPLOYEE" : ""}&active=${
+            this.showActive
+          }&inactive=${this.showInactive}`
+        )
         .then(result => {
           this.accounts = result.data;
           for (let i = 0; i < this.accounts.length; i++) {
