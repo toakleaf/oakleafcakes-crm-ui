@@ -48,7 +48,6 @@ const actions = {
         dispatch('setAuthHeaders');
         localStorage.setItem('token', res.headers['x-auth-token']);
       })
-      .then(() => dispatch('fetchAuthorData'))
       .then(() => router.replace('/'))
       .then(() => dispatch('setLogoutTimer', jwt.decode(state.authToken).exp))
       .catch(err => {
