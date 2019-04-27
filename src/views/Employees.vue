@@ -91,7 +91,7 @@ export default {
       showAdmin: true,
       showEmployee: true,
       showActive: true,
-      showInactive: true
+      showInactive: false
     };
   },
   methods: {
