@@ -11,7 +11,7 @@
             open-on-focus
             v-model="firstName"
             @input="fetchCustomers('first_name', firstName)"
-            @select="option => selected = option"
+            @select="option => { selected = option}"
           >
             <template slot-scope="props">
               <p class="is-size-7 searchResults">
@@ -76,6 +76,7 @@
     </div>
     <!-- <p>{{searchResults}}</p> -->
     <!-- <p>{{selected}}</p> -->
+    <p>{{firstName}}</p>
   </div>
 </template>
 <script>
