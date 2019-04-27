@@ -65,9 +65,6 @@
             <app-employee-details :props="props" @submitted="getAccounts()"/>
           </template>
         </b-table>
-        <h2 class="subtitle is-6 has-text-centered">
-          <a @click="toggleAddNewModal">+ Add New</a>
-        </h2>
       </div>
     </div>
   </section>
