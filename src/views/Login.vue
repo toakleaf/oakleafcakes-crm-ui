@@ -14,7 +14,6 @@
                     @keyup.enter="login({email, password})"
                     v-model="email"
                     class="input"
-                    :class="{'is-success': !$v.email.$invalid, 'is-danger': $v.email.$error}"
                     type="email"
                     placeholder="Email"
                     @blur="$v.email.$touch();"
@@ -29,7 +28,6 @@
                   <input
                     @keyup.enter="attemptLogin"
                     v-model="password"
-                    :class="{'is-success': !$v.password.$invalid, 'is-danger': $v.password.$error}"
                     class="input"
                     type="password"
                     placeholder="Password"
@@ -74,10 +72,6 @@ export default {
     email: {
       required,
       email
-    },
-    password: {
-      required,
-      minLen: minLength(12)
     }
   },
   methods: {
