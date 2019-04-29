@@ -1,5 +1,5 @@
-# oakleafcakes-crm-ui
-The front end user interface for the Oakleaf Cakes Bake Shop Customer Relationship and Order Management API (https://github.com/toakleaf/oakleafcakes-crm-api)
+# Front end user interface for the Oakleaf Cakes Bake Shop Customer Relationship and Order Management API 
+View that project here: (https://github.com/toakleaf/oakleafcakes-crm-api)
 
 ## Project setup
 Open /src/axiosAPI.js, and alter following line to point to api:
