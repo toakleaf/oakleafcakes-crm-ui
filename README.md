@@ -1,4 +1,4 @@
-# Front end user interface for the Oakleaf Cakes Bake Shop Customer Relationship and Order Management API 
+# Front end UI for the Oakleaf Cakes Bake Shop Customer Relationship and Order Management API 
 View that project here: (https://github.com/toakleaf/oakleafcakes-crm-api)
 
 ## Project setup
