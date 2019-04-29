@@ -24,5 +24,9 @@ yarn run build
 Here are some previews of what the UI looks like.
 
 ### Calendar View
-This shos the custom built calendar and date picker components that can dynamically scale to accomodate all screen sizes.
+This shows the custom built calendar and date picker components that can dynamically scale to accomodate all screen sizes.
 ![](README-GIFS/CalendarRecording.gif)
+
+### Employee Admin
+This shows how a small bit of the user interface in action to get a feel for how it works.
+![](README-GIFS/EmployeeAdmin.gif)
