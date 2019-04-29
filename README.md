@@ -28,5 +28,5 @@ This shows the custom built calendar and date picker components that can dynamic
 ![](README-GIFS/CalendarRecording.gif)
 
 ### Employee Admin
-This shows how a small bit of the user interface in action to get a feel for how it works.
+This shows a small bit of the user interface in action to get a feel for how it works.
 ![](README-GIFS/EmployeeAdmin.gif)
