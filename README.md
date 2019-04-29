@@ -1,4 +1,5 @@
 # oakleafcakes-crm-ui
+The front end user interface for the Oakleaf Cakes Bake Shop Customer Relationship and Order Management API (https://github.com/toakleaf/oakleafcakes-crm-api)
 
 ## Project setup
 ```
@@ -14,21 +15,3 @@ yarn run serve
 ```
 yarn run build
 ```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Run your unit tests
-```
-yarn run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
