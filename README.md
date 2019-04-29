@@ -20,3 +20,9 @@ yarn run serve
 ```
 yarn run build
 ```
+## Previews
+Here are some previews of what the UI looks like.
+
+### Calendar View
+This shos the custom built calendar and date picker components that can dynamically scale to accomodate all screen sizes.
+![](README-GIFS/CalendarRecording.gif)
