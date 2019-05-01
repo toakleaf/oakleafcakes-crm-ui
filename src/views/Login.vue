@@ -31,7 +31,6 @@
                     class="input"
                     type="password"
                     placeholder="Password"
-                    @blur="$v.password.$touch()"
                   >
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
