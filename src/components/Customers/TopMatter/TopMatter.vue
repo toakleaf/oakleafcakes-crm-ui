@@ -6,7 +6,7 @@
           <b-autocomplete
             :data="searchResults.first_name"
             field="first_name"
-            :loading="isFetching"
+            :loading="isFetching.first_name"
             placeholder="First Name"
             v-model="firstName"
             @input="fetchCustomers('first_name', firstName)"
@@ -28,7 +28,7 @@
           <b-autocomplete
             :data="searchResults.last_name"
             field="last_name"
-            :loading="isFetching"
+            :loading="isFetching.last_name"
             placeholder="Last Name"
             v-model="lastName"
             @input="fetchCustomers('last_name', lastName)"
@@ -47,7 +47,19 @@
     <div class="column">
       <div class="field">
         <p class="control has-icons-left">
-          <input class="input" type="text" placeholder="@mail">
+          <b-autocomplete
+            :data="searchResults.email"
+            field="email"
+            :loading="isFetching.email"
+            placeholder="Email"
+            v-model="email"
+            @input="fetchCustomers('email', email)"
+            @select="options => setFields(options)"
+          >
+            <template slot-scope="props">
+              <app-search-dropdown :props="props" field="email" :value="email"/>
+            </template>
+          </b-autocomplete>
           <span class="icon is-left">
             <i class="fas fa-envelope"></i>
           </span>
@@ -57,7 +69,19 @@
     <div class="column">
       <div class="field">
         <p class="control has-icons-left">
-          <input class="input" type="text" placeholder="Phone">
+          <b-autocomplete
+            :data="searchResults.phone"
+            field="phone"
+            :loading="isFetching.phone"
+            placeholder="Phone"
+            v-model="phone"
+            @input="fetchCustomers('phone', phone)"
+            @select="options => setFields(options)"
+          >
+            <template slot-scope="props">
+              <app-search-dropdown :props="props" field="phone" :value="phone"/>
+            </template>
+          </b-autocomplete>
           <span class="icon is-left">
             <i class="fas fa-phone"></i>
           </span>
@@ -105,7 +129,12 @@ export default {
       email: null,
       phone: null,
       timeout: null,
-      isFetching: false,
+      isFetching: {
+        first_name: false,
+        last_name: false,
+        email: false,
+        phone: false
+      },
       orderBy: null,
       order: "asc",
       count: null,
@@ -122,7 +151,7 @@ export default {
       }
 
       clearTimeout(this.timeout); //resets the clock since last time this function was called (to avoid multiple calls in short timespan)
-      this.isFetching = true;
+      this.isFetching[field] = true;
 
       this.timeout = setTimeout(() => {
         axios
@@ -134,7 +163,7 @@ export default {
           .then(result => {
             this.clearSearchResults();
             result.data.forEach(item => this.searchResults[field].push(item));
-            this.isFetching = false;
+            this.isFetching[field] = false;
           })
           .catch(err => {
             console.error("error: " + err);

@@ -28,9 +28,19 @@
     >
       <i>{{props.option.company_name}}</i>
     </span>
-    <span class="is-pulled-right">{{' ' + props.option.phone}}</span>
+    <span v-if="field === 'phone'" class="is-pulled-right">
+      <span>{{sliceText.before}}</span>
+      <span class="has-text-weight-bold">{{sliceText.selected}}</span>
+      <span>{{sliceText.after + " "}}</span>
+    </span>
+    <span v-else class="is-pulled-right">{{' ' + props.option.phone}}</span>
     <br>
-    <span class="searchIndent">{{props.option.email}}</span>
+    <span v-if="field === 'email'" class="searchIndent">
+      <span>{{sliceText.before}}</span>
+      <span class="has-text-weight-bold">{{sliceText.selected}}</span>
+      <span>{{sliceText.after + " "}}</span>
+    </span>
+    <span v-else class="searchIndent">{{props.option.email}}</span>
   </p>
 </template>
 
