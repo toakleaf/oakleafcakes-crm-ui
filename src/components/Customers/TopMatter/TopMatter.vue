@@ -14,19 +14,6 @@
           >
             <template slot-scope="props">
               <app-search-dropdown :props="props" field="first_name" :value="firstName"/>
-              <!-- <p class="is-size-7 searchResults">
-                <span>{{highlightText(props.option.first_name, firstName).before}}</span>
-                <span
-                  class="has-text-weight-bold"
-                >{{highlightText(props.option.first_name, firstName).selected}}</span>
-                <span>{{highlightText(props.option.first_name, firstName).after}} {{props.option.last_name + " "}}</span>
-                <span class="searchCompany" v-if="props.option.company_name">
-                  <i>{{props.option.company_name}}</i>
-                </span>
-                <span class="is-pulled-right">{{' ' + props.option.phone}}</span>
-                <br>
-                <span class="searchIndent">{{props.option.email}}</span>
-              </p>-->
             </template>
           </b-autocomplete>
           <span class="icon is-left">
@@ -49,19 +36,6 @@
           >
             <template slot-scope="props">
               <app-search-dropdown :props="props" field="last_name" :value="lastName"/>
-              <!-- <p class="is-size-7 searchResults">
-                <span>{{props.option.firstName}} {{highlightText(props.option.last_name, lastName).before}}</span>
-                <span
-                  class="has-text-weight-bold"
-                >{{highlightText(props.option.last_name, lastName).selected}}</span>
-                <span>{{highlightText(props.option.last_name, lastName).after + " "}}</span>
-                <span class="searchCompany" v-if="props.option.company_name">
-                  <i>{{props.option.company_name}}</i>
-                </span>
-                <span class="is-pulled-right">{{' ' + props.option.phone}}</span>
-                <br>
-                <span class="searchIndent">{{props.option.email}}</span>
-              </p>-->
             </template>
           </b-autocomplete>
           <span class="icon is-left">
