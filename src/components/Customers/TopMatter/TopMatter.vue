@@ -51,7 +51,7 @@
             :data="searchResults.email"
             field="email"
             :loading="isFetching.email"
-            placeholder="Email"
+            placeholder="@mail"
             v-model="email"
             @input="fetchCustomers('email', email)"
             @select="options => setFields(options)"
