@@ -1,7 +1,7 @@
 <template>
   <section class="container pad-route">
     <div class="box">
-      <app-primary-info/>
+      <app-top-matter/>
       <section>
         <!-- <b-icon pack="fas" icon="user" class="is-pulled-right"></b-icon> -->
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
@@ -29,7 +29,7 @@
   </section>
 </template>
 <script>
-import PrimaryInfo from "@/components/Customers/PrimaryInfo.vue";
+import TopMatter from "@/components/Customers/TopMatter/TopMatter.vue";
 import Details from "@/components/Customers/Details/Details.vue";
 import Interactions from "@/components/Customers/Interactions/Interactions.vue";
 import Orders from "@/components/Customers/Orders/Orders.vue";
@@ -43,7 +43,7 @@ export default {
     };
   },
   components: {
-    "app-primary-info": PrimaryInfo,
+    "app-top-matter": TopMatter,
     "app-details": Details,
     "app-interactions": Interactions,
     "app-orders": Orders,
