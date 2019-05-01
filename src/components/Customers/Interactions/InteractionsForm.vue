@@ -3,7 +3,7 @@
     <div class="field">
       <label class="label">
         <p class="control">
-          <b-field>
+          <b-field grouped group-multiline>
             <b-radio-button v-model="typeRadio" native-value="in-person" type="is-primary">
               <b-icon pack="fas" icon="user-friends"></b-icon>
               <span>In Person</span>
