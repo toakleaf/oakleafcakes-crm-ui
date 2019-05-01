@@ -144,7 +144,11 @@ export default {
   },
   methods: {
     fetchCustomers: function(field, query) {
-      if (!query || (this.selected && query === this.selected[field])) {
+      if (
+        !query ||
+        (this.selected && query === this.selected[field]) ||
+        query.length < 2
+      ) {
         // don't fetch if no query or if just a selection event
         this.clearSearchResults();
         return;
