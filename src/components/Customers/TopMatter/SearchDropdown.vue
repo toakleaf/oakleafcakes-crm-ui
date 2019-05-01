@@ -42,7 +42,6 @@ export default {
     sliceText: function() {
       if (!this.props.option[this.field] || !this.value)
         return { before: "", selected: "", after: "" };
-      console.log(this.props.option[this.field] + " : " + this.value);
       const i = this.props.option[this.field]
         .toLowerCase()
         .indexOf(this.value.toLowerCase());
