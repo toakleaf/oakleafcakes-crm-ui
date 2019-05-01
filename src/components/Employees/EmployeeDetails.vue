@@ -273,7 +273,7 @@ export default {
         if (!val) return true;
         let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(val);
-        return ayt.getPhoneNumber().a.valid;
+        return ayt.getPhoneNumber().a.valid && this.phone_country;
       }
     }
   },

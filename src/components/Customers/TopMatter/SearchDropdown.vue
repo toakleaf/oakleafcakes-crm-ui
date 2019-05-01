@@ -32,7 +32,7 @@
       <span>{{sliceText.after + " "}}</span>
     </span>
     <span v-else class="is-pulled-right">{{' ' + props.option.phone}}</span>
-    <br v-if="props.option.first_name || props.option.last_name">
+    <br v-if="props.option.company_name && (props.option.first_name && props.option.last_name)">
     <span
       v-if="props.option.company_name && (props.option.first_name && props.option.last_name) && (field === 'first_name' || field === 'last_name')"
       class="searchIndent"
