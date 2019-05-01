@@ -13,8 +13,7 @@
     </span>
     <span v-else>{{props.option.last_name + " "}}</span>
     <span
-      v-if="props.option.company_name && (field === 'first_name' || field === 'last_name')"
-      class="searchCompany"
+      v-if="props.option.company_name && !(props.option.first_name && props.option.last_name) && (field === 'first_name' || field === 'last_name')"
     >
       <i>
         <span>{{sliceCompanyName.before}}</span>
@@ -23,8 +22,7 @@
       </i>
     </span>
     <span
-      class="searchCompany"
-      v-if="props.option.company_name && field !== 'first_name' && field !== 'last_name'"
+      v-if="props.option.company_name && !(props.option.first_name && props.option.last_name) && field !== 'first_name' && field !== 'last_name'"
     >
       <i>{{props.option.company_name}}</i>
     </span>
@@ -34,6 +32,23 @@
       <span>{{sliceText.after + " "}}</span>
     </span>
     <span v-else class="is-pulled-right">{{' ' + props.option.phone}}</span>
+    <br v-if="props.option.first_name || props.option.last_name">
+    <span
+      v-if="props.option.company_name && (props.option.first_name && props.option.last_name) && (field === 'first_name' || field === 'last_name')"
+      class="searchIndent"
+    >
+      <i>
+        <span>{{sliceCompanyName.before}}</span>
+        <span class="has-text-weight-bold">{{sliceCompanyName.selected}}</span>
+        <span>{{sliceCompanyName.after + " "}}</span>
+      </i>
+    </span>
+    <span
+      class="searchIndent"
+      v-if="props.option.company_name && (props.option.first_name && props.option.last_name) && field !== 'first_name' && field !== 'last_name'"
+    >
+      <i>{{props.option.company_name}}</i>
+    </span>
     <br>
     <span v-if="field === 'email'" class="searchIndent">
       <span>{{sliceText.before}}</span>
@@ -97,12 +112,9 @@ export default {
 .searchResults {
   line-height: 115%;
   margin: -4px -40px -4px -8px;
+  overflow: wrap;
 }
 .searchIndent {
-  margin: 0 0 0 1.25em;
-}
-.searchCompany {
-  font-size: 90%;
-  color: black;
+  margin: 0 0 0 1em;
 }
 </style>
