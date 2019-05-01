@@ -160,9 +160,13 @@ export default {
       this.timeout = setTimeout(() => {
         axios
           .get(
-            `/account/search/?field=${field}&query=${query}&orderby=${
-              this.orderBy
-            }&order=${this.order}&count=${this.count}&page=${this.page}`
+            `/account/search/?field=${field}&query=${query}${
+              field === "first_name" || field === "last_name"
+                ? `&field2=company_name&query2=` + query
+                : ""
+            }&orderby=${this.orderBy}&order=${this.order}&count=${
+              this.count
+            }&page=${this.page}`
           )
           .then(result => {
             this.clearSearchResults();
