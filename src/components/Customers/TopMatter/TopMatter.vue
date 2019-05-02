@@ -1,6 +1,6 @@
 <template>
   <div class="columns is-variable is-1 is-multiline">
-    <div class="column is-full-tablet is-half-desktop">
+    <div class="column is-full-tablet is-5-desktop">
       <div class="columns is-variable is-1">
         <div class="column" v-if="isCompany">
           <div class="field">
@@ -12,9 +12,10 @@
                 placeholder="Company Name"
                 v-model="companyName"
                 @dblclick.native="isCompany = false"
-                @keyup.backspace.native="companyName ? null : clearFields()"
+                @keyup.backspace.native="companyName || !selected ? null : clearFields()"
                 @input="fetchCustomers('company_name', companyName)"
                 @select="options => setFields(options)"
+                @blur="$v.email.$touch();"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="first_name" :value="companyName"/>
@@ -36,9 +37,10 @@
                 placeholder="First Name"
                 v-model="firstName"
                 @dblclick.native="isCompany = true"
-                @keyup.backspace.native="firstName ? null : clearFields()"
+                @keyup.backspace.native="firstName || !selected ? null : clearFields()"
                 @input="fetchCustomers('first_name', firstName)"
                 @select="options => setFields(options)"
+                @blur="$v.firstName.$touch();"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="first_name" :value="firstName"/>
@@ -60,9 +62,10 @@
                 placeholder="Last Name"
                 v-model="lastName"
                 @dblclick.native="isCompany = true"
-                @keyup.backspace.native="lastName ? null : clearFields()"
+                @keyup.backspace.native="lastName || !selected ? null : clearFields()"
                 @input="fetchCustomers('last_name', lastName)"
                 @select="options => setFields(options)"
+                @blur="$v.lastName.$touch();"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="last_name" :value="lastName"/>
@@ -77,20 +80,23 @@
       </div>
     </div>
 
-    <div class="column is-full-tablet is-half-desktop">
+    <div class="column is-full-tablet is-7-desktop">
       <div class="columns is-variable is-1">
         <div class="column">
           <div class="field">
             <p class="control has-icons-left">
               <b-autocomplete
+                class="val-success"
+                :class="{'val-success': !$v.email.$invalid, 'val-danger': $v.email.$error}"
                 :data="searchResults.email"
                 field="email"
                 :loading="isFetching.email"
                 placeholder="@mail"
                 v-model="email"
-                @keyup.backspace.native="email ? null : clearFields()"
+                @keyup.backspace.native="email || !selected ? null : clearFields()"
                 @input="fetchCustomers('email', email)"
                 @select="options => setFields(options)"
+                @blur="$v.email.$touch();"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="email" :value="email"/>
@@ -103,17 +109,18 @@
           </div>
         </div>
         <div class="column">
-          <div class="field">
-            <p class="control has-icons-left">
+          <div class="field has-addons">
+            <div class="control has-icons-left is-expanded">
               <b-autocomplete
                 :data="searchResults.phone"
                 field="phone"
                 :loading="isFetching.phone"
                 placeholder="Phone"
                 v-model="phone"
-                @keyup.backspace.native="phone ? null : clearFields()"
+                @keyup.backspace.native="phone || !selected ? null : clearFields()"
                 @input="fetchCustomers('phone', phone)"
                 @select="options => setFields(options)"
+                @blur="$v.phone.$touch();"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="phone" :value="phone"/>
@@ -122,7 +129,18 @@
               <span class="icon is-left">
                 <i class="fas fa-phone"></i>
               </span>
-            </p>
+            </div>
+            <div class="control countries">
+              <b-autocomplete
+                v-model="phone_country"
+                :data="phone_country === 'US' ? regions : filteredRegions"
+                open-on-focus
+                @select="option => phone_country = option"
+                @blur="$v.phone.$touch();"
+              >
+                <template slot="empty">No results found</template>
+              </b-autocomplete>
+            </div>
           </div>
         </div>
         <div class="column is-narrow is-hidden-touch">
@@ -130,8 +148,8 @@
             <p v-if="!selected" class="control button is-primary">
               <i class="fas fa-user-plus"></i>
             </p>
-            <p v-if="selected" class="control button is-primary is-outlined">
-              <i class="fas fa-user-edit"></i>
+            <p v-if="selected" class="control button is-primary is-outlined" @click="clearFields()">
+              <i class="fas fa-user-slash"></i>
             </p>
             <p
               class="control button is-primary is-outlined is-hidden-tablet"
@@ -149,8 +167,8 @@
         <p v-if="!selected" class="control button is-primary">
           <i class="fas fa-user-plus"></i>
         </p>
-        <p v-if="selected" class="control button is-primary is-outlined">
-          <i class="fas fa-user-edit"></i>
+        <p v-if="selected" class="control button is-primary is-outlined" @click="clearFields()">
+          <i class="fas fa-user-slash"></i>
         </p>
         <p class="control button is-outlined is-hidden-tablet" @click="isCompany = !isCompany">
           <i class="fas fa-store"></i>
@@ -161,7 +179,14 @@
 </template>
 <script>
 import SearchDropdown from "@/components/Customers/TopMatter/SearchDropdown.vue";
+import { required, requiredUnless, email } from "vuelidate/lib/validators";
 import axios from "../../../axiosAPI";
+let PhoneNumber = require("awesome-phonenumber");
+let listCountries = PhoneNumber.getSupportedCallingCodes();
+let listRegions = listCountries.map(c =>
+  PhoneNumber.getRegionCodeForCountryCode(c)
+);
+listRegions = listRegions.sort().filter(item => item !== "001"); //removes the 001's
 
 export default {
   name: "TopMatter",
@@ -181,7 +206,7 @@ export default {
       lastName: null,
       companyName: null,
       email: null,
-      phone: null,
+      phoneInput: null,
       isCompany: false,
       timeout: null,
       isFetching: {
@@ -195,8 +220,63 @@ export default {
       order: "asc",
       count: null,
       page: null,
-      selected: null
+      selected: null,
+      regions: listRegions,
+      phone_country: "US"
     };
+  },
+  computed: {
+    phone: {
+      set: function(val) {
+        this.phoneInput = val;
+      },
+      get: function() {
+        let ayt = PhoneNumber.getAsYouType(this.phone_country);
+        ayt.reset(this.phoneInput);
+        if (ayt.getPhoneNumber().a.valid) {
+          return ayt.getPhoneNumber().a.number.national;
+        }
+        return this.phoneInput;
+      }
+    },
+    filteredRegions() {
+      return listRegions.filter(option => {
+        if (!option || !this.phone_country) return;
+        return (
+          option
+            .toString()
+            .toUpperCase()
+            .indexOf(this.phone_country.toUpperCase()) >= 0
+        );
+      });
+    }
+  },
+  validations: {
+    firstName: {
+      required: requiredUnless("companyName")
+    },
+    lastName: {
+      required: requiredUnless("companyName")
+    },
+    companyName: {
+      required: requiredUnless("lastName")
+    },
+    email: {
+      required,
+      email,
+      unique: function(val) {
+        if (!val) return true;
+        return this.searchResults.email.length > 0;
+      }
+    },
+    phone: {
+      phone: function(val) {
+        if (!val) return true;
+        let ayt = PhoneNumber.getAsYouType(this.phone_country);
+        ayt.reset(val);
+        return ayt.getPhoneNumber().a.valid;
+      }
+    }
   },
   methods: {
     fetchCustomers: function(field, query) {
@@ -236,6 +316,17 @@ export default {
     },
     addCustomer: function() {
       if (this.selected) return;
+
+      axios.post("/account/register", {
+        role: "CUSTOMER",
+        email,
+        ...(firstName ? { first_name: firstName } : {}),
+        ...(lastName ? { last_name: lastName } : {}),
+        ...(companyName ? { company_name: companyName } : {}),
+        ...(companyName ? { company_name: companyName } : {}),
+        ...(phone ? { phone: phone } : {}),
+        ...(phone ? { phone_country: phoneCountry } : {})
+      });
     },
     setFields: function(data) {
       if (!data) return;
@@ -269,4 +360,11 @@ export default {
 
 
 <style lang="scss" scoped>
+.countries {
+  max-width: 3em;
+}
+.val-success {
+  outline-color: green;
+  outline-width: 5px;
+}
 </style>
