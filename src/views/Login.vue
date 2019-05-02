@@ -81,17 +81,10 @@ export default {
     attemptLogin: function() {
       if (this.$v.$invalid) return;
       this.submitting = true;
-      try {
-        this.$store.dispatch("login", {
-          email: this.email,
-          password: this.password
-        });
-      } catch (err) {
-        this.clearForm();
-        alert(
-          "Login attempt failed. Please check your credentials and try again."
-        );
-      }
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      });
       this.submitting = false;
     }
   }

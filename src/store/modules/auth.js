@@ -52,6 +52,9 @@ const actions = {
       .then(() => dispatch('setLogoutTimer', jwt.decode(state.authToken).exp))
       .catch(err => {
         console.error(err);
+        alert(
+          'Login attempt failed. Please check your credentials and try again.'
+        );
       });
   },
   logout({ commit }, redirect = true) {
