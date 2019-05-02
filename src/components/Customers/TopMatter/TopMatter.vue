@@ -9,6 +9,7 @@
             :loading="isFetching.first_name"
             placeholder="First Name"
             v-model="firstName"
+            @keyup.backspace.native="firstName ? null : clearFields()"
             @input="fetchCustomers('first_name', firstName)"
             @select="options => setFields(options)"
           >
@@ -31,6 +32,7 @@
             :loading="isFetching.last_name"
             placeholder="Last Name"
             v-model="lastName"
+            @keyup.backspace.native="firstName ? null : clearFields()"
             @input="fetchCustomers('last_name', lastName)"
             @select="options => setFields(options)"
           >
@@ -53,6 +55,7 @@
             :loading="isFetching.email"
             placeholder="@mail"
             v-model="email"
+            @keyup.backspace.native="firstName ? null : clearFields()"
             @input="fetchCustomers('email', email)"
             @select="options => setFields(options)"
           >
@@ -75,6 +78,7 @@
             :loading="isFetching.phone"
             placeholder="Phone"
             v-model="phone"
+            @keyup.backspace.native="firstName ? null : clearFields()"
             @input="fetchCustomers('phone', phone)"
             @select="options => setFields(options)"
           >
@@ -185,6 +189,13 @@ export default {
       this.lastName = data.last_name;
       this.email = data.email;
       this.phone = data.phone;
+    },
+    clearFields: function() {
+      this.selected = null;
+      this.firstName = null;
+      this.lastName = null;
+      this.email = null;
+      this.phone = null;
     },
     clearSearchResults: function(data) {
       this.searchResults = {
