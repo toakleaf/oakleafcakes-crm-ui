@@ -32,7 +32,7 @@
             :loading="isFetching.last_name"
             placeholder="Last Name"
             v-model="lastName"
-            @keyup.backspace.native="firstName ? null : clearFields()"
+            @keyup.backspace.native="lastName ? null : clearFields()"
             @input="fetchCustomers('last_name', lastName)"
             @select="options => setFields(options)"
           >
@@ -55,7 +55,7 @@
             :loading="isFetching.email"
             placeholder="@mail"
             v-model="email"
-            @keyup.backspace.native="firstName ? null : clearFields()"
+            @keyup.backspace.native="email ? null : clearFields()"
             @input="fetchCustomers('email', email)"
             @select="options => setFields(options)"
           >
@@ -78,7 +78,7 @@
             :loading="isFetching.phone"
             placeholder="Phone"
             v-model="phone"
-            @keyup.backspace.native="firstName ? null : clearFields()"
+            @keyup.backspace.native="phone ? null : clearFields()"
             @input="fetchCustomers('phone', phone)"
             @select="options => setFields(options)"
           >
