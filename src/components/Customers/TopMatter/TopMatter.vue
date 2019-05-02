@@ -152,10 +152,7 @@
         <p v-if="selected" class="control button is-primary is-outlined">
           <i class="fas fa-user-edit"></i>
         </p>
-        <p
-          class="control button is-primary is-outlined is-hidden-tablet"
-          @click="isCompany = !isCompany"
-        >
+        <p class="control button is-outlined is-hidden-tablet" @click="isCompany = !isCompany">
           <i class="fas fa-store"></i>
         </p>
       </div>
