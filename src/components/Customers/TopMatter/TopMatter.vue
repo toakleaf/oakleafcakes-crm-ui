@@ -16,6 +16,7 @@
                 @input="fetchCustomers('company_name', companyName)"
                 @select="options => setFields(options)"
                 @blur="$v.email.$touch();"
+                :disabled="disabled"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="first_name" :value="companyName"/>
@@ -41,6 +42,7 @@
                 @input="fetchCustomers('first_name', firstName)"
                 @select="options => setFields(options)"
                 @blur="$v.firstName.$touch();"
+                :disabled="disabled"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="first_name" :value="firstName"/>
@@ -66,6 +68,7 @@
                 @input="fetchCustomers('last_name', lastName)"
                 @select="options => setFields(options)"
                 @blur="$v.lastName.$touch();"
+                :disabled="disabled"
               >
                 <template slot-scope="props">
                   <app-search-dropdown :props="props" field="last_name" :value="lastName"/>
@@ -85,23 +88,24 @@
         <div class="column">
           <div class="field">
             <p class="control has-icons-left">
-              <b-autocomplete
-                class="val-success"
-                :class="{'val-success': !$v.email.$invalid, 'val-danger': $v.email.$error}"
-                :data="searchResults.email"
-                field="email"
-                :loading="isFetching.email"
-                placeholder="@mail"
-                v-model="email"
-                @keyup.backspace.native="email || !selected ? null : clearFields()"
-                @input="fetchCustomers('email', email)"
-                @select="options => setFields(options)"
-                @blur="$v.email.$touch();"
-              >
-                <template slot-scope="props">
-                  <app-search-dropdown :props="props" field="email" :value="email"/>
-                </template>
-              </b-autocomplete>
+              <b-field :type="getClass($v.email, email)">
+                <b-autocomplete
+                  :data="searchResults.email"
+                  field="email"
+                  :loading="isFetching.email"
+                  placeholder="@mail"
+                  v-model="email"
+                  @keyup.backspace.native="email || !selected ? null : clearFields()"
+                  @input="fetchCustomers('email', email)"
+                  @select="options => setFields(options)"
+                  @blur="$v.email.$touch();"
+                  :disabled="disabled"
+                >
+                  <template slot-scope="props">
+                    <app-search-dropdown :props="props" field="email" :value="email"/>
+                  </template>
+                </b-autocomplete>
+              </b-field>
               <span class="icon is-left">
                 <i class="fas fa-envelope"></i>
               </span>
@@ -111,21 +115,24 @@
         <div class="column">
           <div class="field has-addons">
             <div class="control has-icons-left is-expanded">
-              <b-autocomplete
-                :data="searchResults.phone"
-                field="phone"
-                :loading="isFetching.phone"
-                placeholder="Phone"
-                v-model="phone"
-                @keyup.backspace.native="phone || !selected ? null : clearFields()"
-                @input="fetchCustomers('phone', phone)"
-                @select="options => setFields(options)"
-                @blur="$v.phone.$touch();"
-              >
-                <template slot-scope="props">
-                  <app-search-dropdown :props="props" field="phone" :value="phone"/>
-                </template>
-              </b-autocomplete>
+              <b-field :type="getClass($v.phone, phone)" addons>
+                <b-autocomplete
+                  :data="searchResults.phone"
+                  field="phone"
+                  :loading="isFetching.phone"
+                  placeholder="Phone"
+                  v-model="phone"
+                  @keyup.backspace.native="phone || !selected ? null : clearFields()"
+                  @input="fetchCustomers('phone', phone)"
+                  @select="options => setFields(options)"
+                  @blur="$v.phone.$touch();"
+                  :disabled="disabled"
+                >
+                  <template slot-scope="props">
+                    <app-search-dropdown :props="props" field="phone" :value="phone"/>
+                  </template>
+                </b-autocomplete>
+              </b-field>
               <span class="icon is-left">
                 <i class="fas fa-phone"></i>
               </span>
@@ -137,6 +144,7 @@
                 open-on-focus
                 @select="option => phone_country = option"
                 @blur="$v.phone.$touch();"
+                :disabled="disabled"
               >
                 <template slot="empty">No results found</template>
               </b-autocomplete>
@@ -145,18 +153,21 @@
         </div>
         <div class="column is-narrow is-hidden-touch">
           <div class="field is-grouped">
-            <p v-if="!selected" class="control button is-primary">
-              <i class="fas fa-user-plus"></i>
-            </p>
-            <p v-if="selected" class="control button is-primary is-outlined" @click="clearFields()">
-              <i class="fas fa-user-slash"></i>
-            </p>
-            <p
-              class="control button is-primary is-outlined is-hidden-tablet"
-              @click="isCompany = !isCompany"
+            <button
+              v-if="!selected || !disabled"
+              class="control button is-primary"
+              :disabled="$v.$invalid || selected || disabled"
+              @click="createCustomer()"
             >
-              <i class="fas fa-store"></i>
-            </p>
+              <i class="fas fa-user-plus"></i>
+            </button>
+            <button
+              v-if="selected || disabled"
+              class="control button is-primary is-outlined"
+              @click="clearFields()"
+            >
+              <i class="fas fa-user-slash"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -164,15 +175,24 @@
 
     <div class="column is-narrow is-hidden-desktop">
       <div class="field is-grouped">
-        <p v-if="!selected" class="control button is-primary">
+        <button
+          v-if="!selected || !disabled"
+          class="control button is-primary"
+          :disabled="$v.$invalid || selected || disabled"
+          @click="createCustomer()"
+        >
           <i class="fas fa-user-plus"></i>
-        </p>
-        <p v-if="selected" class="control button is-primary is-outlined" @click="clearFields()">
+        </button>
+        <button
+          v-if="selected || disabled"
+          class="control button is-primary is-outlined"
+          @click="clearFields()"
+        >
           <i class="fas fa-user-slash"></i>
-        </p>
-        <p class="control button is-outlined is-hidden-tablet" @click="isCompany = !isCompany">
+        </button>
+        <button class="control button is-outlined is-hidden-tablet" @click="isCompany = !isCompany">
           <i class="fas fa-store"></i>
-        </p>
+        </button>
       </div>
     </div>
   </div>
@@ -195,6 +215,7 @@ export default {
   },
   data: function() {
     return {
+      disabled: false,
       searchResults: {
         first_name: [],
         last_name: [],
@@ -266,7 +287,7 @@ export default {
       email,
       unique: function(val) {
         if (!val) return true;
-        return this.searchResults.email.length > 0;
+        return this.searchResults.email.length < 1;
       }
     },
     phone: {
@@ -314,19 +335,27 @@ export default {
           });
       }, 700);
     },
-    addCustomer: function() {
+    createCustomer: function() {
       if (this.selected) return;
 
-      axios.post("/account/register", {
-        role: "CUSTOMER",
-        email,
-        ...(firstName ? { first_name: firstName } : {}),
-        ...(lastName ? { last_name: lastName } : {}),
-        ...(companyName ? { company_name: companyName } : {}),
-        ...(companyName ? { company_name: companyName } : {}),
-        ...(phone ? { phone: phone } : {}),
-        ...(phone ? { phone_country: phoneCountry } : {})
-      });
+      axios
+        .post("/account/register", {
+          role: "CUSTOMER",
+          email: this.email,
+          ...(this.firstName ? { first_name: this.firstName } : {}),
+          ...(this.lastName ? { last_name: this.lastName } : {}),
+          ...(this.companyName ? { company_name: this.companyName } : {}),
+          ...(this.companyName ? { company_name: this.companyName } : {}),
+          ...(this.phone ? { phone: this.phone } : {}),
+          ...(this.phone ? { phone_country: this.phoneCountry } : {})
+        })
+        .then(res => {
+          console.log(res.data);
+          this.setFields(res.data);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     },
     setFields: function(data) {
       if (!data) return;
@@ -336,6 +365,8 @@ export default {
       this.companyName = data.company_name;
       this.email = data.email;
       this.phone = data.phone;
+      this.disabled = true;
+      this.$v.$reset();
     },
     clearFields: function() {
       this.selected = null;
@@ -344,6 +375,8 @@ export default {
       this.companyName = null;
       this.email = null;
       this.phone = null;
+      this.disabled = false;
+      this.$v.$reset();
     },
     clearSearchResults: function(data) {
       this.searchResults = {
@@ -353,6 +386,12 @@ export default {
         email: [],
         phone: []
       };
+    },
+    getClass: function(val, input) {
+      if (this.selected) return "";
+      if (input && !val.$invalid) return "is-success";
+      if (val.$error) return "is-danger";
+      return "";
     }
   }
 };
@@ -361,10 +400,6 @@ export default {
 
 <style lang="scss" scoped>
 .countries {
-  max-width: 3em;
-}
-.val-success {
-  outline-color: green;
-  outline-width: 5px;
+  max-width: 3.25em;
 }
 </style>

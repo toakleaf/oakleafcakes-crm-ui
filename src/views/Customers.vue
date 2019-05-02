@@ -39,7 +39,8 @@ export default {
   name: "CustomerForm",
   data: function() {
     return {
-      activeTab: 0
+      activeTab: 0,
+      customer: null
     };
   },
   components: {
