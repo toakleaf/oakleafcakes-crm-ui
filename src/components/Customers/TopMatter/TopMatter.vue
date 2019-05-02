@@ -367,6 +367,7 @@ export default {
       this.phone = data.phone;
       this.disabled = true;
       this.$v.$reset();
+      this.$emit("set-customer", data);
     },
     clearFields: function() {
       this.selected = null;

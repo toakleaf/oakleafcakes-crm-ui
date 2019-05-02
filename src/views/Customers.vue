@@ -1,7 +1,7 @@
 <template>
   <section class="container pad-route">
     <div class="box">
-      <app-top-matter/>
+      <app-top-matter @set-customer="customer = $event"/>
       <section>
         <!-- <b-icon pack="fas" icon="user" class="is-pulled-right"></b-icon> -->
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
