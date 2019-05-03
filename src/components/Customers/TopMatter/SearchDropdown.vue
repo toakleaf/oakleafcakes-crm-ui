@@ -31,9 +31,9 @@
       v-if="field === 'phone'"
       :class="{'is-pulled-right': floatPhone, 'searchIndent': breakPhone}"
     >
-      <span>{{sliceText.before}}</span>
-      <span class="has-text-weight-bold">{{sliceText.selected}}</span>
-      <span>{{sliceText.after + " "}}</span>
+      <span>{{slicePhone.before}}</span>
+      <span class="has-text-weight-bold">{{slicePhone.selected}}</span>
+      <span>{{slicePhone.after + " "}}</span>
     </span>
     <span
       v-else
@@ -99,22 +99,44 @@ export default {
       // Because we search company_name simultaneous to first or last name searches
       if (!this.props.option.company_name || !this.value)
         return { before: "", selected: "", after: "" };
-      const i = this.props.option.company_name
+      const start = this.props.option.company_name
         .toLowerCase()
         .indexOf(this.value.toLowerCase());
-      if (i < 0)
+      if (start < 0)
         return {
           before: this.props.option.company_name,
           selected: "",
           after: ""
         };
       return {
-        before: this.props.option.company_name.slice(0, i),
+        before: this.props.option.company_name.slice(0, start),
         selected: this.props.option.company_name.slice(
-          i,
-          i + this.value.length
+          start,
+          start + this.value.length
         ),
-        after: this.props.option.company_name.slice(i + this.value.length)
+        after: this.props.option.company_name.slice(start + this.value.length)
+      };
+    },
+    slicePhone: function() {
+      // Because we want ignore formatting chars
+      if (!this.props.option.phone || !this.value)
+        return { before: "", selected: "", after: "" };
+      const valueRaw = this.value.replace(/[^0-9]/g, "");
+      let start = this.props.option.phone.indexOf(valueRaw.charAt(0));
+      let end = start;
+      for (let i = 0; i < valueRaw.length; i++) {
+        end = this.props.option.phone.indexOf(valueRaw.charAt(i), end + 1);
+      }
+      if (start < 0)
+        return {
+          before: this.props.option.phone,
+          selected: "",
+          after: ""
+        };
+      return {
+        before: this.props.option.phone.slice(0, start),
+        selected: this.props.option.phone.slice(start, end + 1),
+        after: this.props.option.phone.slice(end + 1)
       };
     }
   },
