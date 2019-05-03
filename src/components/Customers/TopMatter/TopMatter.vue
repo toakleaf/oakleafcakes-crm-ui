@@ -156,7 +156,7 @@
         <div class="column is-narrow is-hidden-touch">
           <div class="field is-grouped">
             <button
-              v-if="!selected || !disabled"
+              v-if="(!selected || !disabled) && !$v.$invalid"
               class="control button is-primary"
               :disabled="$v.$invalid || selected || disabled"
               @click="createCustomer()"
@@ -164,11 +164,11 @@
               <i class="fas fa-user-plus"></i>
             </button>
             <button
-              v-if="selected || disabled"
+              v-if="selected || disabled || $v.$invalid"
               class="control button is-primary is-outlined"
               @click="clearFields()"
             >
-              <i class="fas fa-user-slash"></i>
+              <i class="fas fa-snowplow"></i>
             </button>
           </div>
         </div>
@@ -178,7 +178,7 @@
     <div class="column is-narrow is-hidden-desktop">
       <div class="field is-grouped">
         <button
-          v-if="!selected || !disabled"
+          v-if="(!selected || !disabled) && !$v.$invalid"
           class="control button is-primary"
           :disabled="$v.$invalid || selected || disabled"
           @click="createCustomer()"
@@ -186,11 +186,11 @@
           <i class="fas fa-user-plus"></i>
         </button>
         <button
-          v-if="selected || disabled"
+          v-if="selected || disabled || $v.$invalid"
           class="control button is-primary is-outlined"
           @click="clearFields()"
         >
-          <i class="fas fa-user-slash"></i>
+          <i class="fas fa-snowplow"></i>
         </button>
         <button class="control button is-outlined is-hidden-tablet" @click="isCompany = !isCompany">
           <i class="fas fa-store"></i>
