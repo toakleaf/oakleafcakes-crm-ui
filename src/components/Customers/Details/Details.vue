@@ -1,6 +1,6 @@
 <template>
   <div class="columns">
-    <div class="column">
+    <div class="column is-half-tablet">
       <b-collapse class="card" aria-id="contentIdForA11y3" v-if="customer">
         <div
           slot="trigger"
