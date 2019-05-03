@@ -49,6 +49,18 @@
                 >
                   <i class="fas fa-mobile"></i>
                 </span>
+                <span
+                  class="icon"
+                  v-if="customer.phone_type && customer.phone_type.toLowerCase() === 'work'"
+                >
+                  <i class="fas fa-store"></i>
+                </span>
+                <span
+                  class="icon"
+                  v-if="customer.phone_type && customer.phone_type.toLowerCase() === 'emergency'"
+                >
+                  <i class="fas fa-ambulance"></i>
+                </span>
               </span>
             </p>
             <p class="card-dates">
