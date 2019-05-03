@@ -140,7 +140,6 @@ export default {
   margin: -4px -40px -4px -8px;
   overflow-x: wrap;
   overflow-y: hidden;
-  scrollbar-width: none;
 }
 .searchResults::-webkit-scrollbar {
   height: 0px;
