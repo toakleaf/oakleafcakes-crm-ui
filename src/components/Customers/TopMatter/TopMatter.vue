@@ -213,6 +213,7 @@ export default {
   components: {
     "app-search-dropdown": SearchDropdown
   },
+  props: ["customer"],
   data: function() {
     return {
       disabled: false,
@@ -223,11 +224,14 @@ export default {
         email: [],
         phone: []
       },
-      firstName: null,
-      lastName: null,
-      companyName: null,
-      email: null,
-      phoneInput: null,
+      inputs: {
+        selected: null,
+        firstName: null,
+        lastName: null,
+        companyName: null,
+        email: null,
+        phone: null
+      },
       isCompany: false,
       timeout: null,
       isFetching: {
@@ -241,23 +245,73 @@ export default {
       order: "asc",
       count: null,
       page: null,
-      selected: null,
       regions: listRegions,
       phone_country: "US"
     };
   },
   computed: {
-    phone: {
+    selected: {
       set: function(val) {
-        this.phoneInput = val;
+        this.inputs.selected = val;
       },
       get: function() {
+        if (this.inputs.selected) return this.inputs.selected;
+        if (this.customer) {
+          this.disabled = true;
+          return this.customer;
+        }
+        return null;
+      }
+    },
+    firstName: {
+      set: function(val) {
+        this.inputs.firstName = val;
+      },
+      get: function() {
+        if (this.inputs.firstName) return this.inputs.firstName;
+        return this.customer ? this.customer.first_name : null;
+      }
+    },
+    lastName: {
+      set: function(val) {
+        this.inputs.lastName = val;
+      },
+      get: function() {
+        if (this.inputs.lastName) return this.inputs.lastName;
+        return this.customer ? this.customer.last_name : null;
+      }
+    },
+    companyName: {
+      set: function(val) {
+        this.inputs.companyName = val;
+      },
+      get: function() {
+        if (this.inputs.companyName) return this.inputs.companyName;
+        return this.customer ? this.customer.company_name : null;
+      }
+    },
+    email: {
+      set: function(val) {
+        this.inputs.email = val;
+      },
+      get: function() {
+        if (this.inputs.email) return this.inputs.email;
+        return this.customer ? this.customer.email : null;
+      }
+    },
+    phone: {
+      set: function(val) {
+        this.inputs.phone = val;
+      },
+      get: function() {
+        if (!this.inputs.phone)
+          this.inputs.phone = this.customer ? this.customer.phone : null;
         let ayt = PhoneNumber.getAsYouType(this.phone_country);
-        ayt.reset(this.phoneInput);
+        ayt.reset(this.inputs.phone);
         if (ayt.getPhoneNumber().a.valid) {
           return ayt.getPhoneNumber().a.number.national;
         }
-        return this.phoneInput;
+        return this.inputs.phone;
       }
     },
     filteredRegions() {
@@ -350,7 +404,6 @@ export default {
           ...(this.phone ? { phone_country: this.phoneCountry } : {})
         })
         .then(res => {
-          console.log(res.data);
           this.setFields(res.data);
         })
         .catch(err => {
@@ -370,6 +423,7 @@ export default {
       this.$emit("set-customer", data);
     },
     clearFields: function() {
+      this.$emit("set-customer", null);
       this.selected = null;
       this.firstName = null;
       this.lastName = null;
