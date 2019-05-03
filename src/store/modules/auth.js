@@ -44,6 +44,9 @@ const actions = {
     axios
       .post(`/account/login`, payload)
       .then(res => {
+        const role = jwt.decode(res.headers['x-auth-token']).role;
+        if (!(role === 'ADMIN' || role === 'EMPLOYEE'))
+          throw new Error('This account is unauthorized.');
         commit('setAuthToken', res.headers['x-auth-token']);
         dispatch('setAuthHeaders');
         localStorage.setItem('token', res.headers['x-auth-token']);
