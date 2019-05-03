@@ -19,14 +19,36 @@
         </div>
         <div class="card-content">
           <div class="content">
-            <p v-if="customer.first_name && customer.company_name">
-              <span class="is-italic">{{customer.company_name}}</span>
-              <br>
-              <a :href="'mailto:' + customer.email">{{customer.email}}</a>
+            <p>
+              <span v-if="customer.first_name && customer.company_name" class="is-italic">
+                {{customer.company_name}}
+                <br>
+              </span>
+
+              <a :href="'mailto:' + customer.email">
+                <span class="icon" v-if="customer.email_is_primary">
+                  <i class="far fa-star"></i>
+                </span>
+                {{customer.email}}
+              </a>
               <br>
               <span>
-                <span class="is-capitalized">{{customer.phone_type + ': '}}</span>
+                <span class="icon" v-if="customer.phone_is_primary">
+                  <i class="far fa-star"></i>
+                </span>
                 {{customer.phone}}
+                <span
+                  class="icon"
+                  v-if="customer.phone_type && customer.phone_type.toLowerCase() === 'home'"
+                >
+                  <i class="fas fa-home"></i>
+                </span>
+                <span
+                  class="icon"
+                  v-if="customer.phone_type && customer.phone_type.toLowerCase() === 'mobile'"
+                >
+                  <i class="fas fa-mobile"></i>
+                </span>
               </span>
             </p>
             <p class="card-dates">
