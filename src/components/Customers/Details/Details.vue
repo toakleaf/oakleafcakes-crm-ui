@@ -13,6 +13,7 @@
             class="card-header-title"
           >{{customer.first_name ? (customer.first_name + ' ' + customer.last_name) : customer.company_name ? customer.company_name : null }}</p>
           <a class="card-header-icon">
+            <span class="is-size-7 has-text-grey" style="margin-right: 1em;">{{customer.role}}</span>
             <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" pack="fa"></b-icon>
           </a>
         </div>
@@ -30,8 +31,13 @@
             </p>
             <p class="card-dates">
               <span class="is-size-7">Created: {{customerCreated.toLocaleString()}}</span>
-              <br>
-              <span class="is-size-7">Updated: {{customerUpdated.toLocaleString()}}</span>
+              <span
+                v-if="customerCreated.toLocaleString() !== customerUpdated.toLocaleString()"
+                class="is-size-7"
+              >
+                <br>
+                Updated: {{customerUpdated.toLocaleString()}}
+              </span>
             </p>
           </div>
         </div>
@@ -102,6 +108,6 @@ export default {
 <style lang="scss" scoped>
 .card-dates {
   line-height: 90%;
-  margin: -0.5em 0 -1em 0;
+  margin: 0 0 -1em 0;
 }
 </style>
