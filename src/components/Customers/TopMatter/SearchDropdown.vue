@@ -121,7 +121,8 @@ export default {
   mounted: function() {
     if (this.$refs.searchMenu) {
       this.floatPhone =
-        this.$refs.searchMenu.scrollWidth <= this.$refs.searchMenu.clientWidth;
+        this.$refs.searchMenu.scrollWidth <=
+        this.$refs.searchMenu.clientWidth + 4;
       this.breakPhone = !this.floatPhone;
       return;
     }
