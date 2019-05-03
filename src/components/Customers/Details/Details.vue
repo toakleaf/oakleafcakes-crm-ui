@@ -1,6 +1,62 @@
 <template>
-  <div class="columns is-vcentered">
-    <div class="column"></div>
+  <div class="columns">
+    <div class="column">
+      <b-collapse class="card" aria-id="contentIdForA11y3" v-if="customer">
+        <div
+          slot="trigger"
+          slot-scope="props"
+          class="card-header"
+          role="button"
+          aria-controls="contentIdForA11y3"
+        >
+          <p
+            class="card-header-title"
+          >{{customer.first_name ? (customer.first_name + ' ' + customer.last_name) : customer.company_name ? customer.company_name : null }}</p>
+          <a class="card-header-icon">
+            <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" pack="fa"></b-icon>
+          </a>
+        </div>
+        <div class="card-content">
+          <div class="content">
+            <p v-if="customer.first_name && customer.company_name">
+              <span class="is-italic">{{customer.company_name}}</span>
+              <br>
+              <a :href="'mailto:' + customer.email">{{customer.email}}</a>
+              <br>
+              <span>
+                <span class="is-capitalized">{{customer.phone_type + ': '}}</span>
+                {{customer.phone}}
+              </span>
+            </p>
+            <p class="card-dates">
+              <span class="is-size-7">Created: {{customerCreated.toLocaleString()}}</span>
+              <br>
+              <span class="is-size-7">Updated: {{customerUpdated.toLocaleString()}}</span>
+            </p>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a class="card-footer-item">
+            <span class="icon">
+              <i class="fas fa-edit"></i>
+            </span>
+            Edit
+          </a>
+          <a class="card-footer-item">
+            <span class="icon">
+              <i class="far fa-plus-square"></i>
+            </span>
+            Email
+          </a>
+          <a class="card-footer-item">
+            <span class="icon">
+              <i class="far fa-plus-square"></i>
+            </span>
+            Phone
+          </a>
+        </footer>
+      </b-collapse>
+    </div>
     <div class="column"></div>
     <div class="column">
       <label class="label is-small">Billing Info</label>
@@ -24,10 +80,28 @@ export default {
     "app-billing-address": BillingAddress,
     "app-business-info": BusinessInfo,
     "app-associations": Associations
+  },
+  props: ["customer"],
+  data: function() {
+    return {};
+  },
+  computed: {
+    customerCreated: function() {
+      if (this.customer) return new Date(this.customer.created_at);
+      return null;
+    },
+    customerUpdated: function() {
+      if (this.customer) return new Date(this.customer.updated_at);
+      return null;
+    }
   }
 };
 </script>
 
 
 <style lang="scss" scoped>
+.card-dates {
+  line-height: 90%;
+  margin: -0.5em 0 -1em 0;
+}
 </style>

@@ -6,7 +6,7 @@
         <!-- <b-icon pack="fas" icon="user" class="is-pulled-right"></b-icon> -->
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
           <b-tab-item label="Details" icon-pack="fas" icon="info-circle">
-            <app-details/>
+            <app-details :customer="customer"/>
           </b-tab-item>
           <b-tab-item label="Interactions" icon-pack="fas" icon="comments">
             <app-interactions/>
