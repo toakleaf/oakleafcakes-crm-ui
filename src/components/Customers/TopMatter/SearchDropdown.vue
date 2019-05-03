@@ -157,8 +157,6 @@ export default {
 
 <style lang="scss" scoped>
 .searchResults {
-  left: 0;
-  right: 0;
   line-height: 115%;
   margin: -4px -40px -4px -8px;
   overflow-x: wrap;

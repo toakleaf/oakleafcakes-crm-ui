@@ -88,7 +88,7 @@
         <div class="column">
           <div class="field">
             <p class="control has-icons-left">
-              <b-field :type="getClass($v.email, email)">
+              <b-field :type="getClass($v.email, email)" addons>
                 <b-autocomplete
                   :data="searchResults.email"
                   field="email"
@@ -146,7 +146,9 @@
                 @blur="$v.phone.$touch();"
                 :disabled="disabled"
               >
-                <template slot="empty">No results found</template>
+                <template slot-scope="props">
+                  <app-phone-country-drop :props="props"/>
+                </template>
               </b-autocomplete>
             </div>
           </div>
@@ -199,6 +201,7 @@
 </template>
 <script>
 import SearchDropdown from "@/components/Customers/TopMatter/SearchDropdown.vue";
+import PhoneCountryDrop from "@/components/Customers/TopMatter/PhoneCountryDrop.vue";
 import { required, requiredUnless, email } from "vuelidate/lib/validators";
 import axios from "../../../axiosAPI";
 let PhoneNumber = require("awesome-phonenumber");
@@ -211,7 +214,8 @@ listRegions = listRegions.sort().filter(item => item !== "001"); //removes the 0
 export default {
   name: "TopMatter",
   components: {
-    "app-search-dropdown": SearchDropdown
+    "app-search-dropdown": SearchDropdown,
+    "app-phone-country-drop": PhoneCountryDrop
   },
   props: ["customer"],
   data: function() {
