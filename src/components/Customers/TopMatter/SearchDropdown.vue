@@ -1,5 +1,5 @@
 <template>
-  <p class="is-size-7 searchResults">
+  <p class="is-size-7 searchResults" ref="searchMenu">
     <span v-if="field === 'first_name'">
       <span>{{sliceText.before}}</span>
       <span class="has-text-weight-bold">{{sliceText.selected}}</span>
@@ -26,12 +26,19 @@
     >
       <i>{{props.option.company_name}}</i>
     </span>
-    <span v-if="field === 'phone'" class="is-pulled-right">
+    <br v-if="breakPhone">
+    <span
+      v-if="field === 'phone'"
+      :class="{'is-pulled-right': floatPhone, 'searchIndent': breakPhone}"
+    >
       <span>{{sliceText.before}}</span>
       <span class="has-text-weight-bold">{{sliceText.selected}}</span>
       <span>{{sliceText.after + " "}}</span>
     </span>
-    <span v-else class="is-pulled-right">{{' ' + props.option.phone}}</span>
+    <span
+      v-else
+      :class="{'is-pulled-right': floatPhone, 'searchIndent': breakPhone}"
+    >{{' ' + props.option.phone}}</span>
     <br v-if="props.option.company_name && (props.option.first_name && props.option.last_name)">
     <span
       v-if="props.option.company_name && (props.option.first_name && props.option.last_name) && (field === 'first_name' || field === 'last_name')"
@@ -63,6 +70,12 @@
 export default {
   name: "SearchDropdown",
   props: ["props", "field", "value"],
+  data: function() {
+    return {
+      floatPhone: false,
+      breakPhone: false
+    };
+  },
   computed: {
     sliceText: function() {
       if (!this.props.option[this.field] || !this.value)
@@ -104,15 +117,34 @@ export default {
         after: this.props.option.company_name.slice(i + this.value.length)
       };
     }
+  },
+  mounted: function() {
+    if (this.$refs.searchMenu) {
+      this.floatPhone =
+        this.$refs.searchMenu.scrollWidth <= this.$refs.searchMenu.clientWidth;
+      this.breakPhone = !this.floatPhone;
+      return;
+    }
+    this.floatPhone = true;
+    this.breakPhone = false;
+    return;
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .searchResults {
+  left: 0;
+  right: 0;
   line-height: 115%;
   margin: -4px -40px -4px -8px;
-  overflow: wrap;
+  overflow-x: wrap;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.searchResults::-webkit-scrollbar {
+  height: 0px;
+  width: 0px; /* Remove scrollbar space */
 }
 .searchIndent {
   margin: 0 0 0 1em;
