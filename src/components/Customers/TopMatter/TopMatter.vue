@@ -203,6 +203,8 @@
 import SearchDropdown from "@/components/Customers/TopMatter/SearchDropdown.vue";
 import PhoneCountryDrop from "@/components/Customers/TopMatter/PhoneCountryDrop.vue";
 import { required, requiredUnless, email } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import axios from "../../../axiosAPI";
 let PhoneNumber = require("awesome-phonenumber");
 let listCountries = PhoneNumber.getSupportedCallingCodes();
@@ -254,16 +256,21 @@ export default {
     };
   },
   computed: {
+    ...mapGetters([
+      "currentCustomer",
+      "currentCustomerCreatedAt",
+      "currentCustomerUpdatedAt"
+    ]),
     selected: {
       set: function(val) {
         this.inputs.selected = val;
       },
       get: function() {
-        if (this.inputs.selected) return this.inputs.selected;
-        if (this.customer) {
+        if (this.currentCustomer) {
           this.disabled = true;
-          return this.customer;
+          return this.currentCustomer;
         }
+        if (this.inputs.selected) return this.inputs.selected;
         return null;
       }
     },
@@ -273,7 +280,7 @@ export default {
       },
       get: function() {
         if (this.inputs.firstName) return this.inputs.firstName;
-        return this.customer ? this.customer.first_name : null;
+        return this.currentCustomer ? this.currentCustomer.first_name : null;
       }
     },
     lastName: {
@@ -282,7 +289,7 @@ export default {
       },
       get: function() {
         if (this.inputs.lastName) return this.inputs.lastName;
-        return this.customer ? this.customer.last_name : null;
+        return this.currentCustomer ? this.currentCustomer.last_name : null;
       }
     },
     companyName: {
@@ -291,7 +298,7 @@ export default {
       },
       get: function() {
         if (this.inputs.companyName) return this.inputs.companyName;
-        return this.customer ? this.customer.company_name : null;
+        return this.currentCustomer ? this.currentCustomer.company_name : null;
       }
     },
     email: {
@@ -300,7 +307,7 @@ export default {
       },
       get: function() {
         if (this.inputs.email) return this.inputs.email;
-        return this.customer ? this.customer.email : null;
+        return this.currentCustomer ? this.currentCustomer.email : null;
       }
     },
     phone: {
@@ -309,7 +316,9 @@ export default {
       },
       get: function() {
         if (!this.inputs.phone)
-          this.inputs.phone = this.customer ? this.customer.phone : null;
+          this.inputs.phone = this.currentCustomer
+            ? this.currentCustomer.phone
+            : null;
         let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(this.inputs.phone);
         if (ayt.getPhoneNumber().a.valid) {
@@ -358,6 +367,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      "fetchCurrentCustomer",
+      "setCurrentCustomer",
+      "clearCurrentCustomer"
+    ]),
     fetchCustomers: function(field, query) {
       if (
         !query ||
@@ -424,10 +438,10 @@ export default {
       this.phone = data.phone;
       this.disabled = true;
       this.$v.$reset();
-      this.$emit("set-customer", data);
+      this.setCurrentCustomer(data);
     },
     clearFields: function() {
-      this.$emit("set-customer", null);
+      this.clearCurrentCustomer();
       this.selected = null;
       this.firstName = null;
       this.lastName = null;

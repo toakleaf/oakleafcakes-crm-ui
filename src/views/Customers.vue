@@ -1,12 +1,11 @@
 <template>
   <section class="container pad-route">
     <div class="box">
-      <app-top-matter :customer="customer" @set-customer="customer = $event"/>
+      <app-top-matter/>
       <section>
-        <!-- <b-icon pack="fas" icon="user" class="is-pulled-right"></b-icon> -->
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
           <b-tab-item label="Details" icon-pack="fas" icon="info-circle">
-            <app-details :customer="customer"/>
+            <app-details/>
           </b-tab-item>
           <b-tab-item label="Interactions" icon-pack="fas" icon="comments">
             <app-interactions/>
@@ -39,8 +38,7 @@ export default {
   name: "CustomerForm",
   data: function() {
     return {
-      activeTab: 0,
-      customer: null
+      activeTab: 0
     };
   },
   components: {

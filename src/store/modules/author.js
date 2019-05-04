@@ -5,6 +5,7 @@ import axios from '../../axiosAPI';
 // such as Employees and Customers
 
 const state = {
+  author: null,
   authorID: null,
   authorFirstName: null,
   authorLastName: null,
@@ -19,32 +20,44 @@ const state = {
 };
 
 const getters = {
+  author: state => {
+    return state.author;
+  },
   authorID: state => {
-    return state.authorID;
+    if (state.author) return state.author.id;
+    else return null;
   },
   authorFirstName: state => {
-    return state.authorFirstName;
+    if (state.author) return state.author.first_name;
+    else return null;
   },
   authorLastName: state => {
-    return state.authorLastName;
+    if (state.author) return state.author.last_name;
+    else return null;
   },
   authorCompanyName: state => {
-    return state.authorCompanyName;
+    if (state.author) return state.author.company_name;
+    else return null;
   },
   authorEmail: state => {
-    return state.authorEmail;
+    if (state.author) return state.author.email;
+    else return null;
   },
   authorRole: state => {
-    return state.authorRole;
+    if (state.author) return state.author.role;
+    else return null;
   },
   authorPhone: state => {
-    return state.authorPhone;
+    if (state.author) return state.author.phone;
+    else return null;
   },
   authorPhoneCountry: state => {
-    return state.authorPhoneCountry;
+    if (state.author) return state.author.phone_country;
+    else return null;
   },
   authorPhoneType: state => {
-    return state.authorPhoneType;
+    if (state.author) return state.author.phone_type;
+    else return null;
   },
   authorCreatedAt: state => {
     return state.authorCreatedAt;
@@ -56,38 +69,17 @@ const getters = {
 
 const mutations = {
   setAuthorData: (state, payload) => {
-    payload['id'] ? (state.authorID = payload['id']) : null;
-    payload['first_name']
-      ? (state.authorFirstName = payload['first_name'])
+    state.author = payload;
+    state.authorCreatedAt = payload['created_at']
+      ? new Date(payload['created_at'])
       : null;
-    payload['last_name'] ? (state.authorLastName = payload['last_name']) : null;
-    payload['company_name']
-      ? (state.authorCompanyName = payload['company_name'])
-      : null;
-    payload['email'] ? (state.authorEmail = payload['email']) : null;
-    payload['phone'] ? (state.authorPhone = payload['phone']) : null;
-    payload['phone_country']
-      ? (state.authorPhoneCountry = payload['phone_country'])
-      : null;
-    payload['phone_type']
-      ? (state.authorPhoneType = payload['phone_type'])
-      : null;
-    payload['role'] ? (state.authorRole = payload['role']) : null;
-    payload['created_at']
-      ? (state.authorCreatedAt = new Date(payload['created_at']))
-      : null;
-    payload['updated_at']
-      ? (state.authorUpdatedAt = new Date(payload['updated_at']))
+    state.authorUpdatedAt = payload['updated_at']
+      ? new Date(payload['updated_at'])
       : null;
     return;
   },
   clearAuthorData: state => {
-    state.authorID = null;
-    state.authorFirstName = null;
-    state.authorLastName = null;
-    state.authorCompanyName = null;
-    state.authorEmail = null;
-    state.authorRole = null;
+    state.author = null;
     state.authorCreatedAt = null;
     state.authorUpdatedAt = null;
     return;
@@ -101,7 +93,7 @@ const actions = {
       .then(res => {
         commit('setAuthorData', res.data[0]);
       })
-      .catch(err => console.error('hi: ' + err));
+      .catch(err => console.error('Error: ' + err));
   },
   setAuthorData({ commit }, payload) {
     commit('setAuthorData', payload);

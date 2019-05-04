@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './modules/auth';
 import author from './modules/author';
+import customer from './modules/customer';
 
 import * as getters from './getters';
 import * as actions from './actions';
@@ -16,6 +17,7 @@ export default new Vuex.Store({
   mutations,
   modules: {
     auth,
-    author
+    author,
+    customer
   }
 });
