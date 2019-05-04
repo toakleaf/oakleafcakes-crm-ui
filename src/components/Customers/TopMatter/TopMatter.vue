@@ -12,7 +12,7 @@
                 placeholder="Company Name"
                 v-model="companyName"
                 @dblclick.native="isCompany = false"
-                @keyup.backspace.native="companyName || !selected ? null : clearFields()"
+                @keyup.backspace.native="companyName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('company_name', companyName)"
                 @select="options => setFields(options)"
                 @blur="$v.email.$touch();"
@@ -38,7 +38,7 @@
                 placeholder="First Name"
                 v-model="firstName"
                 @dblclick.native="isCompany = true"
-                @keyup.backspace.native="firstName || !selected ? null : clearFields()"
+                @keyup.backspace.native="firstName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('first_name', firstName)"
                 @select="options => setFields(options)"
                 @blur="$v.firstName.$touch();"
@@ -64,7 +64,7 @@
                 placeholder="Last Name"
                 v-model="lastName"
                 @dblclick.native="isCompany = true"
-                @keyup.backspace.native="lastName || !selected ? null : clearFields()"
+                @keyup.backspace.native="lastName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('last_name', lastName)"
                 @select="options => setFields(options)"
                 @blur="$v.lastName.$touch();"
@@ -95,7 +95,7 @@
                   :loading="isFetching.email"
                   placeholder="@mail"
                   v-model="email"
-                  @keyup.backspace.native="email || !selected ? null : clearFields()"
+                  @keyup.backspace.native="email || !currentCustomer ? null : clearFields()"
                   @input="fetchCustomers('email', email)"
                   @select="options => setFields(options)"
                   @blur="$v.email.$touch();"
@@ -122,7 +122,7 @@
                   :loading="isFetching.phone"
                   placeholder="Phone"
                   v-model="phone"
-                  @keyup.backspace.native="phone || !selected ? null : clearFields()"
+                  @keyup.backspace.native="phone || !currentCustomer ? null : clearFields()"
                   @input="fetchCustomers('phone', phone)"
                   @select="options => setFields(options)"
                   @blur="$v.phone.$touch();"
@@ -156,15 +156,15 @@
         <div class="column is-narrow is-hidden-touch">
           <div class="field is-grouped">
             <button
-              v-if="(!selected || !disabled) && !$v.$invalid"
+              v-if="(!currentCustomer || !disabled) && !$v.$invalid"
               class="control button is-primary"
-              :disabled="$v.$invalid || selected || disabled"
+              :disabled="$v.$invalid || currentCustomer || disabled"
               @click="createCustomer()"
             >
               <i class="fas fa-user-plus"></i>
             </button>
             <button
-              v-if="selected || disabled || $v.$invalid"
+              v-if="currentCustomer || disabled || $v.$invalid"
               class="control button is-primary is-outlined"
               @click="clearFields()"
             >
@@ -178,15 +178,15 @@
     <div class="column is-narrow is-hidden-desktop">
       <div class="field is-grouped">
         <button
-          v-if="(!selected || !disabled) && !$v.$invalid"
+          v-if="(!currentCustomer || !disabled) && !$v.$invalid"
           class="control button is-primary"
-          :disabled="$v.$invalid || selected || disabled"
+          :disabled="$v.$invalid || currentCustomer || disabled"
           @click="createCustomer()"
         >
           <i class="fas fa-user-plus"></i>
         </button>
         <button
-          v-if="selected || disabled || $v.$invalid"
+          v-if="currentCustomer || disabled || $v.$invalid"
           class="control button is-primary is-outlined"
           @click="clearFields()"
         >
@@ -231,7 +231,7 @@ export default {
         phone: []
       },
       inputs: {
-        selected: null,
+        currentCustomer: null,
         firstName: null,
         lastName: null,
         companyName: null,
@@ -261,26 +261,13 @@ export default {
       "currentCustomerCreatedAt",
       "currentCustomerUpdatedAt"
     ]),
-    selected: {
-      set: function(val) {
-        this.inputs.selected = val;
-      },
-      get: function() {
-        if (this.currentCustomer) {
-          this.disabled = true;
-          return this.currentCustomer;
-        }
-        if (this.inputs.selected) return this.inputs.selected;
-        return null;
-      }
-    },
     firstName: {
       set: function(val) {
         this.inputs.firstName = val;
       },
       get: function() {
-        if (this.inputs.firstName) return this.inputs.firstName;
-        return this.currentCustomer ? this.currentCustomer.first_name : null;
+        if (this.currentCustomer) return this.currentCustomer.first_name;
+        return this.inputs.firstName;
       }
     },
     lastName: {
@@ -288,8 +275,8 @@ export default {
         this.inputs.lastName = val;
       },
       get: function() {
-        if (this.inputs.lastName) return this.inputs.lastName;
-        return this.currentCustomer ? this.currentCustomer.last_name : null;
+        if (this.currentCustomer) return this.currentCustomer.last_name;
+        return this.inputs.lastName;
       }
     },
     companyName: {
@@ -297,8 +284,8 @@ export default {
         this.inputs.companyName = val;
       },
       get: function() {
-        if (this.inputs.companyName) return this.inputs.companyName;
-        return this.currentCustomer ? this.currentCustomer.company_name : null;
+        if (this.currentCustomer) return this.currentCustomer.company_name;
+        return this.inputs.companyName;
       }
     },
     email: {
@@ -306,8 +293,8 @@ export default {
         this.inputs.email = val;
       },
       get: function() {
-        if (this.inputs.email) return this.inputs.email;
-        return this.currentCustomer ? this.currentCustomer.email : null;
+        if (this.currentCustomer) return this.currentCustomer.email;
+        return this.inputs.email;
       }
     },
     phone: {
@@ -315,10 +302,7 @@ export default {
         this.inputs.phone = val;
       },
       get: function() {
-        if (!this.inputs.phone)
-          this.inputs.phone = this.currentCustomer
-            ? this.currentCustomer.phone
-            : null;
+        if (this.currentCustomer) return this.currentCustomer.phone;
         let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(this.inputs.phone);
         if (ayt.getPhoneNumber().a.valid) {
@@ -375,7 +359,7 @@ export default {
     fetchCustomers: function(field, query) {
       if (
         !query ||
-        (this.selected && query === this.selected[field]) ||
+        (this.currentCustomer && query === this.currentCustomer[field]) ||
         query.length < 2
       ) {
         // don't fetch if no query or if just a selection event
@@ -408,7 +392,7 @@ export default {
       }, 700);
     },
     createCustomer: function() {
-      if (this.selected) return;
+      if (this.currentCustomer) return;
 
       axios
         .post("/account/register", {
@@ -430,7 +414,7 @@ export default {
     },
     setFields: function(data) {
       if (!data) return;
-      this.selected = data;
+
       this.firstName = data.first_name;
       this.lastName = data.last_name;
       this.companyName = data.company_name;
@@ -442,7 +426,7 @@ export default {
     },
     clearFields: function() {
       this.clearCurrentCustomer();
-      this.selected = null;
+
       this.firstName = null;
       this.lastName = null;
       this.companyName = null;
@@ -461,7 +445,7 @@ export default {
       };
     },
     getClass: function(val, input) {
-      if (this.selected) return "";
+      if (this.currentCustomer) return "";
       if (input && !val.$invalid) return "is-success";
       if (val.$error) return "is-danger";
       return "";

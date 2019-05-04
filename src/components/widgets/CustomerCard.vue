@@ -76,7 +76,7 @@
     <footer class="card-footer">
       <a
         class="card-footer-item"
-        @click="setCurrentCustomer({...currentCustomer, first_name: 'stan'})"
+        @click="setCurrentCustomer({...currentCustomer, first_name: 'stan', phone: '911'})"
       >
         <span class="icon">
           <i class="fas fa-edit"></i>
