@@ -25,45 +25,47 @@ const getters = {
   },
   authorID: state => {
     if (state.author) return state.author.id;
-    else return null;
+    return null;
   },
   authorFirstName: state => {
     if (state.author) return state.author.first_name;
-    else return null;
+    return null;
   },
   authorLastName: state => {
     if (state.author) return state.author.last_name;
-    else return null;
+    return null;
   },
   authorCompanyName: state => {
     if (state.author) return state.author.company_name;
-    else return null;
+    return null;
   },
   authorEmail: state => {
     if (state.author) return state.author.email;
-    else return null;
+    return null;
   },
   authorRole: state => {
     if (state.author) return state.author.role;
-    else return null;
+    return null;
   },
   authorPhone: state => {
     if (state.author) return state.author.phone;
-    else return null;
+    return null;
   },
   authorPhoneCountry: state => {
     if (state.author) return state.author.phone_country;
-    else return null;
+    return null;
   },
   authorPhoneType: state => {
     if (state.author) return state.author.phone_type;
-    else return null;
+    return null;
   },
   authorCreatedAt: state => {
-    return state.authorCreatedAt;
+    if (state.author) return state.authorCreatedAt;
+    return null;
   },
   authorUpdatedAt: state => {
-    return state.authorUpdatedAt;
+    if (state.author) return state.authorUpdatedAt;
+    return null;
   }
 };
 
@@ -92,6 +94,7 @@ const actions = {
       .get('/account')
       .then(res => {
         commit('setAuthorData', res.data[0]);
+        console.log(res.data);
       })
       .catch(err => console.error('Error: ' + err));
   },

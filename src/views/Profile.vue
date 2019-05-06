@@ -347,15 +347,23 @@ export default {
           first_name: this.first_name,
           last_name: this.last_name,
           company_name: this.company_name,
-          new_email: this.email,
-          current_email: this.$store.getters.authorEmail,
-          new_phone: this.phone,
-          current_phone: this.$store.getters.authorPhone,
-          phone_type: this.phone_type,
-          phone_country: this.phone_country,
-          ...(this.password ? { password: this.password } : {}),
-          email_is_primary: true,
-          phone_is_primary: true
+          emails: [
+            {
+              new_email: this.email,
+              current_email: this.$store.getters.authorEmail,
+              is_primary: true
+            }
+          ],
+          phones: [
+            {
+              new_phone: this.phone,
+              current_phone: this.$store.getters.authorPhone,
+              phone_type: this.phone_type,
+              phone_country: this.phone_country,
+              is_primary: true
+            }
+          ],
+          ...(this.password ? { password: this.password } : {})
         })
         .then(() => {
           this.$store.dispatch("fetchAuthorData");

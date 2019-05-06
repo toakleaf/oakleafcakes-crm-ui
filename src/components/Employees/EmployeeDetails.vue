@@ -324,15 +324,23 @@ export default {
           first_name: this.first_name,
           last_name: this.last_name,
           company_name: this.company_name,
-          new_email: this.email,
-          current_email: this.props.row.email,
-          new_phone: this.phone,
-          current_phone: this.props.row.phone,
-          phone_type: this.phone_type,
-          phone_country: this.phone_country,
-          role: this.role,
-          email_is_primary: true,
-          phone_is_primary: true
+          emails: [
+            {
+              new_email: this.email,
+              current_email: this.props.row.email,
+              is_primary: true
+            }
+          ],
+          phones: [
+            {
+              new_phone: this.phone,
+              current_phone: this.props.row.phone,
+              phone_type: this.phone_type,
+              phone_country: this.phone_country,
+              is_primary: true
+            }
+          ],
+          role: this.role
         })
         .then(() => {
           this.$v.$reset();
