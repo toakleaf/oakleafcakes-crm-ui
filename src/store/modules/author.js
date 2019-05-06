@@ -94,7 +94,6 @@ const actions = {
       .get('/account')
       .then(res => {
         commit('setAuthorData', res.data[0]);
-        console.log(res.data);
       })
       .catch(err => console.error('Error: ' + err));
   },
