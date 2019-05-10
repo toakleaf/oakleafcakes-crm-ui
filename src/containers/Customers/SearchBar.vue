@@ -200,12 +200,12 @@
   </div>
 </template>
 <script>
-import SearchDropdown from "@/components/Customers/TopMatter/SearchDropdown.vue";
-import PhoneCountryDrop from "@/components/Customers/TopMatter/PhoneCountryDrop.vue";
+import SearchDropdown from "@/components/Customers/SearchBar/SearchDropdown.vue";
+import PhoneCountryDrop from "@/components/Customers/SearchBar/PhoneCountryDrop.vue";
 import { required, requiredUnless, email } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-import axios from "../../../axiosAPI";
+import axios from "../../axiosAPI";
 let PhoneNumber = require("awesome-phonenumber");
 let listCountries = PhoneNumber.getSupportedCallingCodes();
 let listRegions = listCountries.map(c =>
@@ -214,7 +214,7 @@ let listRegions = listCountries.map(c =>
 listRegions = listRegions.sort().filter(item => item !== "001"); //removes the 001's
 
 export default {
-  name: "TopMatter",
+  name: "SearchBar",
   components: {
     "app-search-dropdown": SearchDropdown,
     "app-phone-country-drop": PhoneCountryDrop

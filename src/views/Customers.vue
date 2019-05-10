@@ -1,7 +1,7 @@
 <template>
   <section class="container pad-route">
     <div class="box">
-      <app-top-matter/>
+      <app-search-bar/>
       <section>
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
           <b-tab-item label="Details" icon-pack="fas" icon="info-circle">
@@ -28,12 +28,12 @@
   </section>
 </template>
 <script>
-import TopMatter from "@/components/Customers/TopMatter/TopMatter.vue";
-import Details from "@/components/Customers/Details/Details.vue";
-import Interactions from "@/components/Customers/Interactions/Interactions.vue";
-import Orders from "@/components/Customers/Orders/Orders.vue";
-import Classes from "@/components/Customers/Classes/Classes.vue";
-import Payments from "@/components/Customers/Payments/Payments.vue";
+import SearchBar from "@/containers/Customers/SearchBar.vue";
+import Details from "@/containers/Customers/Details.vue";
+import Interactions from "@/containers/Customers/Interactions.vue";
+import Orders from "@/containers/Customers/Orders.vue";
+import Classes from "@/containers/Customers/Classes.vue";
+import Payments from "@/containers/Customers/Payments.vue";
 export default {
   name: "CustomerForm",
   data: function() {
@@ -42,7 +42,7 @@ export default {
     };
   },
   components: {
-    "app-top-matter": TopMatter,
+    "app-search-bar": SearchBar,
     "app-details": Details,
     "app-interactions": Interactions,
     "app-orders": Orders,
