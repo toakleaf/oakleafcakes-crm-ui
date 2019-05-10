@@ -33,6 +33,12 @@
               </a>
               <br>
             </span>
+            <b-radio
+              v-if="editing"
+              v-model="primaryEmail"
+              size="is-small"
+              :native-value="email.email"
+            >Primary</b-radio>
             <app-email-check
               :emailAddress="email.email"
               v-if="editing"
@@ -88,7 +94,7 @@
         </span>
         Update
       </a>
-      <a class="card-footer-item" @click="editing = false" v-if="editing">
+      <a class="card-footer-item" @click="editing = false; clearUpdates()" v-if="editing">
         <span class="icon">
           <i class="fas fa-ban"></i>
         </span>
@@ -129,22 +135,38 @@ export default {
     return {
       editing: false,
       errors: false,
-      role: null,
-      first_name: null,
-      last_name: null,
-      company_name: null,
-      phones: [],
-      emails: []
+      emailUpdates: [],
+      primaryEmailUpdate: null
     };
   },
+  computed: {
+    primaryEmail: {
+      get: function() {
+        return this.primaryEmailUpdate
+          ? this.primaryEmailUpdate
+          : this.account.emails.filter(e => e.is_primary)[0].email;
+      },
+      set: function(val) {
+        this.primaryEmailUpdate = val;
+      }
+    }
+  },
   methods: {
-    updateEmail: function(i, value) {
+    clearUpdates: function() {
+      this.emailUpdates = [];
+      this.primaryEmailUpdate = null;
+    },
+    updateEmail: function(i, val) {
       // console.log(this.account.emails[i].email);
-      // console.log(value);
-      // // this.account.emails[i].email = value.email;
-      // // this.errors = value.email;
-      // console.log(this.this.account.emails[i].email);
-      // console.log(this.account.emails);
+      // console.log(val.email);
+      this.emailUpdates = this.emailUpdates.filter(
+        e => e.current_email !== this.account.emails[i].email
+      );
+      this.emailUpdates.push({
+        current_email: this.account.emails[i].email,
+        new_email: val.email
+      });
+      console.log(this.emailUpdates);
     }
   }
 };

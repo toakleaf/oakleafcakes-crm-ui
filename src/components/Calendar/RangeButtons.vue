@@ -35,8 +35,8 @@ export default {
       showLastWeek: false,
       showNextWeek: false,
       showThisMonth: false,
-      localStart: null,
-      localEnd: null,
+      _start: null,
+      _end: null,
       WEEK_DAYS: {
         SUNDAY: 0,
         MONDAY: 1,
@@ -51,14 +51,14 @@ export default {
   },
   watch: {
     start: function() {
-      if (this.start != this.localStart) {
+      if (this.start != this._start) {
         this.clearWeekButtons();
         this.clearTodayButton();
         this.clearMonthButton();
       }
     },
     end: function() {
-      if (this.end != this.localEnd) {
+      if (this.end != this._end) {
         this.clearWeekButtons();
         this.clearTodayButton();
         this.clearMonthButton();
@@ -77,8 +77,8 @@ export default {
         this.toggleNextWeek();
         this.toggleNextWeek();
       }
-      this.$emit("update:start", this.localStart);
-      this.$emit("update:end", this.localEnd);
+      this.$emit("update:start", this._start);
+      this.$emit("update:end", this._end);
     }
   },
   computed: {
@@ -146,15 +146,15 @@ export default {
       this.clearTodayButton();
       this.clearMonthButton();
       //set start dates via overwrite
-      if (this.showNextWeek) this.localStart = this.nextWeekStart;
-      if (this.showThisWeek) this.localStart = this.thisWeekStart;
-      if (this.showLastWeek) this.localStart = this.lastWeekStart;
+      if (this.showNextWeek) this._start = this.nextWeekStart;
+      if (this.showThisWeek) this._start = this.thisWeekStart;
+      if (this.showLastWeek) this._start = this.lastWeekStart;
       //set end dates via overwrite
-      if (this.showLastWeek) this.localEnd = this.lastWeekEnd;
-      if (this.showThisWeek) this.localEnd = this.thisWeekEnd;
-      if (this.showNextWeek) this.localEnd = this.nextWeekEnd;
-      this.$emit("update:start", this.localStart);
-      this.$emit("update:end", this.localEnd);
+      if (this.showLastWeek) this._end = this.lastWeekEnd;
+      if (this.showThisWeek) this._end = this.thisWeekEnd;
+      if (this.showNextWeek) this._end = this.nextWeekEnd;
+      this.$emit("update:start", this._start);
+      this.$emit("update:end", this._end);
     },
     clearWeekButtons: function() {
       this.showLastWeek = false;
@@ -172,20 +172,20 @@ export default {
       this.clearWeekButtons();
       this.clearMonthButton();
       if (!this.showToday) return;
-      this.localStart = this.today;
-      this.localEnd = this.today;
-      this.$emit("update:start", this.localStart);
-      this.$emit("update:end", this.localEnd);
+      this._start = this.today;
+      this._end = this.today;
+      this.$emit("update:start", this._start);
+      this.$emit("update:end", this._end);
     },
     toggleThisMonth: function() {
       this.clearWeekButtons();
       this.clearTodayButton();
       this.showThisMonth = !this.showThisMonth;
       if (!this.showThisMonth) return;
-      this.localStart = this.thisMonthStart;
-      this.localEnd = this.thisMonthEnd;
-      this.$emit("update:start", this.localStart);
-      this.$emit("update:end", this.localEnd);
+      this._start = this.thisMonthStart;
+      this._end = this.thisMonthEnd;
+      this.$emit("update:start", this._start);
+      this.$emit("update:end", this._end);
     },
     toggleLastWeek: function() {
       this.showLastWeek = !this.showLastWeek;

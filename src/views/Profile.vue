@@ -13,7 +13,7 @@
 
 <script>
 import axios from "../axiosAPI";
-import AccountCard from "@/components//widgets/AccountCard.vue";
+import AccountCard from "@/components//AccountCard/AccountCard.vue";
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
 let PhoneNumber = require("awesome-phonenumber");
 

@@ -6,14 +6,11 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar/Navbar.vue";
+import Navbar from "@/containers/Navbar.vue";
 export default {
   components: {
     "app-navbar": Navbar
   }
-  // created() {
-  //   this.$store.dispatch("persistSession");
-  // }
 };
 </script>
 

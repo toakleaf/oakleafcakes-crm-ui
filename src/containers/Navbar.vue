@@ -3,7 +3,7 @@
     <nav-brand @toggle-menu="showMenu = !showMenu"/>
     <div v-if="auth" class="navbar-menu" :class="{'is-active' : showMenu}">
       <nav-start/>
-      <nav-end/>
+      <nav-end :first_name="first_name" :role="role" @logout="logout()"/>
     </div>
   </nav>
 </template>
@@ -32,6 +32,21 @@ export default {
   computed: {
     auth() {
       return this.$store.getters.isAuthenticated;
+    },
+    first_name() {
+      return this.$store.getters.author
+        ? this.$store.getters.author.first_name
+        : null;
+    },
+    role() {
+      return this.$store.getters.author
+        ? this.$store.getters.author.role
+        : null;
+    }
+  },
+  methods: {
+    logout: function() {
+      $store.dispatch("logout");
     }
   }
 };

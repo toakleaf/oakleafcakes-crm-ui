@@ -20,7 +20,7 @@
 import BillingAddress from "@/components/widgets/BillingAddress.vue";
 import BusinessInfo from "@/components/Customers/Details/BusinessInfo.vue";
 import Associations from "@/components/Customers/Details/Associations.vue";
-import AccountCard from "@/components//widgets/AccountCard.vue";
+import AccountCard from "@/components//AccountCard/AccountCard.vue";
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 
