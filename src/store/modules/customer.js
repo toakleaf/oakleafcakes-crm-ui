@@ -34,7 +34,7 @@ const mutations = {
 const actions = {
   fetchCurrentCustomer({ commit }, id) {
     axios
-      .get('/account/id')
+      .get(`/account/${id}`)
       .then(res => {
         commit('setCurrentCustomer', res.data[0]);
       })

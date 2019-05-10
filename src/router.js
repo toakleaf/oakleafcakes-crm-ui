@@ -90,7 +90,10 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "employees" */ './views/Employees.vue'),
       beforeEnter(to, from, next) {
-        if (store.getters['authorRole'] !== 'ADMIN') {
+        if (
+          store.getters['author'] &&
+          store.getters['author'].role !== 'ADMIN'
+        ) {
           return next('/');
         }
         if (store.getters['isAuthenticated']) {
@@ -108,7 +111,10 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
       beforeEnter(to, from, next) {
-        if (store.getters['authorRole'] !== 'ADMIN') {
+        if (
+          store.getters['author'] &&
+          store.getters['author'].role !== 'ADMIN'
+        ) {
           return next('/');
         }
         if (store.getters['isAuthenticated']) {

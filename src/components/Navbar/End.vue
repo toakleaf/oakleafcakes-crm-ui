@@ -5,17 +5,18 @@
       <router-link
         to="/profile"
         class="navbar-link"
-      >Lookin' fine, {{$store.getters.authorFirstName}}!</router-link>
+        v-if="$store.getters.author"
+      >Lookin' fine, {{$store.getters.author.first_name}}!</router-link>
 
       <div class="navbar-dropdown">
         <router-link to="/profile" class="navbar-item">My Deets</router-link>
         <router-link
-          v-if="$store.getters.authorRole === 'ADMIN'"
+          v-if="$store.getters.author && $store.getters.author.role === 'ADMIN'"
           to="/employees"
           class="navbar-item"
         >Employee Admin</router-link>
         <router-link
-          v-if="$store.getters.authorRole === 'ADMIN'"
+          v-if="$store.getters.author && $store.getters.author.role === 'ADMIN'"
           to="/admin"
           class="navbar-item"
         >System Admin</router-link>

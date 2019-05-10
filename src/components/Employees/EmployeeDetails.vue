@@ -5,7 +5,7 @@
         v-if="!props.row.is_active"
         class="heading has-text-weight-semibold has-text-danger"
       >Account is currently deactivated</h2>
-      <table class="table is-bordered">
+      <table class="table is-bordered no-background">
         <tbody>
           <tr>
             <td class="has-text-weight-semibold">ID</td>
@@ -68,68 +68,57 @@
               >
             </td>
           </tr>
-          <tr>
-            <td class="has-text-weight-semibold">Primary Email</td>
-            <td v-if="!editing">{{props.row.email}}</td>
+          <tr v-for="(email, i) in props.row.emails" :key="email.id + 'e'">
+            <td class="has-text-weight-semibold">{{email.is_primary ? 'Primary ' : ''}} Email</td>
+            <td v-if="!editing">{{email.email}}</td>
             <td v-if="editing">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="email"
-                placeholder="Email"
-                :class="{'is-success': !$v.email.$invalid && email !== props.row.email, 'is-danger': $v.email.$error}"
-                @blur="$v.email.$touch();"
-                @input="checkForDuplicateEmail"
-              >
-            </td>
-          </tr>
-          <tr>
-            <td class="has-text-weight-semibold">Primary Phone</td>
-            <td v-if="!editing">{{props.row.phone}}</td>
-            <td v-if="editing">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="phone"
-                placeholder="Phone"
-                :class="{'is-success': !$v.phone.$invalid && phone !== props.row.phone, 'is-danger': $v.phone.$error}"
-                @blur="$v.phone.$touch()"
-              >
-            </td>
-          </tr>
-          <tr>
-            <td class="has-text-weight-semibold">Phone Type</td>
-            <td v-if="!editing" class="is-capitalized">{{props.row.phone_type}}</td>
-            <td v-if="editing">
-              <span class="select is-small">
-                <select v-model="phone_type" @change="$v.phone.$touch()">
-                  <option value="mobile">Mobile</option>
-                  <option value="home">Home</option>
-                  <option value="work">Work</option>
-                </select>
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td class="has-text-weight-semibold">Phone Country</td>
-            <td v-if="!editing">{{props.row.phone_country}}</td>
-            <td v-if="editing">
-              <p class="control has-icons-left">
-                <span class="select is-small">
-                  <select v-model="phone_country" @change="$v.phone.$touch()">
-                    <option
-                      v-for="region in regions"
-                      v-bind:value="region"
-                      :key="region"
-                    >{{ region }}</option>
-                  </select>
-                </span>
-                <span class="icon is-small is-left">
-                  <i class="fas fa-globe"></i>
-                </span>
+              <p class="control is-small" :class="{'is-loading': emails[i].is_loading}">
+                <input
+                  class="input is-small"
+                  type="text"
+                  v-model="emails[i].email"
+                  placeholder="@mail"
+                  :class="{'is-success': !$v.emails.$each[i].email.$invalid && emails[i].email !== email.email , 'is-danger': $v.emails.$each[i].email.$error}"
+                  @blur="$v.emails.$each[i].email.$touch();"
+                  @input="checkForDuplicateEmail(i)"
+                >
               </p>
             </td>
           </tr>
+        </tbody>
+        <template v-for="(phone, i) in props.row.phones">
+          <tbody :key="phone.id + 'p'">
+            <tr>
+              <td class="has-text-weight-semibold">
+                <span v-if="phone.is_primary">Primary{{' '}}</span>
+                Phone
+                <br>
+                <span class="phone-indent">Country</span>
+                <br>
+                <span class="phone-indent">Type</span>
+              </td>
+              <td v-if="!editing">
+                {{phone.phone}}
+                <br>
+                <span class="phone-indent">{{phone.phone_country}}</span>
+                <br>
+                <span class="phone-indent is-capitalized">{{phone.phone_type}}</span>
+              </td>
+              <td v-if="editing">
+                <input
+                  class="input is-small"
+                  type="text"
+                  :value="phones[i].phone"
+                  @input="updatePhones($event.target.value, i)"
+                  placeholder="Phone"
+                  :class="{'is-success': !$v.phones.$each[i].$error && phones[i].phone !== phone.phone, 'is-danger': $v.phones.$each[i].$error}"
+                  @blur="$v.phones.$each[i].$touch();"
+                >
+              </td>
+            </tr>
+          </tbody>
+        </template>
+        <tbody>
           <tr>
             <td class="has-text-weight-semibold">Account Created</td>
             <td>{{props.row.created_at.toLocaleString()}}</td>
@@ -226,33 +215,14 @@ export default {
       first_name: null,
       last_name: null,
       company_name: null,
-      email: null,
-      phoneInput: null,
-      phone_type: null,
-      phone_country: null,
+      emails: null,
+      phones: null,
       regions: listRegions,
-      emailCheckedForDuplicate: null,
       timeout: null,
-      emailIsUnique: true,
-      checkingEmail: false,
       submitting: false
     };
   },
-  computed: {
-    phone: {
-      get: function() {
-        let ayt = PhoneNumber.getAsYouType(this.phone_country);
-        ayt.reset(this.phoneInput);
-        if (ayt.getPhoneNumber().a.valid) {
-          return ayt.getPhoneNumber().a.number.national;
-        }
-        return this.phoneInput;
-      },
-      set: function(val) {
-        this.phoneInput = val;
-      }
-    }
-  },
+  computed: {},
   validations: {
     first_name: {
       required
@@ -260,45 +230,74 @@ export default {
     last_name: {
       required
     },
-    email: {
+    emails: {
       required,
-      email,
-      unique: function(val) {
-        if (!val || val === this.$store.getters.authorEmail) return true;
-        return this.emailIsUnique;
+      $each: {
+        required,
+        email: {
+          email,
+          unique: function(val) {
+            if (!val) return true;
+            const i = this.emails.findIndex(e => e.email === val);
+            return this.emails[i].emailIsUnique;
+          }
+        }
       }
     },
-    phone: {
-      phone: function(val) {
-        if (!val) return true;
-        let ayt = PhoneNumber.getAsYouType(this.phone_country);
-        ayt.reset(val);
-        return ayt.getPhoneNumber().a.valid && this.phone_country;
+    phones: {
+      $each: {
+        phone: function(val) {
+          // console.log(val.phone);
+          if (!val) return true;
+          let ayt = PhoneNumber.getAsYouType(val.phone_country);
+          ayt.reset(val.phone);
+          return ayt.getPhoneNumber().a.valid && val.phone_country;
+        }
       }
     }
   },
   methods: {
-    checkForDuplicateEmail: function() {
-      if (!this.$v.email.email || this.email === this.emailCheckedForDuplicate)
+    updatePhones: function(val, i) {
+      if (!this.phones) return;
+      let ayt = PhoneNumber.getAsYouType(this.phones[i].phone_country);
+      ayt.reset(val);
+      if (ayt.getPhoneNumber().a.valid) {
+        this.phones[i].phone = ayt.getPhoneNumber().a.number.national;
+      } else this.phones[i].phone = val;
+    },
+    checkForDuplicateEmail: function(i) {
+      this.emails[i].is_loading = false;
+      if (
+        !this.$v.emails.$each[i].email.email ||
+        this.emails[i].email === this.props.row.emails[i].email
+      ) {
         return; //only check valid emails, and don't recheck same email
-      this.emailCheckedForDuplicate = this.email;
+      }
 
       clearTimeout(this.timeout); //resets the clock since last time this function was called (to avoid multiple calls in short timespan)
-      this.checkingEmail = true;
+      this.emails[i].is_loading = true;
 
       this.timeout = setTimeout(() => {
         axios
-          .get(`/account/search/?exact=true&field=email&query=${this.email}`)
+          .get(
+            `/account/search/?exact=true&field=email&query=${
+              this.emails[i].email
+            }`
+          )
           .then(result => {
-            if (result.data.length === 0) {
-              this.emailIsUnique = true;
+            this.emails[i].is_loading = false;
+            if (
+              result.data.length === 0 ||
+              this.emails[i].email === this.props.row.emails[i].email
+            ) {
+              this.emails[i].emailIsUnique = true;
             } else {
-              this.emailIsUnique = false; //ok
+              this.emails[i].emailIsUnique = false; //ok
             }
-            this.checkingEmail = false;
-            this.$v.email.$touch(); //because async
+            this.$v.emails.$each[i].email.$touch(); //because async
           })
           .catch(err => {
+            this.emails[i].is_loading = false;
             console.error("error: " + err);
           });
       }, 1000);
@@ -308,10 +307,15 @@ export default {
       this.first_name = this.props.row.first_name;
       this.last_name = this.props.row.last_name;
       this.company_name = this.props.row.company_name;
-      this.email = this.props.row.email;
-      this.phone = this.props.row.phone;
-      this.phone_type = this.props.row.phone_type;
-      this.phone_country = this.props.row.phone_country;
+      this.props.row.emails.sort((a, b) => (a.is_primary ? -1 : 1));
+      this.emails = this.props.row.emails.map(e => {
+        return { ...e, emailIsUnique: true, is_loading: false };
+      });
+      this.props.row.phones.sort((a, b) => (a.is_primary ? -1 : 1));
+      //vue REALLY did not want me to copy by value. props kept getting modified locally.
+      this.phones = this.props.row.phones.map(p => {
+        return { ...p };
+      });
       this.$v.$reset();
     },
     pushUpdates: function() {
@@ -378,7 +382,8 @@ export default {
       axios
         .put(`/account/${this.props.row.id}`, {
           is_active: !this.props.row.is_active,
-          current_email: this.props.row.email
+          current_email: this.props.row.emails.filter(e => e.is_primary)[0]
+            .email
         })
         .then(() => {
           this.$emit("submitted");
@@ -468,3 +473,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.phone-indent {
+  margin: 0 0 0 1em;
+}
+.no-background {
+  background: none;
+}
+</style>
+

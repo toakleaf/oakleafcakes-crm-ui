@@ -38,7 +38,7 @@
     <span
       v-else
       :class="{'is-pulled-right': floatPhone, 'searchIndent': breakPhone}"
-    >{{' ' + props.option.phone}}</span>
+    >{{props.option.phones.filter(p => p.is_primary)[0].phone}}</span>
     <br v-if="props.option.company_name && (props.option.first_name && props.option.last_name)">
     <span
       v-if="props.option.company_name && (props.option.first_name && props.option.last_name) && (field === 'first_name' || field === 'last_name')"
@@ -62,7 +62,7 @@
       <span class="has-text-weight-bold">{{sliceText.selected}}</span>
       <span>{{sliceText.after + " "}}</span>
     </span>
-    <span v-else class="searchIndent">{{props.option.email}}</span>
+    <span v-else class="searchIndent">{{props.option.emails.filter(e => e.is_primary)[0].email}}</span>
   </p>
 </template>
 

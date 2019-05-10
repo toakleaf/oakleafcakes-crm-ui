@@ -42,7 +42,7 @@
           :pagination-simple="true"
           :opened-detailed="defaultOpenedDetails"
           detailed
-          detail-key="id"
+          :detail-key="accounts.result"
           show-detail-icon
           icon-pack="fas"
         >
@@ -96,15 +96,21 @@ export default {
   },
   methods: {
     getAccounts: function() {
+      if (
+        (!this.showAdmin && !this.showEmployee) ||
+        (!this.showActive && !this.showInactive)
+      )
+        return (this.accounts = []);
       axios
         .get(
           `/account/search/?orderby=last_name${
             this.showAdmin ? "&role=ADMIN" : ""
-          }${this.showEmployee ? "&role=EMPLOYEE" : ""}&active=${
+          }${this.showEmployee ? "&role=EMPLOyEE" : ""}&active=${
             this.showActive
           }&inactive=${this.showInactive}`
         )
         .then(result => {
+          // console.log(result.data);
           this.accounts = result.data;
           for (let i = 0; i < this.accounts.length; i++) {
             this.accounts[i].created_at = new Date(this.accounts[i].created_at);

@@ -222,7 +222,7 @@ export default {
   props: ["customer"],
   data: function() {
     return {
-      disabled: false,
+      disabledVal: false,
       searchResults: {
         first_name: [],
         last_name: [],
@@ -252,7 +252,14 @@ export default {
       count: null,
       page: null,
       regions: listRegions,
-      phone_country: "US"
+      phone_country: "US",
+      previous_queries: {
+        first_name: [],
+        last_name: [],
+        company_name: [],
+        email: [],
+        phone: []
+      }
     };
   },
   computed: {
@@ -261,6 +268,14 @@ export default {
       "currentCustomerCreatedAt",
       "currentCustomerUpdatedAt"
     ]),
+    disabled: {
+      set: function(val) {
+        this.disabledVal = val;
+      },
+      get: function() {
+        return this.currentCustomer ? true : this.disabledVal;
+      }
+    },
     firstName: {
       set: function(val) {
         this.inputs.firstName = val;
@@ -293,7 +308,10 @@ export default {
         this.inputs.email = val;
       },
       get: function() {
-        if (this.currentCustomer) return this.currentCustomer.email;
+        if (this.currentCustomer && this.currentCustomer.email)
+          return this.currentCustomer.email;
+        if (this.currentCustomer && this.currentCustomer.emails)
+          return this.currentCustomer.emails.filter(e => e.is_primary)[0].email;
         return this.inputs.email;
       }
     },
@@ -302,7 +320,11 @@ export default {
         this.inputs.phone = val;
       },
       get: function() {
-        if (this.currentCustomer) return this.currentCustomer.phone;
+        if (this.currentCustomer && this.currentCustomer.phone)
+          return this.currentCustomer.phone;
+        if (this.currentCustomer && this.currentCustomer.phones)
+          return this.currentCustomer.phones.filter(p => p.is_primary)[0].phone;
+
         let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(this.inputs.phone);
         if (ayt.getPhoneNumber().a.valid) {
@@ -338,6 +360,8 @@ export default {
       email,
       unique: function(val) {
         if (!val) return true;
+        // this is a 'ilike' search, so if val is contained in an existing email it will block,
+        // however, for efficiency, and extreme unlikelyhood of problem, I think it's going to be fine for this page.
         return this.searchResults.email.length < 1;
       }
     },
@@ -357,10 +381,19 @@ export default {
       "clearCurrentCustomer"
     ]),
     fetchCustomers: function(field, query) {
+      this.previous_queries[field].push(query);
       if (
         !query ||
+        query.length < 2 ||
+        (this.previous_queries[field].pop().length > 4 && //prevent oversearching by stopping search if big query but no results
+          this.searchResults[field].length < 1) ||
         (this.currentCustomer && query === this.currentCustomer[field]) ||
-        query.length < 2
+        (this.currentCustomer &&
+          this.currentCustomer.emails &&
+          this.currentCustomer.emails.some(e => query === e.email)) ||
+        (this.currentCustomer &&
+          this.currentCustomer.emails &&
+          this.currentCustomer.phones.some(p => query === p.phone))
       ) {
         // don't fetch if no query or if just a selection event
         this.clearSearchResults();
@@ -397,15 +430,17 @@ export default {
       axios
         .post("/account/register", {
           role: "CUSTOMER",
-          email: this.email,
           ...(this.firstName ? { first_name: this.firstName } : {}),
           ...(this.lastName ? { last_name: this.lastName } : {}),
           ...(this.companyName ? { company_name: this.companyName } : {}),
           ...(this.companyName ? { company_name: this.companyName } : {}),
-          ...(this.phone ? { phone: this.phone } : {}),
-          ...(this.phone ? { phone_country: this.phoneCountry } : {})
+          ...(this.email ? { email: this.email } : {}),
+          ...(this.phone
+            ? { phone: this.phone, phone_country: this.phoneCountry }
+            : {})
         })
         .then(res => {
+          console.log(res.data);
           this.setFields(res.data);
         })
         .catch(err => {
@@ -414,19 +449,31 @@ export default {
     },
     setFields: function(data) {
       if (!data) return;
-
       this.firstName = data.first_name;
       this.lastName = data.last_name;
       this.companyName = data.company_name;
-      this.email = data.email;
-      this.phone = data.phone;
+      if (data.hasOwnProperty("email")) {
+        this.email = data.email;
+      } else {
+        this.email =
+          data.emails && data.emails.some(e => e.is_primary)
+            ? data.emails.filter(e => e.is_primary)[0].email
+            : null;
+      }
+      if (data.hasOwnProperty("phone")) {
+        this.phone = data.phone;
+      } else {
+        this.phone =
+          data.phones && data.phones.some(p => p.is_primary)
+            ? data.phones.filter(p => p.is_primary)[0].phone
+            : null;
+      }
       this.disabled = true;
       this.$v.$reset();
       this.setCurrentCustomer(data);
     },
     clearFields: function() {
       this.clearCurrentCustomer();
-
       this.firstName = null;
       this.lastName = null;
       this.companyName = null;

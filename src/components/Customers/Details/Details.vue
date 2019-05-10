@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column is-half-tablet">
-      <app-customer-card/>
+      <app-account-card :account="currentCustomer"/>
     </div>
     <div class="column"></div>
     <div class="column">
@@ -20,19 +20,35 @@
 import BillingAddress from "@/components/widgets/BillingAddress.vue";
 import BusinessInfo from "@/components/Customers/Details/BusinessInfo.vue";
 import Associations from "@/components/Customers/Details/Associations.vue";
-import CustomerCard from "@/components//widgets/CustomerCard.vue";
+import AccountCard from "@/components//widgets/AccountCard.vue";
+import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
+
 export default {
   name: "SecondaryInfo",
   components: {
     "app-billing-address": BillingAddress,
     "app-business-info": BusinessInfo,
     "app-associations": Associations,
-    "app-customer-card": CustomerCard
+    "app-account-card": AccountCard
   },
   data: function() {
     return {};
   },
-  methods: {}
+  computed: {
+    ...mapGetters([
+      "currentCustomer",
+      "currentCustomerCreatedAt",
+      "currentCustomerUpdatedAt"
+    ])
+  },
+  methods: {
+    ...mapActions([
+      "fetchCurrentCustomer",
+      "setCurrentCustomer",
+      "clearCurrentCustomer"
+    ])
+  }
 };
 </script>
 
