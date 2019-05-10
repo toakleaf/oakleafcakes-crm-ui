@@ -9,24 +9,71 @@ const state = {
 const getters = {
   currentCustomer: state => {
     return state.currentCustomer;
-  },
-  currentCustomerCreatedAt: state => {
-    return state.currentCustomerCreatedAt;
-  },
-  currentCustomerUpdatedAt: state => {
-    return state.currentCustomerUpdatedAt;
   }
 };
 
 const mutations = {
   setCurrentCustomer: (state, payload) => {
     state.currentCustomer = payload;
-    state.currentCustomerCreatedAt = payload
-      ? new Date(payload['created_at'])
-      : null;
-    state.currentCustomerUpdatedAt = payload
-      ? new Date(payload['updated_at'])
-      : null;
+
+    if (!state.currentCustomer) return;
+    if (
+      state.currentCustomer.emails &&
+      state.currentCustomer.emails.length > 0
+    ) {
+      state.currentCustomer.emails = state.currentCustomer.emails.sort((a, b) =>
+        a.is_primary ? -1 : 1
+      );
+      state.currentCustomer.emails.map(e => {
+        if (!(e.created_at && e.updated_at)) return e;
+        return {
+          ...e,
+          created_at: new Date(e.created_at),
+          updated_at: new Date(e.updated_at)
+        };
+      });
+    }
+    if (
+      state.currentCustomer.phones &&
+      state.currentCustomer.phones.length > 0
+    ) {
+      state.currentCustomer.phones = state.currentCustomer.phones.sort((a, b) =>
+        a.is_primary ? -1 : 1
+      );
+      state.currentCustomer.phones.map(p => {
+        if (!(p.created_at && p.updated_at)) return p;
+        return {
+          ...p,
+          created_at: new Date(p.created_at),
+          updated_at: new Date(p.updated_at)
+        };
+      });
+    }
+    if (
+      state.currentCustomer.logins &&
+      state.currentCustomer.logins.length > 0
+    ) {
+      state.currentCustomer.logins = state.currentCustomer.logins.sort((a, b) =>
+        a.is_active ? -1 : 1
+      );
+      state.currentCustomer.logins.map(l => {
+        if (!(l.created_at && l.updated_at)) return l;
+        return {
+          ...l,
+          created_at: new Date(l.created_at),
+          updated_at: new Date(l.updated_at)
+        };
+      });
+    }
+    if (state.currentCustomer.created_at)
+      state.currentCustomer.created_at = new Date(
+        state.currentCustomer.created_at
+      );
+    if (state.currentCustomer.updated_at)
+      state.currentCustomer.updated_at = new Date(
+        state.currentCustomer.updated_at
+      );
+
     return;
   }
 };

@@ -70,23 +70,23 @@
           </span>
         </p>
         <p class="card-dates">
-          <span class="is-size-7">Created: {{accountCreatedAt.toLocaleString()}}</span>
+          <span class="is-size-7">Created: {{account.created_at.toLocaleString()}}</span>
           <span
-            v-if="accountCreatedAt.toLocaleString() !== accountUpdatedAt.toLocaleString()"
+            v-if="account.created_at.toLocaleString() !== account.updated_at.toLocaleString()"
             class="is-size-7"
           >
             <br>
-            Updated: {{accountUpdatedAt.toLocaleString()}}
+            Updated: {{account.updated_at.toLocaleString()}}
           </span>
         </p>
       </div>
     </div>
     <footer class="card-footer">
-      <a class="card-footer-item" @click="editing = true" v-if="!editing">
+      <a class="card-footer-item has-link-danger" @click="editing = false" v-if="editing">
         <span class="icon">
-          <i class="fas fa-edit"></i>
+          <i class="far fa-save"></i>
         </span>
-        Edit
+        Update
       </a>
       <a class="card-footer-item" @click="editing = false" v-if="editing">
         <span class="icon">
@@ -94,13 +94,19 @@
         </span>
         Cancel
       </a>
-      <a class="card-footer-item">
+      <a class="card-footer-item" @click="editing = true" v-if="!editing">
+        <span class="icon">
+          <i class="fas fa-edit"></i>
+        </span>
+        Edit
+      </a>
+      <a class="card-footer-item" v-if="!editing">
         <span class="icon">
           <i class="far fa-plus-square"></i>
         </span>
         Email
       </a>
-      <a class="card-footer-item">
+      <a class="card-footer-item" v-if="!editing">
         <span class="icon">
           <i class="far fa-plus-square"></i>
         </span>
@@ -122,25 +128,23 @@ export default {
   data: function() {
     return {
       editing: false,
-      errors: false
+      errors: false,
+      role: null,
+      first_name: null,
+      last_name: null,
+      company_name: null,
+      phones: [],
+      emails: []
     };
-  },
-  computed: {
-    accountCreatedAt: function() {
-      return new Date(this.account.created_at);
-    },
-    accountUpdatedAt: function() {
-      return new Date(this.account.created_at);
-    }
   },
   methods: {
     updateEmail: function(i, value) {
-      console.log(this.account.emails[i].email);
-      console.log(value);
-      // this.emails[i].email = value.email;
-      // this.errors = value.email;
-      console.log(this.this.account.emails[i].email);
-      console.log(this.account.emails);
+      // console.log(this.account.emails[i].email);
+      // console.log(value);
+      // // this.account.emails[i].email = value.email;
+      // // this.errors = value.email;
+      // console.log(this.this.account.emails[i].email);
+      // console.log(this.account.emails);
     }
   }
 };

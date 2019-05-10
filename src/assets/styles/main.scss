@@ -116,3 +116,9 @@ $speed-slower: 300ms !default; //tabs
     }
   }
 }
+.has-link-danger {
+  color: $danger;
+}
+.has-link-danger:hover {
+  color: $black;
+}
