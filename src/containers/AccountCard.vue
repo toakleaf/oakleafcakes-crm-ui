@@ -16,7 +16,12 @@
       </a>
     </div>
     <app-display-card :account="account" v-if="!editing"/>
-    <app-edit-card :account="account" @update:account="listenUpdates" v-if="editing"/>
+    <app-edit-card
+      :account="account"
+      @update:account="listenUpdates"
+      v-if="editing"
+      @update:editing="editing = false"
+    />
     <footer class="card-footer">
       <a
         class="card-footer-item has-link-danger"

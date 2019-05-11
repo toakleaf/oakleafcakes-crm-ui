@@ -62,7 +62,10 @@
       <span class="has-text-weight-bold">{{sliceText.selected}}</span>
       <span>{{sliceText.after + " "}}</span>
     </span>
-    <span v-else class="searchIndent">{{props.option.emails.filter(e => e.is_primary)[0].email}}</span>
+    <span
+      v-else
+      class="searchIndent"
+    >{{props.option.emails.length ? props.option.emails.filter(e => e.is_primary)[0].email : null}}</span>
   </p>
 </template>
 

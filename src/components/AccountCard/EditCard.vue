@@ -65,7 +65,7 @@
         v-for="(email, i) in account.emails"
         :key="email.id + 'e'"
       >
-        <a class="control">
+        <a class="control" @click="deleteEmail({email: email.email})">
           <b-tooltip label="Delete this email" type="is-danger">
             <span class="icon has-link-danger">
               <i class="fas fa-backspace fa-flip-horizontal"></i>
@@ -91,13 +91,12 @@
       <div class="field">
         <label class="label">Phone Numbers</label>
       </div>
-
       <div
         class="field is-grouped is-grouped-multiline"
         v-for="(phone, i) in account.phones"
         :key="phone.id + 'p'"
       >
-        <a class="control">
+        <a class="control" @click="deletePhone({phone: phone.phone})">
           <b-tooltip label="Delete this email" type="is-danger">
             <span class="icon has-link-danger">
               <i class="fas fa-backspace fa-flip-horizontal"></i>
@@ -154,7 +153,6 @@ export default {
   props: ["account"],
   data: function() {
     return {
-      cats: null,
       error: false,
       firstNameUpdate: null,
       lastNameUpdate: null,
@@ -200,7 +198,9 @@ export default {
       get: function() {
         return this.primaryEmailUpdate
           ? this.primaryEmailUpdate
-          : this.account.emails.filter(e => e.is_primary)[0].email;
+          : this.account.emails.filter(e => e.is_primary).length
+          ? this.account.emails.filter(e => e.is_primary)[0].email
+          : null;
       },
       set: function(val) {
         this.primaryEmailUpdate = val;
@@ -210,7 +210,9 @@ export default {
       get: function() {
         return this.primaryPhoneUpdate
           ? this.primaryPhoneUpdate
-          : this.account.phones.filter(p => p.is_primary)[0].phone;
+          : this.account.phones.filter(p => p.is_primary).length
+          ? this.account.phones.filter(p => p.is_primary)[0].phone
+          : null;
       },
       set: function(val) {
         this.primaryPhoneUpdate = val;
@@ -295,6 +297,56 @@ export default {
         },
         error: this.$v.$invalid || this.error
       });
+    },
+    deleteEmail: function(val) {
+      if (!val || !val.email) return;
+      this.$store
+        .dispatch("deleteAccountEmail", {
+          id: this.account.id,
+          emails: [{ email: val.email }]
+        })
+        .then(() => {
+          this.$toast.open({
+            message: `Successfully deleted email address ${val.email}!`,
+            position: "is-bottom",
+            type: "is-success"
+          });
+          this.$emit("update:editing");
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message: "Failed to delete email.",
+            position: "is-bottom",
+            type: "is-danger"
+          });
+          this.$emit("update:editing");
+        });
+    },
+    deletePhone: function(val) {
+      if (!val || !val.phone) return;
+      this.$store
+        .dispatch("deleteAccountPhone", {
+          id: this.account.id,
+          phones: [{ phone: val.phone }]
+        })
+        .then(() => {
+          this.$toast.open({
+            message: `Successfully deleted phone number ${val.phone}!`,
+            position: "is-bottom",
+            type: "is-success"
+          });
+          this.$emit("update:editing");
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message: "Failed to delete phone number.",
+            position: "is-bottom",
+            type: "is-danger"
+          });
+          this.$emit("update:editing");
+        });
     }
   }
 };
