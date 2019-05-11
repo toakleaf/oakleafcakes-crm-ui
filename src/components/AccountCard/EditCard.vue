@@ -185,11 +185,6 @@ export default {
     },
     primaryPhone: {
       get: function() {
-        console.log(
-          this.primaryPhoneUpdate
-            ? this.primaryPhoneUpdate
-            : this.account.phones.filter(p => p.is_primary)[0].phone
-        );
         return this.primaryPhoneUpdate
           ? this.primaryPhoneUpdate
           : this.account.phones.filter(p => p.is_primary)[0].phone;
