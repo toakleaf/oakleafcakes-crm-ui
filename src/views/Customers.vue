@@ -1,6 +1,7 @@
 <template>
   <section class="container pad-route">
     <div class="box">
+      {{$store.getters.currentCustomerLastName}}
       <app-search-bar/>
       <section>
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">

@@ -121,7 +121,7 @@
 <script>
 import EmailCheck from "@/components/Form/EmailCheck.vue";
 import PhoneCheck from "@/components/Form/PhoneCheck.vue";
-import { required, requiredIf } from "vuelidate/lib/validators";
+import { required, requiredUnless } from "vuelidate/lib/validators";
 
 export default {
   components: {
@@ -146,7 +146,7 @@ export default {
     firstName: {
       get: function() {
         return this.firstNameUpdate
-          ? this.firstNameUpdate.first_name
+          ? this.firstNameUpdate.firstName
           : this.account.first_name;
       },
       set: function(val) {
@@ -195,15 +195,11 @@ export default {
     }
   },
   validations: {
-    first_name: {
-      required: requiredIf(function() {
-        return !this.companyName;
-      })
+    firstName: {
+      required: requiredUnless("companyName")
     },
     companyName: {
-      required: requiredIf(function() {
-        return !this.firstName;
-      })
+      required: requiredUnless("firstName")
     }
   },
   methods: {

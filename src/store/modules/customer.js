@@ -2,8 +2,12 @@ import axios from '@/axiosAPI';
 
 const state = {
   currentCustomer: null,
-  currentCustomerCreatedAt: null,
-  currentCustomerUpdatedAt: null
+  currentCustomerID: null,
+  currentCustomerFirstName: null,
+  currentCustomerLastName: null,
+  currentCustomerCompanyName: null,
+  currentCustomerWorkingEmail: null,
+  currentCustomerWorkingPhone: null
 };
 
 const getters = {
@@ -11,23 +15,48 @@ const getters = {
     return state.currentCustomer;
   },
   currentCustomerID: state => {
-    return state.currentCustomer ? state.currentCustomer.id : null;
+    return state.currentCustomerID;
+  },
+  currentCustomerFirstName: state => {
+    return state.currentCustomerFirstName;
+  },
+  currentCustomerLastName: state => {
+    return state.currentCustomerLastName;
+  },
+  currentCustomerCompanyName: state => {
+    return state.currentCustomerCompanyName;
+  },
+  currentCustomerWorkingEmail: state => {
+    return state.currentCustomerWorkingEmail;
+  },
+  currentCustomerWorkingPhone: state => {
+    return state.currentCustomerWorkingPhone;
   }
 };
 
 const mutations = {
   setCurrentCustomer: (state, payload) => {
+    if (!payload) {
+      state.currentCustomer = null;
+      state.currentCustomerID = null;
+      state.currentCustomerFirstName = null;
+      state.currentCustomerLastName = null;
+      state.currentCustomerCompanyName = null;
+      state.currentCustomerWorkingEmail = null;
+      state.currentCustomerWorkingPhone = null;
+      return;
+    }
     state.currentCustomer = payload;
+    state.currentCustomerID = payload.id;
+    state.currentCustomerFirstName = payload.first_name;
+    state.currentCustomerLastName = payload.last_name;
+    state.currentCustomerCompanyName = payload.company_name;
 
-    if (!state.currentCustomer) return;
-    if (
-      state.currentCustomer.emails &&
-      state.currentCustomer.emails.length > 0
-    ) {
-      state.currentCustomer.emails = state.currentCustomer.emails.sort((a, b) =>
+    if (payload.emails && payload.emails.length > 0) {
+      state.currentCustomer.emails = payload.emails.sort((a, b) =>
         a.is_primary ? -1 : 1
       );
-      state.currentCustomer.emails.map(e => {
+      state.currentCustomer.emails = state.currentCustomer.emails.map(e => {
         if (!(e.created_at && e.updated_at)) return e;
         return {
           ...e,
@@ -35,6 +64,7 @@ const mutations = {
           updated_at: new Date(e.updated_at)
         };
       });
+      state.currentCustomerWorkingEmail = state.currentCustomer.emails[0].email;
     }
     if (
       state.currentCustomer.phones &&
@@ -43,7 +73,7 @@ const mutations = {
       state.currentCustomer.phones = state.currentCustomer.phones.sort((a, b) =>
         a.is_primary ? -1 : 1
       );
-      state.currentCustomer.phones.map(p => {
+      state.currentCustomer.phones = state.currentCustomer.phones.map(p => {
         if (!(p.created_at && p.updated_at)) return p;
         return {
           ...p,
@@ -51,7 +81,12 @@ const mutations = {
           updated_at: new Date(p.updated_at)
         };
       });
+      state.currentCustomerWorkingPhone = state.currentCustomer.phones[0].phone;
     }
+
+    if (payload.email) state.currentCustomerWorkingEmail = payload.email;
+    if (payload.phone) state.currentCustomerWorkingPhone = payload.phone;
+
     if (
       state.currentCustomer.logins &&
       state.currentCustomer.logins.length > 0
@@ -68,14 +103,10 @@ const mutations = {
         };
       });
     }
-    if (state.currentCustomer.created_at)
-      state.currentCustomer.created_at = new Date(
-        state.currentCustomer.created_at
-      );
-    if (state.currentCustomer.updated_at)
-      state.currentCustomer.updated_at = new Date(
-        state.currentCustomer.updated_at
-      );
+    if (payload.created_at)
+      state.currentCustomer.created_at = new Date(payload.created_at);
+    if (payload.updated_at)
+      state.currentCustomer.updated_at = new Date(payload.updated_at);
 
     return;
   }
@@ -86,7 +117,7 @@ const actions = {
     axios
       .get(`/account/${id}`)
       .then(res => {
-        commit('setCurrentCustomer', res.data[0]);
+        commit('setCurrentCustomer', res.data);
       })
       .catch(err => console.error('Error: ' + err));
   },

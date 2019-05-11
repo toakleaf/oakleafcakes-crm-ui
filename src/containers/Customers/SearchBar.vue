@@ -14,7 +14,7 @@
                 @dblclick.native="isCompany = false"
                 @keyup.backspace.native="companyName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('company_name', companyName)"
-                @select="options => setFields(options)"
+                @select="options => { setCurrentCustomer(options)}"
                 @blur="$v.email.$touch();"
                 :disabled="disabled"
               >
@@ -40,7 +40,7 @@
                 @dblclick.native="isCompany = true"
                 @keyup.backspace.native="firstName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('first_name', firstName)"
-                @select="options => setFields(options)"
+                @select="options => { setCurrentCustomer(options)}"
                 @blur="$v.firstName.$touch();"
                 :disabled="disabled"
               >
@@ -66,7 +66,7 @@
                 @dblclick.native="isCompany = true"
                 @keyup.backspace.native="lastName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('last_name', lastName)"
-                @select="options => setFields(options)"
+                @select="options => { setCurrentCustomer(options)}"
                 @blur="$v.lastName.$touch();"
                 :disabled="disabled"
               >
@@ -97,7 +97,7 @@
                   v-model="email"
                   @keyup.backspace.native="email || !currentCustomer ? null : clearFields()"
                   @input="fetchCustomers('email', email)"
-                  @select="options => setFields(options)"
+                  @select="options => { setCurrentCustomer(options)}"
                   @blur="$v.email.$touch();"
                   :disabled="disabled"
                 >
@@ -124,7 +124,7 @@
                   v-model="phone"
                   @keyup.backspace.native="phone || !currentCustomer ? null : clearFields()"
                   @input="fetchCustomers('phone', phone)"
-                  @select="options => setFields(options)"
+                  @select="options => { setCurrentCustomer(options)}"
                   @blur="$v.phone.$touch();"
                   :disabled="disabled"
                 >
@@ -266,15 +266,15 @@ export default {
   computed: {
     ...mapGetters([
       "currentCustomer",
-      "currentCustomerCreatedAt",
-      "currentCustomerUpdatedAt"
+      "currentCustomerFirstName",
+      "currentCustomerLastName",
+      "currentCustomerCompanyName",
+      "currentCustomerWorkingEmail",
+      "currentCustomerWorkingPhone"
     ]),
     disabled: {
-      set: function(val) {
-        this.disabledVal = val;
-      },
       get: function() {
-        return this.currentCustomer ? true : this.disabledVal;
+        return this.currentCustomer !== null;
       }
     },
     firstName: {
@@ -282,7 +282,7 @@ export default {
         this.inputs.firstName = val;
       },
       get: function() {
-        if (this.currentCustomer) return this.currentCustomer.first_name;
+        if (this.currentCustomerFirstName) return this.currentCustomerFirstName;
         return this.inputs.firstName;
       }
     },
@@ -291,7 +291,7 @@ export default {
         this.inputs.lastName = val;
       },
       get: function() {
-        if (this.currentCustomer) return this.currentCustomer.last_name;
+        if (this.currentCustomerLastName) return this.currentCustomerLastName;
         return this.inputs.lastName;
       }
     },
@@ -300,7 +300,8 @@ export default {
         this.inputs.companyName = val;
       },
       get: function() {
-        if (this.currentCustomer) return this.currentCustomer.company_name;
+        if (this.currentCustomerCompanyName)
+          return this.currentCustomerCompanyName;
         return this.inputs.companyName;
       }
     },
@@ -309,10 +310,8 @@ export default {
         this.inputs.email = val;
       },
       get: function() {
-        if (this.currentCustomer && this.currentCustomer.email)
-          return this.currentCustomer.email;
-        if (this.currentCustomer && this.currentCustomer.emails)
-          return this.currentCustomer.emails.filter(e => e.is_primary)[0].email;
+        if (this.currentCustomerWorkingEmail)
+          return this.currentCustomerWorkingEmail;
         return this.inputs.email;
       }
     },
@@ -321,10 +320,8 @@ export default {
         this.inputs.phone = val;
       },
       get: function() {
-        if (this.currentCustomer && this.currentCustomer.phone)
-          return this.currentCustomer.phone;
-        if (this.currentCustomer && this.currentCustomer.phones)
-          return this.currentCustomer.phones.filter(p => p.is_primary)[0].phone;
+        if (this.currentCustomerWorkingPhone)
+          return this.currentCustomerWorkingPhone;
 
         let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(this.inputs.phone);
@@ -334,7 +331,7 @@ export default {
         return this.inputs.phone;
       }
     },
-    filteredRegions() {
+    filteredRegions: function() {
       return listRegions.filter(option => {
         if (!option || !this.phone_country) return;
         return (
@@ -441,37 +438,11 @@ export default {
             : {})
         })
         .then(res => {
-          console.log(res.data);
-          this.setFields(res.data);
+          this.setCurrentCustomer(res.data);
         })
         .catch(err => {
           console.error(err);
         });
-    },
-    setFields: function(data) {
-      if (!data) return;
-      this.firstName = data.first_name;
-      this.lastName = data.last_name;
-      this.companyName = data.company_name;
-      if (data.hasOwnProperty("email")) {
-        this.email = data.email;
-      } else {
-        this.email =
-          data.emails && data.emails.some(e => e.is_primary)
-            ? data.emails.filter(e => e.is_primary)[0].email
-            : null;
-      }
-      if (data.hasOwnProperty("phone")) {
-        this.phone = data.phone;
-      } else {
-        this.phone =
-          data.phones && data.phones.some(p => p.is_primary)
-            ? data.phones.filter(p => p.is_primary)[0].phone
-            : null;
-      }
-      this.disabled = true;
-      this.$v.$reset();
-      this.setCurrentCustomer(data);
     },
     clearFields: function() {
       this.clearCurrentCustomer();
@@ -480,10 +451,9 @@ export default {
       this.companyName = null;
       this.email = null;
       this.phone = null;
-      this.disabled = false;
       this.$v.$reset();
     },
-    clearSearchResults: function(data) {
+    clearSearchResults: function() {
       this.searchResults = {
         first_name: [],
         last_name: [],
