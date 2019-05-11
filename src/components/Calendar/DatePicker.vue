@@ -15,7 +15,7 @@
           @blur="showStartInput = !showStartInput; startInput = $event.target.value; updateStart()"
           class="input"
           type="text"
-          :value="showStartInput? startString : _start.toDateString()"
+          :value="showStartInput? startString : localStart.toDateString()"
         >
       </div>
     </div>
@@ -27,7 +27,7 @@
           @blur="showEndInput = !showEndInput; endInput = $event.target.value; updateEnd();"
           class="input"
           type="text"
-          :value="showEndInput? endString : _end.toDateString()"
+          :value="showEndInput? endString : localEnd.toDateString()"
         >
       </div>
 
@@ -54,8 +54,8 @@ export default {
   props: ["start", "end"],
   data: function() {
     return {
-      _start: this.start,
-      _end: this.end,
+      localStart: this.start,
+      localEnd: this.end,
       showStartInput: false,
       showEndInput: false,
       startInput: null,
@@ -65,28 +65,30 @@ export default {
   },
   watch: {
     start: function() {
-      this._start = new Date(this.start);
-      this._start.setHours(0, 0, 0, 0);
+      this.localStart = new Date(this.start);
+      this.localStart.setHours(0, 0, 0, 0);
     },
     end: function() {
-      this._end = new Date(this.end);
-      this._end.setHours(0, 0, 0, 0);
+      this.localEnd = new Date(this.end);
+      this.localEnd.setHours(0, 0, 0, 0);
     }
   },
   computed: {
     startString: function() {
-      return `${this._start.getMonth() +
-        1}/${this._start.getDate()}/${this._start.getFullYear() - 2000}`;
+      return `${this.localStart.getMonth() +
+        1}/${this.localStart.getDate()}/${this.localStart.getFullYear() -
+        2000}`;
     },
     endString: function() {
-      return `${this._end.getMonth() +
-        1}/${this._end.getDate()}/${this._end.getFullYear() - 2000}`;
+      return `${this.localEnd.getMonth() +
+        1}/${this.localEnd.getDate()}/${this.localEnd.getFullYear() - 2000}`;
     },
     difference: function() {
       let diff =
-        this._end -
-        this._start +
-        (this._start.getTimezoneOffset() - this._end.getTimezoneOffset()) *
+        this.localEnd -
+        this.localStart +
+        (this.localStart.getTimezoneOffset() -
+          this.localEnd.getTimezoneOffset()) *
           60 *
           1000;
       let oneDay = 1000 * 60 * 60 * 24;
@@ -96,14 +98,14 @@ export default {
   methods: {
     updateStart: function() {
       try {
-        this._start = new Date(this.startInput || this._start);
+        this.localStart = new Date(this.startInput || this.localStart);
       } catch (err) {
         this.error = err;
       }
     },
     updateEnd: function() {
       try {
-        this._end = new Date(this.endInput || this._end);
+        this.localEnd = new Date(this.endInput || this.localEnd);
       } catch (err) {
         this.error = err;
       }
@@ -111,67 +113,71 @@ export default {
     submit: function() {
       try {
         if (this.difference < 0) {
-          const temp = this._start;
-          this._start = this._end;
-          this._end = temp;
+          const temp = this.localStart;
+          this.localStart = this.localEnd;
+          this.localEnd = temp;
         }
         if (Math.abs(this.difference) > 31) {
           // default to 1 week from start if out of bounds
-          this._end = new Date(this._start);
-          this._end.setDate(this._start.getDate() + 6);
+          this.localEnd = new Date(this.localStart);
+          this.localEnd.setDate(this.localStart.getDate() + 6);
         }
-        this.$emit("update:start", this._start);
-        this.$emit("update:end", this._end);
+        this.$emit("update:start", this.localStart);
+        this.$emit("update:end", this.localEnd);
       } catch (err) {
         this.error = err;
       }
     },
     jumpBack: function() {
       try {
-        if (this._start.getDate() === 1 && this._end.getDate() >= 28) {
+        if (this.localStart.getDate() === 1 && this.localEnd.getDate() >= 28) {
           return this.jumpMonthBack();
         }
-        this._start.setDate(
-          this._start.getDate() - Math.abs(this.difference) - 1
+        this.localStart.setDate(
+          this.localStart.getDate() - Math.abs(this.difference) - 1
         );
-        this._end.setDate(this._end.getDate() - Math.abs(this.difference) - 1);
-        this.$emit("update:start", this._start);
-        this.$emit("update:end", this._end);
+        this.localEnd.setDate(
+          this.localEnd.getDate() - Math.abs(this.difference) - 1
+        );
+        this.$emit("update:start", this.localStart);
+        this.$emit("update:end", this.localEnd);
       } catch (err) {
         this.error = err;
       }
     },
     jumpAhead: function() {
       try {
-        if (this._start.getDate() === 1 && this._end.getDate() >= 28) {
+        if (this.localStart.getDate() === 1 && this.localEnd.getDate() >= 28) {
           return this.jumpMonthAhead();
         }
-        this._start.setDate(
-          this._start.getDate() + Math.abs(this.difference) + 1
+        this.localStart.setDate(
+          this.localStart.getDate() + Math.abs(this.difference) + 1
         );
-        this._end.setDate(this._end.getDate() + Math.abs(this.difference) + 1);
-        this.$emit("update:start", this._start);
-        this.$emit("update:end", this._end);
+        this.localEnd.setDate(
+          this.localEnd.getDate() + Math.abs(this.difference) + 1
+        );
+        this.$emit("update:start", this.localStart);
+        this.$emit("update:end", this.localEnd);
       } catch (err) {
         this.error = err;
       }
     },
     jumpMonthBack: function() {
       //order of execution is important
-      this._end.setMonth(this._start.getMonth());
-      this._end.setDate(0); //go back a day
-      this._start.setMonth(this._start.getMonth() - 1);
-      this.$emit("update:start", this._start);
-      this.$emit("update:end", this._end);
+      this.localEnd.setMonth(this.localStart.getMonth());
+      this.localEnd.setDate(0); //go back a day
+      this.localStart.setMonth(this.localStart.getMonth() - 1);
+      this.$emit("update:start", this.localStart);
+      this.$emit("update:end", this.localEnd);
     },
     jumpMonthAhead: function() {
       //order of execution is important
-      this._end.setDate(1);
-      this._end.setMonth(this._end.getMonth() + 2);
-      this._end.setDate(0); //go back a day
-      this._start.setMonth(this._start.getMonth() + 1);
-      this.$emit("update:start", this._start);
-      this.$emit("update:end", this._end);
+      this.localEnd.setDate(1);
+      this.localEnd.setMonth(this.localEnd.getMonth() + 2);
+      this.localEnd.setDate(0); //go back a day
+      this.localStart.setMonth(this.localStart.getMonth() + 1);
+      this.$emit("update:start", this.localStart);
+      this.$emit("update:end", this.localEnd);
     }
   }
 };

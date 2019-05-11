@@ -65,18 +65,27 @@
         v-for="(email, i) in account.emails"
         :key="email.id + 'e'"
       >
+        <a class="control">
+          <b-tooltip label="Delete this email" type="is-danger">
+            <span class="icon has-link-danger">
+              <i class="fas fa-backspace fa-flip-horizontal"></i>
+            </span>
+          </b-tooltip>
+        </a>
         <div class="control">
-          <b-radio
-            v-model="primaryEmail"
-            size="is-small"
-            :native-value="email.email"
-            @input="emitUpdates()"
-          >Primary</b-radio>
+          <b-tooltip label="Mark this email as primary">
+            <app-star-radio
+              v-model="primaryEmail"
+              :native-value="email.email"
+              size="is-small"
+              @input="emitUpdates()"
+            ></app-star-radio>
+          </b-tooltip>
         </div>
         <app-email-check
           :emailAddress="email.email"
           size="is-small"
-          @update:emailAddress="updateEmail(i, ...arguments)"
+          @update:email="updateEmail(i, ...arguments)"
         />
       </div>
       <div class="field">
@@ -88,20 +97,31 @@
         v-for="(phone, i) in account.phones"
         :key="phone.id + 'p'"
       >
+        <a class="control">
+          <b-tooltip label="Delete this email" type="is-danger">
+            <span class="icon has-link-danger">
+              <i class="fas fa-backspace fa-flip-horizontal"></i>
+            </span>
+          </b-tooltip>
+        </a>
         <div class="control">
-          <b-radio
-            v-model="primaryPhone"
-            size="is-small"
-            :native-value="phone.phone"
-            @input="emitUpdates()"
-          >Primary</b-radio>
+          <b-tooltip label="Mark this email as primary">
+            <app-star-radio
+              v-model="primaryPhone"
+              :native-value="phone.phone"
+              size="is-small"
+              @input="emitUpdates()"
+            ></app-star-radio>
+          </b-tooltip>
         </div>
+
         <app-phone-check
           :phoneNumber="phone.phone"
           :phoneNumberType="phone.phone_type"
           :phoneNumberCountry="phone.phone_country"
           size="is-small"
-          @update:phoneNumber="updatePhone(i, ...arguments)"
+          :hasGlobe="false"
+          @update:phone="updatePhone(i, ...arguments)"
         />
       </div>
       <p class="card-dates">
@@ -121,17 +141,20 @@
 <script>
 import EmailCheck from "@/components/Form/EmailCheck.vue";
 import PhoneCheck from "@/components/Form/PhoneCheck.vue";
+import StarRadio from "@/components/widgets/StarRadio.vue";
 import { required, requiredUnless } from "vuelidate/lib/validators";
 
 export default {
   components: {
     "app-email-check": EmailCheck,
-    "app-phone-check": PhoneCheck
+    "app-phone-check": PhoneCheck,
+    "app-star-radio": StarRadio
   },
   name: "EditCard",
   props: ["account"],
   data: function() {
     return {
+      cats: null,
       error: false,
       firstNameUpdate: null,
       lastNameUpdate: null,

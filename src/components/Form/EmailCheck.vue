@@ -120,9 +120,10 @@ export default {
       }, 1000);
     },
     emitInput: function(pending = false) {
-      this.$emit("update:emailAddress", {
+      this.$emit("update:email", {
         email: this.email,
-        error: this.$v.email.$error || pending
+        error: this.$v.email.$error || pending,
+        valid: this.$v.email.email
       });
     }
   },

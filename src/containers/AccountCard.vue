@@ -26,50 +26,52 @@
         <span class="icon">
           <i class="far fa-save"></i>
         </span>
-        Update
+        <span>Update</span>
       </a>
       <p class="card-footer-item has-text-grey" v-if="editing && disabled">
         <span class="icon">
           <i class="far fa-save"></i>
         </span>
-        <strike>Update</strike>
+        <span>
+          <strike>Update</strike>
+        </span>
       </p>
       <a class="card-footer-item" @click="editing = false, disabled = true" v-if="editing">
         <span class="icon">
           <i class="fas fa-ban"></i>
         </span>
-        Cancel
+        <span>Cancel</span>
       </a>
       <a class="card-footer-item" @click="editing = true" v-if="!editing">
         <span class="icon">
           <i class="fas fa-edit"></i>
         </span>
-        Edit
+        <span>Edit</span>
       </a>
-      <a class="card-footer-item" v-if="!editing">
+      <a class="card-footer-item" v-if="!editing" @click="emailModal">
         <span class="icon">
           <i class="far fa-plus-square"></i>
         </span>
-        Email
+        <span>Email</span>
       </a>
-      <a class="card-footer-item" v-if="!editing">
+      <a class="card-footer-item" v-if="!editing" @click="phoneModal">
         <span class="icon">
           <i class="far fa-plus-square"></i>
         </span>
-        Phone
+        <span>Phone</span>
       </a>
     </footer>
   </b-collapse>
 </template>
 
 <script>
-import EmailCheck from "@/components/Form/EmailCheck.vue";
 import DisplayCard from "@/components/AccountCard/DisplayCard.vue";
 import EditCard from "@/components/AccountCard/EditCard.vue";
+import AddEmail from "@/containers/modals/AddEmail.vue";
+import AddPhone from "@/containers/modals/AddPhone.vue";
 
 export default {
   components: {
-    "app-email-check": EmailCheck,
     "app-display-card": DisplayCard,
     "app-edit-card": EditCard
   },
@@ -90,11 +92,43 @@ export default {
     },
     submitUpdates: function(val) {
       if (!this.account || !this.update) return;
-      this.$store.dispatch("pushAccountUpdate", {
-        id: this.account.id,
-        update: this.update
-      });
+      this.$store
+        .dispatch("pushAccountUpdate", {
+          id: this.account.id,
+          update: this.update
+        })
+        .then(() => {
+          this.$toast.open({
+            message: "Account updated successfully!",
+            position: "is-bottom",
+            type: "is-success"
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message: "Failed to update account",
+            position: "is-bottom",
+            type: "is-danger"
+          });
+        });
       this.editing = false;
+    },
+    emailModal: function() {
+      this.$modal.open({
+        props: { id: this.account.id },
+        parent: this,
+        component: AddEmail,
+        hasModalCard: true
+      });
+    },
+    phoneModal: function() {
+      this.$modal.open({
+        props: { id: this.account.id },
+        parent: this,
+        component: AddPhone,
+        hasModalCard: true
+      });
     }
   }
 };

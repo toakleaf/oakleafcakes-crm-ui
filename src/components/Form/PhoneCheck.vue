@@ -15,7 +15,7 @@
         @input="emitInput()"
         @blur="$v.phone.$touch()"
       >
-      <span class="icon is-left">
+      <span class="icon is-left" v-if="hasIcon">
         <i class="fas fa-phone"></i>
       </span>
       <span v-if="hasCheckmark && !isLoading" class="icon is-small is-right">
@@ -33,6 +33,7 @@
           :readonly="readonly"
           :disabled="disabled"
         >
+          <option value></option>
           <option value="mobile">Mobile</option>
           <option value="home">Home</option>
           <option value="work">Work</option>
@@ -40,7 +41,7 @@
         </select>
       </span>
     </p>
-    <p class="control has-icons-left">
+    <p class="control" :class="{'has-icons-left': hasGlobe}">
       <span
         class="select"
         :class="{'is-success': !$v.phone.$invalid && phoneInput !== phoneNumber, 'is-danger': $v.phone.$error, 'is-small': size === 'is-small', 'is-medium': size === 'is-medium', 'is-large': size === 'is-large'}"
@@ -54,7 +55,7 @@
           <option v-for="region in regions" v-bind:value="region" :key="region">{{ region }}</option>
         </select>
       </span>
-      <span class="icon is-small is-left">
+      <span class="icon is-small is-left" v-if="hasGlobe">
         <i class="fas fa-globe"></i>
       </span>
     </p>
@@ -88,6 +89,10 @@ export default {
       type: Boolean
     },
     hasIcon: {
+      default: true,
+      type: Boolean
+    },
+    hasGlobe: {
       default: true,
       type: Boolean
     },
@@ -148,11 +153,12 @@ export default {
   methods: {
     emitInput: function() {
       if (this.phoneNumber) this.$v.phone.$touch();
-      this.$emit("update:phoneNumber", {
+      this.$emit("update:phone", {
         phone: this.phone,
         phone_country: this.phone_country,
         phone_type: this.phone_type,
-        error: this.$v.phone.$error
+        error: this.$v.phone.$error,
+        valid: this.$v.phone.phone
       });
     }
   },
