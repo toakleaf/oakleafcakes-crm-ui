@@ -219,7 +219,6 @@ export default {
       this.emitUpdates();
     },
     updatePhone: function(i, val) {
-      console.log("hi");
       this.phoneUpdates = this.phoneUpdates.filter(
         p => p.current_phone !== this.account.phones[i].phone
       );
@@ -234,18 +233,34 @@ export default {
     },
     emitUpdates: function() {
       if (this.primaryEmailUpdate) {
-        this.emailUpdates = this.emailUpdates.map(e => {
-          return e.email === this.primaryEmailUpdate
-            ? { ...e, is_primary: true }
-            : e;
-        });
+        if (this.emailUpdates.length > 0) {
+          this.emailUpdates = this.emailUpdates.map(e => {
+            return e.new_email === this.primaryEmailUpdate ||
+              e.current_email === this.primaryEmailUpdate
+              ? { ...e, is_primary: true }
+              : { ...e, is_primary: false };
+          });
+        } else {
+          this.emailUpdates.push({
+            current_email: this.primaryEmailUpdate,
+            is_primary: true
+          });
+        }
       }
       if (this.primaryPhoneUpdate) {
-        this.phoneUpdates = this.phoneUpdates.map(p => {
-          return p.phone === this.primaryPhoneUpdate
-            ? { ...p, is_primary: true }
-            : p;
-        });
+        if (this.phoneUpdates.length > 0) {
+          this.phoneUpdates = this.phoneUpdates.map(p => {
+            return p.new_phone === this.primaryPhoneUpdate ||
+              p.current_phone === this.primaryPhoneUpdate
+              ? { ...p, is_primary: true }
+              : { ...p, is_primary: false };
+          });
+        } else {
+          this.phoneUpdates.push({
+            current_phone: this.primaryPhoneUpdate,
+            is_primary: true
+          });
+        }
       }
       this.$emit("update:account", {
         update: {

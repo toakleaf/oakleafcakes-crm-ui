@@ -141,7 +141,6 @@ export default {
     }
   },
   mounted: function() {
-    console.log(this.props.option);
     if (this.$refs.searchMenu) {
       this.floatPhone =
         this.$refs.searchMenu.scrollWidth <=
