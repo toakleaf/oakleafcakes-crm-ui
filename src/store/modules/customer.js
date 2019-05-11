@@ -1,4 +1,4 @@
-import axios from '../../axiosAPI';
+import axios from '@/axiosAPI';
 
 const state = {
   currentCustomer: null,
@@ -9,6 +9,9 @@ const state = {
 const getters = {
   currentCustomer: state => {
     return state.currentCustomer;
+  },
+  currentCustomerID: state => {
+    return state.currentCustomer ? state.currentCustomer.id : null;
   }
 };
 

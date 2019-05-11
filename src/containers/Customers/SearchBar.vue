@@ -199,13 +199,14 @@
     </div>
   </div>
 </template>
+
 <script>
 import SearchDropdown from "@/components/Customers/SearchBar/SearchDropdown.vue";
 import PhoneCountryDrop from "@/components/Customers/SearchBar/PhoneCountryDrop.vue";
 import { required, requiredUnless, email } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-import axios from "../../axiosAPI";
+import axios from "@/axiosAPI";
 let PhoneNumber = require("awesome-phonenumber");
 let listCountries = PhoneNumber.getSupportedCallingCodes();
 let listRegions = listCountries.map(c =>

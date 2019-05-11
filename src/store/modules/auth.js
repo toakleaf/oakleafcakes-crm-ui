@@ -1,5 +1,5 @@
-import axios from '../../axiosAPI';
-import router from '../../router';
+import axios from '@/axiosAPI';
+import router from '@/router';
 const jwt = require('jsonwebtoken');
 
 const state = {

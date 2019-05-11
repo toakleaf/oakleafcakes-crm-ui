@@ -1,4 +1,4 @@
-import axios from '../../axiosAPI';
+import axios from '@/axiosAPI';
 
 // The logged in account is the 'author'
 // All other accounts are handled by account type's name,
@@ -11,6 +11,9 @@ const state = {
 const getters = {
   author: state => {
     return state.author;
+  },
+  authorID: state => {
+    return state.author ? state.author.id : null;
   }
 };
 

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     logout: function() {
-      $store.dispatch("logout");
+      this.$store.dispatch("logout");
     }
   }
 };
