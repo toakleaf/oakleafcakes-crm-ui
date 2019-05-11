@@ -3,7 +3,9 @@
     <div class="content">
       <p>
         <span v-if="account.first_name && account.company_name" class="is-italic">
-          <i class="fas fa-store"></i>
+          <span class="icon">
+            <i class="fas fa-store"></i>
+          </span>
           {{account.company_name}}
           <br>
         </span>
@@ -13,6 +15,9 @@
               <span class="icon" v-if="email.is_primary">
                 <i class="far fa-star"></i>
               </span>
+              <span class="icon" v-else>
+                <i class></i>
+              </span>
               {{email.email}}
             </a>
             <br>
@@ -21,6 +26,9 @@
         <span v-for="phone in account.phones" :key="phone.id + 'p'">
           <span class="icon" v-if="phone.is_primary">
             <i class="far fa-star"></i>
+          </span>
+          <span class="icon" v-else>
+            <i class></i>
           </span>
           {{phone.phone}}
           <span

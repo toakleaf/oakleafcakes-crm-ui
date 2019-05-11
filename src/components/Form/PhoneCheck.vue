@@ -36,7 +36,7 @@
           <option value="mobile">Mobile</option>
           <option value="home">Home</option>
           <option value="work">Work</option>
-          <option value="emergency">Emergency</option>
+          <option value="emergency">Emerg</option>
         </select>
       </span>
     </p>

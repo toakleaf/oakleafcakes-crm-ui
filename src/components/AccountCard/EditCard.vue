@@ -185,6 +185,11 @@ export default {
     },
     primaryPhone: {
       get: function() {
+        console.log(
+          this.primaryPhoneUpdate
+            ? this.primaryPhoneUpdate
+            : this.account.phones.filter(p => p.is_primary)[0].phone
+        );
         return this.primaryPhoneUpdate
           ? this.primaryPhoneUpdate
           : this.account.phones.filter(p => p.is_primary)[0].phone;
@@ -231,14 +236,15 @@ export default {
       if (this.primaryEmailUpdate) {
         if (this.emailUpdates.length > 0) {
           this.emailUpdates = this.emailUpdates.map(e => {
-            return e.new_email === this.primaryEmailUpdate ||
-              e.current_email === this.primaryEmailUpdate
+            return e.new_email === this.primaryEmail ||
+              e.current_email === this.primaryEmail
               ? { ...e, is_primary: true }
               : { ...e, is_primary: false };
           });
-        } else {
+        }
+        if (!this.emailUpdates.some(e => e.is_primary)) {
           this.emailUpdates.push({
-            current_email: this.primaryEmailUpdate,
+            current_email: this.primaryEmail,
             is_primary: true
           });
         }
@@ -246,14 +252,15 @@ export default {
       if (this.primaryPhoneUpdate) {
         if (this.phoneUpdates.length > 0) {
           this.phoneUpdates = this.phoneUpdates.map(p => {
-            return p.new_phone === this.primaryPhoneUpdate ||
-              p.current_phone === this.primaryPhoneUpdate
+            return p.new_phone === this.primaryPhone ||
+              p.current_phone === this.primaryPhone
               ? { ...p, is_primary: true }
               : { ...p, is_primary: false };
           });
-        } else {
+        }
+        if (!this.phoneUpdates.some(p => p.is_primary)) {
           this.phoneUpdates.push({
-            current_phone: this.primaryPhoneUpdate,
+            current_phone: this.primaryPhone,
             is_primary: true
           });
         }
