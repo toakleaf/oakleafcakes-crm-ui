@@ -18,13 +18,13 @@ const getters = {
 
 const mutations = {
   setAuthToken: (state, payload) => {
+    if (!payload) {
+      state.authToken = null;
+      state.tokenExp = null;
+      return;
+    }
     state.authToken = payload;
     state.tokenExp = jwt.decode(payload).exp;
-    return;
-  },
-  clearAuthData: state => {
-    state.authToken = null;
-    state.tokenExp = null;
     return;
   }
 };
@@ -60,9 +60,13 @@ const actions = {
         );
       });
   },
-  logout({ commit }, redirect = true) {
-    commit('clearAuthData');
-    commit('clearAuthorData');
+  clearAuthData({ commit }) {
+    commit('setAuthToken');
+  },
+  logout({ commit, dispatch }, redirect = true) {
+    dispatch('clearCurrentCustomer');
+    dispatch('clearAuthorData');
+    dispatch('clearAuthData');
     axios.defaults.headers.common['Authorization'] = null;
     localStorage.removeItem('token');
     if (redirect) router.replace('/login');

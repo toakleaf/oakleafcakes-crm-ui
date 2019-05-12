@@ -5,7 +5,13 @@ import axios from '@/axiosAPI';
 // such as Employees and Customers
 
 const state = {
-  author: null
+  author: null,
+  authorID: null,
+  authorFirstName: null,
+  authorLastName: null,
+  authorCompanyName: null,
+  authorWorkingEmail: null,
+  authorWorkingPhone: null
 };
 
 const getters = {
@@ -13,19 +19,48 @@ const getters = {
     return state.author;
   },
   authorID: state => {
-    return state.author ? state.author.id : null;
+    return state.authorID;
+  },
+  authorFirstName: state => {
+    return state.authorFirstName;
+  },
+  authorLastName: state => {
+    return state.authorLastName;
+  },
+  authorCompanyName: state => {
+    return state.authorCompanyName;
+  },
+  authorWorkingEmail: state => {
+    return state.authorWorkingEmail;
+  },
+  authorWorkingPhone: state => {
+    return state.authorWorkingPhone;
   }
 };
 
 const mutations = {
   setAuthorData: (state, payload) => {
+    if (!payload) {
+      state.author = null;
+      state.authorID = null;
+      state.authorFirstName = null;
+      state.authorLastName = null;
+      state.authorCompanyName = null;
+      state.authorWorkingEmail = null;
+      state.authorWorkingPhone = null;
+      return;
+    }
     state.author = payload;
+    state.authorID = payload.id;
+    state.authorFirstName = payload.first_name;
+    state.authorLastName = payload.last_name;
+    state.authorCompanyName = payload.company_name;
 
-    if (state.author.emails && state.author.emails.length > 0) {
-      state.author.emails = state.author.emails.sort((a, b) =>
+    if (payload.emails && payload.emails.length > 0) {
+      state.author.emails = payload.emails.sort((a, b) =>
         a.is_primary ? -1 : 1
       );
-      state.author.emails.map(e => {
+      state.author.emails = state.author.emails.map(e => {
         if (!(e.created_at && e.updated_at)) return e;
         return {
           ...e,
@@ -33,12 +68,13 @@ const mutations = {
           updated_at: new Date(e.updated_at)
         };
       });
+      state.authorWorkingEmail = state.author.emails[0].email;
     }
     if (state.author.phones && state.author.phones.length > 0) {
       state.author.phones = state.author.phones.sort((a, b) =>
         a.is_primary ? -1 : 1
       );
-      state.author.phones.map(p => {
+      state.author.phones = state.author.phones.map(p => {
         if (!(p.created_at && p.updated_at)) return p;
         return {
           ...p,
@@ -46,7 +82,12 @@ const mutations = {
           updated_at: new Date(p.updated_at)
         };
       });
+      state.authorWorkingPhone = state.author.phones[0].phone;
     }
+
+    if (payload.email) state.authorWorkingEmail = payload.email;
+    if (payload.phone) state.authorWorkingPhone = payload.phone;
+
     if (state.author.logins && state.author.logins.length > 0) {
       state.author.logins = state.author.logins.sort((a, b) =>
         a.is_active ? -1 : 1
@@ -60,15 +101,11 @@ const mutations = {
         };
       });
     }
-    if (state.author.created_at)
-      state.author.created_at = new Date(state.author.created_at);
-    if (state.author.updated_at)
-      state.author.updated_at = new Date(state.author.updated_at);
+    if (payload.created_at)
+      state.author.created_at = new Date(payload.created_at);
+    if (payload.updated_at)
+      state.author.updated_at = new Date(payload.updated_at);
 
-    return;
-  },
-  clearAuthorData: state => {
-    state.author = null;
     return;
   }
 };
@@ -84,6 +121,9 @@ const actions = {
   },
   setAuthorData({ commit }, payload) {
     commit('setAuthorData', payload);
+  },
+  clearAuthorData({ commit }) {
+    commit('setAuthorData', null);
   }
 };
 

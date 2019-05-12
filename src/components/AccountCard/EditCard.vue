@@ -131,17 +131,7 @@
           @update:phone="updatePhone(i, ...arguments)"
         />
       </div>
-      <nav class="level card-dates">
-        <div class="level-item has-text-centered">
-          <p class="is-size-7">Created: {{account.created_at.toLocaleString()}}</p>
-        </div>
-        <div class="level-item has-text-centered">
-          <p
-            v-if="account.created_at.toLocaleString() !== account.updated_at.toLocaleString()"
-            class="is-size-7"
-          >Updated: {{account.updated_at.toLocaleString()}}</p>
-        </div>
-      </nav>
+      <app-card-dates :created="account.created_at" :updated="account.updated_at"/>
     </div>
   </div>
 </template>
@@ -150,13 +140,15 @@
 import EmailCheck from "@/components/Form/EmailCheck.vue";
 import PhoneCheck from "@/components/Form/PhoneCheck.vue";
 import StarRadio from "@/components/widgets/StarRadio.vue";
+import CardDates from "@/components/AccountCard/CardDates.vue";
 import { required, requiredUnless } from "vuelidate/lib/validators";
 
 export default {
   components: {
     "app-email-check": EmailCheck,
     "app-phone-check": PhoneCheck,
-    "app-star-radio": StarRadio
+    "app-star-radio": StarRadio,
+    "app-card-dates": CardDates
   },
   name: "EditCard",
   props: ["account"],
@@ -313,8 +305,4 @@ export default {
 
 
 <style lang="scss" scoped>
-.card-dates {
-  line-height: 90%;
-  margin: 1em 0 -1em 0;
-}
 </style>

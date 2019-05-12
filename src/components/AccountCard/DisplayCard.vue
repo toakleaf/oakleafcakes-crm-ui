@@ -49,43 +49,23 @@
           <br>
         </span>
       </p>
-      <nav class="level card-dates is-desktop">
-        <div class="level-item has-text-centered">
-          <p class="is-size-7" style="padding: 0 .25em 0 .25em">
-            Created:
-            <span class="has-text-grey">{{account.created_at.toLocaleString()}}</span>
-          </p>
-        </div>
-        <div class="level-item has-text-centered" style="padding: 0 .25em 0 .25em">
-          <p
-            v-if="account.created_at.toLocaleString() !== account.updated_at.toLocaleString()"
-            class="is-size-7"
-          >
-            Updated:
-            <span class="has-text-grey">{{account.updated_at.toLocaleString()}}</span>
-          </p>
-        </div>
-      </nav>
+      <app-card-dates :created="account.created_at" :updated="account.updated_at"/>
     </div>
   </div>
 </template>
 
 <script>
+import CardDates from "@/components/AccountCard/CardDates.vue";
+
 export default {
-  name: "DisplayCard",
-  props: ["account"],
-  data: function() {
-    return {};
+  components: {
+    "app-card-dates": CardDates
   },
-  computed: {},
-  methods: {}
+  name: "DisplayCard",
+  props: ["account"]
 };
 </script>
 
 
 <style lang="scss" scoped>
-.card-dates {
-  line-height: 90%;
-  margin: 0 0 -1em 0;
-}
 </style>
