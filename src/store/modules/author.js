@@ -7,6 +7,7 @@ import axios from '@/axiosAPI';
 const state = {
   author: null,
   authorID: null,
+  authorRole: null,
   authorFirstName: null,
   authorLastName: null,
   authorCompanyName: null,
@@ -20,6 +21,9 @@ const getters = {
   },
   authorID: state => {
     return state.authorID;
+  },
+  authorRole: state => {
+    return state.authorRole;
   },
   authorFirstName: state => {
     return state.authorFirstName;
@@ -43,6 +47,7 @@ const mutations = {
     if (!payload) {
       state.author = null;
       state.authorID = null;
+      state.authorRole = null;
       state.authorFirstName = null;
       state.authorLastName = null;
       state.authorCompanyName = null;
@@ -52,6 +57,7 @@ const mutations = {
     }
     state.author = payload;
     state.authorID = payload.id;
+    state.authorRole = payload.role;
     state.authorFirstName = payload.first_name;
     state.authorLastName = payload.last_name;
     state.authorCompanyName = payload.company_name;

@@ -34,14 +34,10 @@ export default {
       return this.$store.getters.isAuthenticated;
     },
     first_name() {
-      return this.$store.getters.author
-        ? this.$store.getters.author.first_name
-        : null;
+      return this.$store.getters.authorFirstName;
     },
     role() {
-      return this.$store.getters.author
-        ? this.$store.getters.author.role
-        : null;
+      return this.$store.getters.authorRole;
     }
   },
   methods: {

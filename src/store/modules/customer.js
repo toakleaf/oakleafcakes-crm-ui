@@ -3,6 +3,7 @@ import axios from '@/axiosAPI';
 const state = {
   currentCustomer: null,
   currentCustomerID: null,
+  currentCustomerRole: null,
   currentCustomerFirstName: null,
   currentCustomerLastName: null,
   currentCustomerCompanyName: null,
@@ -16,6 +17,9 @@ const getters = {
   },
   currentCustomerID: state => {
     return state.currentCustomerID;
+  },
+  currentCustomerRole: state => {
+    return state.currentCustomerRole;
   },
   currentCustomerFirstName: state => {
     return state.currentCustomerFirstName;
@@ -39,6 +43,7 @@ const mutations = {
     if (!payload) {
       state.currentCustomer = null;
       state.currentCustomerID = null;
+      state.currentCustomerRole = null;
       state.currentCustomerFirstName = null;
       state.currentCustomerLastName = null;
       state.currentCustomerCompanyName = null;
@@ -48,6 +53,7 @@ const mutations = {
     }
     state.currentCustomer = payload;
     state.currentCustomerID = payload.id;
+    state.currentCustomerRole = payload.role;
     state.currentCustomerFirstName = payload.first_name;
     state.currentCustomerLastName = payload.last_name;
     state.currentCustomerCompanyName = payload.company_name;
