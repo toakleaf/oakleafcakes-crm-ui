@@ -14,7 +14,7 @@
                 @dblclick.native="isCompany = false"
                 @keyup.backspace.native="companyName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('company_name', companyName)"
-                @select="options => { setCurrentCustomer(options)}"
+                @select="options => { !disabled ? setCurrentCustomer(options) : null}"
                 @blur="$v.email.$touch();"
                 :disabled="disabled"
               >
@@ -40,7 +40,7 @@
                 @dblclick.native="isCompany = true"
                 @keyup.backspace.native="firstName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('first_name', firstName)"
-                @select="options => { setCurrentCustomer(options)}"
+                @select="options => { !disabled ? setCurrentCustomer(options) : null}"
                 @blur="$v.firstName.$touch();"
                 :disabled="disabled"
               >
@@ -66,7 +66,7 @@
                 @dblclick.native="isCompany = true"
                 @keyup.backspace.native="lastName || !currentCustomer ? null : clearFields()"
                 @input="fetchCustomers('last_name', lastName)"
-                @select="options => { setCurrentCustomer(options)}"
+                @select="options => { !disabled ? setCurrentCustomer(options) : null}"
                 @blur="$v.lastName.$touch();"
                 :disabled="disabled"
               >
@@ -97,7 +97,7 @@
                   v-model="email"
                   @keyup.backspace.native="email || !currentCustomer ? null : clearFields()"
                   @input="fetchCustomers('email', email)"
-                  @select="options => { setCurrentCustomer(options)}"
+                  @select="options => { !disabled ? setCurrentCustomer(options) : null}"
                   @blur="$v.email.$touch();"
                   :disabled="disabled"
                 >
@@ -124,7 +124,7 @@
                   v-model="phone"
                   @keyup.backspace.native="phone || !currentCustomer ? null : clearFields()"
                   @input="fetchCustomers('phone', phone)"
-                  @select="options => { setCurrentCustomer(options)}"
+                  @select="options => { !disabled ? setCurrentCustomer(options) : null}"
                   @blur="$v.phone.$touch();"
                   :disabled="disabled"
                 >
@@ -223,7 +223,6 @@ export default {
   props: ["customer"],
   data: function() {
     return {
-      disabledVal: false,
       searchResults: {
         first_name: [],
         last_name: [],
@@ -282,7 +281,10 @@ export default {
         this.inputs.firstName = val;
       },
       get: function() {
-        if (this.currentCustomerFirstName) return this.currentCustomerFirstName;
+        if (this.currentCustomerFirstName) {
+          return this.currentCustomerFirstName;
+        }
+
         return this.inputs.firstName;
       }
     },
@@ -379,6 +381,7 @@ export default {
       "clearCurrentCustomer"
     ]),
     fetchCustomers: function(field, query) {
+      if (this.currentCustomer && this.currentCustomer[field] === query) return;
       this.previous_queries[field].push(query);
       if (
         !query ||
