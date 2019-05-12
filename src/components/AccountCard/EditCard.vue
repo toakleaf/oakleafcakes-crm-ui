@@ -65,7 +65,7 @@
         v-for="(email, i) in account.emails"
         :key="email.id + 'e'"
       >
-        <a class="control" @click="deleteEmail({email: email.email})">
+        <a class="control" @click="$emit('deleteEmail', {email: email.email})">
           <b-tooltip label="Delete this email" type="is-danger">
             <span class="icon has-link-danger">
               <i class="fas fa-backspace fa-flip-horizontal"></i>
@@ -96,15 +96,15 @@
         v-for="(phone, i) in account.phones"
         :key="phone.id + 'p'"
       >
-        <a class="control" @click="deletePhone({phone: phone.phone})">
-          <b-tooltip label="Delete this email" type="is-danger">
+        <a class="control" @click="$emit('deletePhone', {phone: phone.phone})">
+          <b-tooltip label="Delete this phone number" type="is-danger">
             <span class="icon has-link-danger">
               <i class="fas fa-backspace fa-flip-horizontal"></i>
             </span>
           </b-tooltip>
         </a>
         <div class="control">
-          <b-tooltip label="Mark this email as primary">
+          <b-tooltip label="Mark this phone number as primary">
             <app-star-radio
               v-model="primaryPhone"
               :native-value="phone.phone"
@@ -297,56 +297,6 @@ export default {
         },
         error: this.$v.$invalid || this.error
       });
-    },
-    deleteEmail: function(val) {
-      if (!val || !val.email) return;
-      this.$store
-        .dispatch("deleteAccountEmail", {
-          id: this.account.id,
-          emails: [{ email: val.email }]
-        })
-        .then(() => {
-          this.$toast.open({
-            message: `Successfully deleted email address ${val.email}!`,
-            position: "is-bottom",
-            type: "is-success"
-          });
-          this.$emit("update:editing");
-        })
-        .catch(err => {
-          console.error(err);
-          this.$toast.open({
-            message: "Failed to delete email.",
-            position: "is-bottom",
-            type: "is-danger"
-          });
-          this.$emit("update:editing");
-        });
-    },
-    deletePhone: function(val) {
-      if (!val || !val.phone) return;
-      this.$store
-        .dispatch("deleteAccountPhone", {
-          id: this.account.id,
-          phones: [{ phone: val.phone }]
-        })
-        .then(() => {
-          this.$toast.open({
-            message: `Successfully deleted phone number ${val.phone}!`,
-            position: "is-bottom",
-            type: "is-success"
-          });
-          this.$emit("update:editing");
-        })
-        .catch(err => {
-          console.error(err);
-          this.$toast.open({
-            message: "Failed to delete phone number.",
-            position: "is-bottom",
-            type: "is-danger"
-          });
-          this.$emit("update:editing");
-        });
     }
   }
 };

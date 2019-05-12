@@ -21,6 +21,8 @@
       @update:account="listenUpdates"
       v-if="editing"
       @update:editing="editing = false"
+      @deleteEmail="deleteEmail"
+      @deletePhone="deletePhone"
     />
     <footer class="card-footer">
       <a
@@ -134,6 +136,56 @@ export default {
         component: AddPhone,
         hasModalCard: true
       });
+    },
+    deleteEmail: function(val) {
+      if (!val || !val.email) return;
+      this.$store
+        .dispatch("deleteAccountEmail", {
+          id: this.account.id,
+          emails: [{ email: val.email }]
+        })
+        .then(() => {
+          this.$toast.open({
+            message: `Successfully deleted email address ${val.email}!`,
+            position: "is-bottom",
+            type: "is-success"
+          });
+          this.$emit("update:editing");
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message: "Failed to delete email.",
+            position: "is-bottom",
+            type: "is-danger"
+          });
+          this.$emit("update:editing");
+        });
+    },
+    deletePhone: function(val) {
+      if (!val || !val.phone) return;
+      this.$store
+        .dispatch("deleteAccountPhone", {
+          id: this.account.id,
+          phones: [{ phone: val.phone }]
+        })
+        .then(() => {
+          this.$toast.open({
+            message: `Successfully deleted phone number ${val.phone}!`,
+            position: "is-bottom",
+            type: "is-success"
+          });
+          this.$emit("update:editing");
+        })
+        .catch(err => {
+          console.error(err);
+          this.$toast.open({
+            message: "Failed to delete phone number.",
+            position: "is-bottom",
+            type: "is-danger"
+          });
+          this.$emit("update:editing");
+        });
     }
   }
 };
