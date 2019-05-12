@@ -1,6 +1,6 @@
 <template>
   <div class="card-content">
-    <div class="content">
+    <div class="content has-text-centered">
       <p>
         <span v-if="account.first_name && account.company_name" class="is-italic">
           <span class="icon">
@@ -27,9 +27,6 @@
           <span class="icon" v-if="phone.is_primary">
             <i class="far fa-star"></i>
           </span>
-          <span class="icon" v-else>
-            <i class></i>
-          </span>
           {{phone.phone}}
           <span
             class="icon"
@@ -52,16 +49,23 @@
           <br>
         </span>
       </p>
-      <p class="card-dates">
-        <span class="is-size-7">Created: {{account.created_at.toLocaleString()}}</span>
-        <span
-          v-if="account.created_at.toLocaleString() !== account.updated_at.toLocaleString()"
-          class="is-size-7"
-        >
-          <br>
-          Updated: {{account.updated_at.toLocaleString()}}
-        </span>
-      </p>
+      <nav class="level card-dates is-desktop">
+        <div class="level-item has-text-centered">
+          <p class="is-size-7" style="padding: 0 .25em 0 .25em">
+            Created:
+            <span class="has-text-grey">{{account.created_at.toLocaleString()}}</span>
+          </p>
+        </div>
+        <div class="level-item has-text-centered" style="padding: 0 .25em 0 .25em">
+          <p
+            v-if="account.created_at.toLocaleString() !== account.updated_at.toLocaleString()"
+            class="is-size-7"
+          >
+            Updated:
+            <span class="has-text-grey">{{account.updated_at.toLocaleString()}}</span>
+          </p>
+        </div>
+      </nav>
     </div>
   </div>
 </template>

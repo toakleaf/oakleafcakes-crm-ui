@@ -88,6 +88,14 @@
           @update:email="updateEmail(i, ...arguments)"
         />
       </div>
+      <nav class="level is-marginless">
+        <div class="level-left"></div>
+        <div class="level-right">
+          <div class="level-item">
+            <a class="is-size-7">+Add Email</a>
+          </div>
+        </div>
+      </nav>
       <div class="field">
         <label class="label">Phone Numbers</label>
       </div>
@@ -123,16 +131,17 @@
           @update:phone="updatePhone(i, ...arguments)"
         />
       </div>
-      <p class="card-dates">
-        <span class="is-size-7">Created: {{account.created_at.toLocaleString()}}</span>
-        <span
-          v-if="account.created_at.toLocaleString() !== account.updated_at.toLocaleString()"
-          class="is-size-7"
-        >
-          <br>
-          Updated: {{account.updated_at.toLocaleString()}}
-        </span>
-      </p>
+      <nav class="level card-dates">
+        <div class="level-item has-text-centered">
+          <p class="is-size-7">Created: {{account.created_at.toLocaleString()}}</p>
+        </div>
+        <div class="level-item has-text-centered">
+          <p
+            v-if="account.created_at.toLocaleString() !== account.updated_at.toLocaleString()"
+            class="is-size-7"
+          >Updated: {{account.updated_at.toLocaleString()}}</p>
+        </div>
+      </nav>
     </div>
   </div>
 </template>
