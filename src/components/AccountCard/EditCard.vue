@@ -168,7 +168,7 @@ export default {
     firstName: {
       get: function() {
         return this.firstNameUpdate
-          ? this.firstNameUpdate.firstName
+          ? this.firstNameUpdate.first_name
           : this.account.first_name;
       },
       set: function(val) {
