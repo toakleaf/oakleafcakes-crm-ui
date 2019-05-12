@@ -2,9 +2,12 @@
   <section class="container pad-route">
     <div class="box">
       <h1 class="title">My Account Profile</h1>
-      <div class="columns">
+      <div class="columns is-multiline">
         <div class="column is-two-thirds">
           <app-account-card :account="$store.getters.author"/>
+        </div>
+        <div class="column">
+          <app-login-card :account="$store.getters.author"/>
         </div>
       </div>
     </div>
@@ -14,6 +17,7 @@
 <script>
 import axios from "../axiosAPI";
 import AccountCard from "@/containers/AccountCard.vue";
+import LoginCard from "@/containers/LoginCard.vue";
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
 let PhoneNumber = require("awesome-phonenumber");
 
@@ -25,7 +29,8 @@ listRegions = listRegions.sort().filter(item => item !== "001"); //removes the 0
 
 export default {
   components: {
-    "app-account-card": AccountCard
+    "app-account-card": AccountCard,
+    "app-login-card": LoginCard
   },
   name: "profile",
   data: function() {

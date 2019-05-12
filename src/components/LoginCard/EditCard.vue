@@ -149,7 +149,7 @@
 import EmailCheck from "@/components/Form/EmailCheck.vue";
 import PhoneCheck from "@/components/Form/PhoneCheck.vue";
 import IconRadio from "@/components/widgets/IconRadio.vue";
-import CardDates from "@/components/AccountCard/CardDates.vue";
+import CardDates from "@/components/LoginCard/CardDates.vue";
 import { required, requiredUnless } from "vuelidate/lib/validators";
 
 export default {

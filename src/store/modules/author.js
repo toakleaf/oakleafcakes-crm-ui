@@ -76,6 +76,19 @@ const mutations = {
       });
       state.authorWorkingEmail = state.author.emails[0].email;
     }
+    if (payload.logins && payload.logins.length > 0) {
+      state.author.logins = payload.logins.sort((a, b) =>
+        a.is_active ? -1 : 1
+      );
+      state.author.logins = state.author.logins.map(e => {
+        if (!(e.created_at && e.updated_at)) return e;
+        return {
+          ...e,
+          created_at: new Date(e.created_at),
+          updated_at: new Date(e.updated_at)
+        };
+      });
+    }
     if (state.author.phones && state.author.phones.length > 0) {
       state.author.phones = state.author.phones.sort((a, b) =>
         a.is_primary ? -1 : 1
@@ -94,19 +107,6 @@ const mutations = {
     if (payload.email) state.authorWorkingEmail = payload.email;
     if (payload.phone) state.authorWorkingPhone = payload.phone;
 
-    if (state.author.logins && state.author.logins.length > 0) {
-      state.author.logins = state.author.logins.sort((a, b) =>
-        a.is_active ? -1 : 1
-      );
-      state.author.logins.map(l => {
-        if (!(l.created_at && l.updated_at)) return l;
-        return {
-          ...l,
-          created_at: new Date(l.created_at),
-          updated_at: new Date(l.updated_at)
-        };
-      });
-    }
     if (payload.created_at)
       state.author.created_at = new Date(payload.created_at);
     if (payload.updated_at)

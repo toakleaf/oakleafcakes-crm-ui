@@ -13,10 +13,7 @@
           <span>
             <a :href="'mailto:' + email.email">
               <span class="icon" v-if="email.is_primary">
-                <i class="far fa-star"></i>
-              </span>
-              <span class="icon" v-else>
-                <i class></i>
+                <i class="fas fa-star"></i>
               </span>
               {{email.email}}
             </a>
@@ -25,7 +22,7 @@
         </span>
         <span v-for="phone in account.phones" :key="phone.id + 'p'">
           <span class="icon" v-if="phone.is_primary">
-            <i class="far fa-star"></i>
+            <i class="fas fa-star"></i>
           </span>
           {{phone.phone}}
           <span

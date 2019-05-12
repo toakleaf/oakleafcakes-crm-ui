@@ -7,11 +7,13 @@
       role="button"
       aria-controls="contentIdForA11y3"
     >
-      <p
-        class="card-header-title"
-      >{{account.first_name ? (account.first_name + ' ' + account.last_name) : account.company_name ? account.company_name : null }}</p>
+      <p class="card-header-title">
+        <span class="icon is-medium">
+          <i class="fas fa-sign-in-alt fa-lg"></i>
+        </span>
+        Account Logins
+      </p>
       <a class="card-header-icon">
-        <span class="is-size-7 has-text-grey" style="margin-right: 1em;">{{account.role}}</span>
         <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" pack="fa"></b-icon>
       </a>
     </div>
@@ -43,10 +45,10 @@
 </template>
 
 <script>
-import DisplayCard from "@/components/AccountCard/DisplayCard.vue";
-import DisplayFooter from "@/components/AccountCard/DisplayFooter.vue";
-import EditCard from "@/components/AccountCard/EditCard.vue";
-import EditFooter from "@/components/AccountCard/EditFooter.vue";
+import DisplayCard from "@/components/LoginCard/DisplayCard.vue";
+import DisplayFooter from "@/components/LoginCard/DisplayFooter.vue";
+import EditCard from "@/components/LoginCard/EditCard.vue";
+import EditFooter from "@/components/LoginCard/EditFooter.vue";
 import AddEmail from "@/containers/modals/AddEmail.vue";
 import AddPhone from "@/containers/modals/AddPhone.vue";
 

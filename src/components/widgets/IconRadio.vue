@@ -22,13 +22,12 @@
       }"
     >
       <i
-        class="fas fa-star"
-        :class="{
+        :class="[selectedIcon, {
           '': size === 'is-small',
           'fa-lg': size === '',
           'fa-2x': size === 'is-medium',
           'fa-3x': size === 'is-large',
-        }"
+        }]"
       ></i>
     </span>
     <span
@@ -55,12 +54,12 @@
     >
       <i
         class="far fa-star"
-        :class="{
+        :class="[deselectedIcon, {
           '': size === 'is-small',
           'fa-lg': size === '',
           'fa-2x': size === 'is-medium',
           'fa-3x': size === 'is-large',
-        }"
+        }]"
       ></i>
     </span>
   </a>
@@ -79,13 +78,22 @@ export default {
       type: String
     },
     value: {
-      //native-value in template
       default: "",
       type: String
     },
     nativeValue: {
       //native-value in template
       default: "",
+      type: String
+    },
+    selectedIcon: {
+      //selected-icon in template
+      default: "fas fa-star",
+      type: String
+    },
+    deselectedIcon: {
+      //deselected-icon in template
+      default: "far fa-star",
       type: String
     }
   },

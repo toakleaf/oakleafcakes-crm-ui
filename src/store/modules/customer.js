@@ -72,6 +72,20 @@ const mutations = {
       });
       state.currentCustomerWorkingEmail = state.currentCustomer.emails[0].email;
     }
+    if (payload.logins && payload.logins.length > 0) {
+      state.currentCustomer.logins = payload.logins.sort((a, b) =>
+        a.is_active ? -1 : 1
+      );
+      state.currentCustomer.logins = state.currentCustomer.logins.map(e => {
+        if (!(e.created_at && e.updated_at)) return e;
+        return {
+          ...e,
+          created_at: new Date(e.created_at),
+          updated_at: new Date(e.updated_at)
+        };
+      });
+    }
+
     if (
       state.currentCustomer.phones &&
       state.currentCustomer.phones.length > 0
@@ -93,22 +107,6 @@ const mutations = {
     if (payload.email) state.currentCustomerWorkingEmail = payload.email;
     if (payload.phone) state.currentCustomerWorkingPhone = payload.phone;
 
-    if (
-      state.currentCustomer.logins &&
-      state.currentCustomer.logins.length > 0
-    ) {
-      state.currentCustomer.logins = state.currentCustomer.logins.sort((a, b) =>
-        a.is_active ? -1 : 1
-      );
-      state.currentCustomer.logins.map(l => {
-        if (!(l.created_at && l.updated_at)) return l;
-        return {
-          ...l,
-          created_at: new Date(l.created_at),
-          updated_at: new Date(l.updated_at)
-        };
-      });
-    }
     if (payload.created_at)
       state.currentCustomer.created_at = new Date(payload.created_at);
     if (payload.updated_at)
