@@ -6,8 +6,12 @@
         <span class="has-text-grey">{{created.toLocaleString()}}</span>
       </p>
     </div>
-    <div class="level-item has-text-centered" style="padding: 0 .25em 0 .25em">
-      <p v-if="created.toLocaleString() !== updated.toLocaleString()" class="is-size-7">
+    <div
+      v-if="created.toLocaleString() !== updated.toLocaleString()"
+      class="level-item has-text-centered"
+      style="padding: 0 .25em 0 .25em"
+    >
+      <p class="is-size-7">
         Updated:
         <span class="has-text-grey">{{updated.toLocaleString()}}</span>
       </p>

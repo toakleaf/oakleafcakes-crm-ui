@@ -92,7 +92,7 @@
         <div class="level-left"></div>
         <div class="level-right">
           <div class="level-item">
-            <a class="is-size-7">+Add Email</a>
+            <a class="is-size-7" @click="$emit('addEmail')">+Add Email</a>
           </div>
         </div>
       </nav>
@@ -131,6 +131,15 @@
           @update:phone="updatePhone(i, ...arguments)"
         />
       </div>
+      <nav class="level">
+        <div class="level-left"></div>
+        <div class="level-right">
+          <div class="level-item">
+            <a class="is-size-7" @click="$emit('addPhone')">+Add Phone</a>
+          </div>
+        </div>
+      </nav>
+
       <app-card-dates :created="account.created_at" :updated="account.updated_at"/>
     </div>
   </div>

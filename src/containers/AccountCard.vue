@@ -21,66 +21,41 @@
       @update:account="listenUpdates"
       v-if="editing"
       @update:editing="editing = false"
+      @addEmail="addEmailModal"
+      @addPhone="addPhoneModal"
       @deleteEmail="deleteEmail"
       @deletePhone="deletePhone"
     />
-    <footer class="card-footer">
-      <a
-        class="card-footer-item has-link-danger"
-        @click="submitUpdates()"
-        v-if="editing && !disabled"
-      >
-        <span class="icon">
-          <i class="far fa-save"></i>
-        </span>
-        <span>Update</span>
-      </a>
-      <p class="card-footer-item has-text-grey" v-if="editing && disabled">
-        <span class="icon">
-          <i class="far fa-save"></i>
-        </span>
-        <span>
-          <strike>Update</strike>
-        </span>
-      </p>
-      <a class="card-footer-item" @click="editing = false, disabled = true" v-if="editing">
-        <span class="icon">
-          <i class="fas fa-ban"></i>
-        </span>
-        <span>Cancel</span>
-      </a>
-      <a class="card-footer-item" @click="editing = true" v-if="!editing">
-        <span class="icon">
-          <i class="fas fa-edit"></i>
-        </span>
-        <span>Edit</span>
-      </a>
-      <a class="card-footer-item" v-if="!editing" @click="emailModal">
-        <span class="icon">
-          <i class="far fa-plus-square"></i>
-        </span>
-        <span>Email</span>
-      </a>
-      <a class="card-footer-item" v-if="!editing" @click="phoneModal">
-        <span class="icon">
-          <i class="far fa-plus-square"></i>
-        </span>
-        <span>Phone</span>
-      </a>
-    </footer>
+    <app-edit-footer
+      v-if="editing"
+      :disabled.sync="disabled"
+      :editing.sync="editing"
+      @submitUpdates="submitUpdates"
+    />
+    <app-display-footer
+      v-else
+      :disabled.sync="disabled"
+      :editing.sync="editing"
+      @addEmail="addEmailModal"
+      @addPhone="addPhoneModal"
+    />
   </b-collapse>
 </template>
 
 <script>
 import DisplayCard from "@/components/AccountCard/DisplayCard.vue";
+import DisplayFooter from "@/components/AccountCard/DisplayFooter.vue";
 import EditCard from "@/components/AccountCard/EditCard.vue";
+import EditFooter from "@/components/AccountCard/EditFooter.vue";
 import AddEmail from "@/containers/modals/AddEmail.vue";
 import AddPhone from "@/containers/modals/AddPhone.vue";
 
 export default {
   components: {
     "app-display-card": DisplayCard,
-    "app-edit-card": EditCard
+    "app-display-footer": DisplayFooter,
+    "app-edit-card": EditCard,
+    "app-edit-footer": EditFooter
   },
   name: "AccountCard",
   props: ["account"],
@@ -119,9 +94,8 @@ export default {
             type: "is-danger"
           });
         });
-      this.editing = false;
     },
-    emailModal: function() {
+    addEmailModal: function() {
       this.$modal.open({
         props: { id: this.account.id },
         parent: this,
@@ -129,7 +103,7 @@ export default {
         hasModalCard: true
       });
     },
-    phoneModal: function() {
+    addPhoneModal: function() {
       this.$modal.open({
         props: { id: this.account.id },
         parent: this,
