@@ -65,55 +65,78 @@
         v-for="(email, i) in account.emails"
         :key="email.id + 'e'"
       >
-        <p
-          class="control"
-          v-if="preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email))"
+        <a
+          class="control has-text-grey"
+          @click="disableLogin(email.email) ? null : $emit('deleteEmail', {email: email.email})"
+          :class="{'cursor-disabled': disableLogin(email.email)}"
         >
-          <span class="icon">
-            <i class="fas fa-backspace fa-flip-horizontal"></i>
-          </span>
-        </p>
-        <a class="control" @click="$emit('deleteEmail', {email: email.email})" v-else>
           <b-tooltip
             :label=" account.logins && account.logins.some(l => l.email === email.email) ? 'CAUTION! Deleting this email will also delete the user\'s login email and could prevent access!' : 'Delete this email'"
             type="is-danger"
             multilined
             position="is-right"
+            :active="!disableLogin(email.email)"
           >
-            <span class="icon has-link-danger">
+            <span class="icon" :class="{'has-link-danger': !disableLogin(email.email)}">
               <i class="fas fa-backspace fa-flip-horizontal"></i>
             </span>
           </b-tooltip>
         </a>
         <div class="control">
-          <b-tooltip label="Mark this email as primary" position="is-right">
+          <b-tooltip
+            label="Mark this email as primary"
+            position="is-right"
+            :active="!preventLoginEdits"
+          >
             <app-icon-radio
               v-model="primaryEmail"
               :native-value="email.email"
               size="is-small"
               @input="emitUpdates()"
+              :disabled="preventLoginEdits"
             ></app-icon-radio>
           </b-tooltip>
         </div>
 
         <app-email-check
           :iconLeft="account.logins && account.logins.some(l => l.email === email.email) ? 'fas fa-sign-in-alt' : 'fas fa-envelope'"
-          :disabled="preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email))"
+          :disabled="disableLogin(email.email)"
           :emailAddress="email.email"
           size="is-small"
           @update:email="updateEmail(i, ...arguments)"
         />
 
-        <p
-          class="control"
-          v-if="preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email))"
-        >
+        <p class="control" v-if="disableLogin(email.email)">
           <b-tooltip
             label="CAUTION! Editing this email will also alter the user's login email and could prevent access!"
             multilined
             type="is-danger"
           >
-            <a class="has-text-danger is-size-7" @click="preventLoginEdits = false">edit</a>
+            <a class="has-text-danger is-size-7" @click="preventLoginEdits = false">Edit</a>
+          </b-tooltip>
+        </p>
+        <p
+          class="control"
+          v-if="!preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email && l.is_active))"
+        >
+          <b-tooltip
+            label="Suspending this login email will block user from logging into their account (after the expiration of their browser token)."
+            multilined
+            type="is-danger"
+          >
+            <a class="has-text-danger is-size-7" @click="deactivateEmail(email.email)">Suspend</a>
+          </b-tooltip>
+        </p>
+        <p
+          class="control"
+          v-if="!preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email && l.is_active === false))"
+        >
+          <b-tooltip
+            label="This email has login credentials associated with it but is currently deactivated. Click to reactivate user's ability to login with this email."
+            multilined
+            type="is-danger"
+          >
+            <a class="has-text-danger is-size-7" @click="activateEmail(email.email)">Reactivate</a>
           </b-tooltip>
         </p>
       </div>
@@ -270,6 +293,13 @@ export default {
     }
   },
   methods: {
+    disableLogin: function(email) {
+      return (
+        this.preventLoginEdits &&
+        (this.account.logins &&
+          this.account.logins.some(l => l.email === email))
+      );
+    },
     updateEmail: function(i, val) {
       this.emailUpdates = this.emailUpdates.filter(
         e => e.current_email !== this.account.emails[i].email
@@ -293,6 +323,20 @@ export default {
       });
       this.error = val.error;
       this.emitUpdates();
+    },
+    deactivateEmail: function(val) {
+      this.$emit("update:account", {
+        update: { emails: [{ current_email: val, is_active: false }] },
+        error: false
+      });
+      this.$emit("submitUpdates");
+    },
+    activateEmail: function(val) {
+      this.$emit("update:account", {
+        update: { emails: [{ current_email: val, is_active: true }] },
+        error: false
+      });
+      this.$emit("submitUpdates");
     },
     emitUpdates: function() {
       if (this.primaryEmailUpdate) {
@@ -339,6 +383,13 @@ export default {
         },
         error: this.$v.$invalid || this.error
       });
+    }
+  },
+  created: function() {
+    if (this.account && this.account.logins && this.account.emails) {
+      this.preventLoginEdits = this.account.logins.some(l =>
+        this.account.emails.some(e => e.email === l.email)
+      );
     }
   }
 };

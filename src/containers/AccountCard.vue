@@ -10,24 +10,44 @@
       <p
         class="card-header-title"
       >{{account.first_name ? (account.first_name + ' ' + account.last_name) : account.company_name ? account.company_name : null }}</p>
-      <a class="card-header-icon">
-        <span class="is-size-7 has-text-grey" style="margin-right: 1em;">{{account.role}}</span>
+      <a class="card-header-icon is-size-7 has-text-grey">
+        <span v-if="account.is_active">ACTIVE</span>
+
+        <span v-else-if="account.logins && account.logins.length">
+          <span v-if="account.logins.some(l => Date.now() - Date.parse(l) ) / 86400000 < 7">
+            <!-- if < 1 week since a login was created -->
+            PENDING
+          </span>
+          <span v-else class="has-text-danger">
+            <!-- if > 1 week since a login was created -->
+            SUSPENDED
+          </span>
+        </span>
+        <span style="margin: 0 .25em 0 .25em">|</span>
+        <span style="margin-right: 1em;">{{account.role}}</span>
         <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" pack="fa"></b-icon>
       </a>
     </div>
     <app-display-card :account="account" v-if="!editing"/>
     <app-edit-card
+      v-if="editing"
       :account="account"
       @update:account="listenUpdates"
-      v-if="editing"
+      @submitUpdates="submitUpdates"
       @update:editing="editing = false"
       @addEmail="addEmailModal"
       @addPhone="addPhoneModal"
       @deleteEmail="deleteEmail"
       @deletePhone="deletePhone"
     />
+    <footer
+      class="card-footer"
+      v-if="$store.getters.authorRole !== 'ADMIN' && account.role === 'ADMIN'"
+    >
+      <!-- hide editing options if not privilaged to edit. -->
+    </footer>
     <app-edit-footer
-      v-if="editing"
+      v-else-if="editing"
       :disabled.sync="disabled"
       :editing.sync="editing"
       @submitUpdates="submitUpdates"
@@ -73,26 +93,14 @@ export default {
       this.update = val.update;
     },
     submitUpdates: function(val) {
-      if (!this.account || !this.update) return;
+      if (!this.account || !this.update || this.disabled) return;
       this.$store
         .dispatch("pushAccountUpdate", {
           id: this.account.id,
           update: this.update
         })
         .then(() => {
-          this.$toast.open({
-            message: "Account updated successfully!",
-            position: "is-bottom",
-            type: "is-success"
-          });
-        })
-        .catch(err => {
-          console.error(err);
-          this.$toast.open({
-            message: "Failed to update account",
-            position: "is-bottom",
-            type: "is-danger"
-          });
+          this.disabled = true;
         });
     },
     addEmailModal: function() {
@@ -113,53 +121,17 @@ export default {
     },
     deleteEmail: function(val) {
       if (!val || !val.email) return;
-      this.$store
-        .dispatch("deleteAccountEmail", {
-          id: this.account.id,
-          emails: [{ email: val.email }]
-        })
-        .then(() => {
-          this.$toast.open({
-            message: `Successfully deleted email address ${val.email}!`,
-            position: "is-bottom",
-            type: "is-success"
-          });
-          this.$emit("update:editing");
-        })
-        .catch(err => {
-          console.error(err);
-          this.$toast.open({
-            message: "Failed to delete email.",
-            position: "is-bottom",
-            type: "is-danger"
-          });
-          this.$emit("update:editing");
-        });
+      this.$store.dispatch("deleteAccountEmail", {
+        id: this.account.id,
+        emails: [{ email: val.email }]
+      });
     },
     deletePhone: function(val) {
       if (!val || !val.phone) return;
-      this.$store
-        .dispatch("deleteAccountPhone", {
-          id: this.account.id,
-          phones: [{ phone: val.phone }]
-        })
-        .then(() => {
-          this.$toast.open({
-            message: `Successfully deleted phone number ${val.phone}!`,
-            position: "is-bottom",
-            type: "is-success"
-          });
-          this.$emit("update:editing");
-        })
-        .catch(err => {
-          console.error(err);
-          this.$toast.open({
-            message: "Failed to delete phone number.",
-            position: "is-bottom",
-            type: "is-danger"
-          });
-          this.$emit("update:editing");
-        });
+      this.$store.dispatch("deleteAccountPhone", {
+        id: this.account.id,
+        phones: [{ phone: val.phone }]
+      });
     }
   }
 };

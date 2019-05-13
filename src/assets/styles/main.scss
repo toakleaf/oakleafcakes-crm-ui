@@ -125,3 +125,6 @@ $speed-slower: 300ms !default; //tabs
 .has-link-danger:hover {
   color: $black;
 }
+.cursor-disabled {
+  cursor: not-allowed;
+}

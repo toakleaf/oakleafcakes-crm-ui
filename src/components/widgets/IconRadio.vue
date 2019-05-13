@@ -1,5 +1,10 @@
 <template>
-  <a @click="$emit('input', nativeValue)" @mouseover="hover = true" @mouseleave="hover = false">
+  <a
+    @click="disabled ? null : $emit('input', nativeValue)"
+    @mouseover="disabled ? null : hover = true"
+    @mouseleave="hover = false"
+    :class="{'cursor-disabled': disabled}"
+  >
     <span
       v-if="value === nativeValue"
       class="icon"
@@ -95,6 +100,11 @@ export default {
       //deselected-icon in template
       default: "far fa-star",
       type: String
+    },
+    disabled: {
+      //deselected-icon in template
+      default: false,
+      type: Boolean
     }
   },
   data: function() {
