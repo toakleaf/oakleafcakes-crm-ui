@@ -19,12 +19,10 @@ export default {
   },
   mounted() {
     this.$store.subscribe((mutation, state) => {
-      console.log("ho");
       if (mutation.type === "setStatus") {
         switch (state.status) {
           case "success":
             if (!state.showToast) return;
-            console.log("hi");
             this.isLoading = false;
             return this.$toast.open({
               message: state.successMessage,
