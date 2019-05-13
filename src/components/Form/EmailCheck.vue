@@ -1,7 +1,7 @@
 <template>
   <p
-    class="control has-icons-left"
-    :class="{'is-loading': isLoading, 'has-icons-left': hasIcon, 'has-icons-right': hasCheckmark, 'is-small': size === 'is-small', 'is-medium': size === 'is-medium', 'is-large': size === 'is-large', 'is-expanded': expanded}"
+    class="control"
+    :class="{'is-loading': isLoading, 'has-icons-left': hasIconLeft, 'has-icons-right': hasCheckmark, 'is-small': size === 'is-small', 'is-medium': size === 'is-medium', 'is-large': size === 'is-large', 'is-expanded': expanded}"
   >
     <input
       class="input"
@@ -14,8 +14,8 @@
       @blur="$v.email.$touch();"
       @input="checkForDuplicateEmail"
     >
-    <span class="icon is-left">
-      <i class="fas fa-envelope"></i>
+    <span class="icon is-left" v-if="hasIconLeft">
+      <i :class="iconLeft"></i>
     </span>
     <span v-if="hasCheckmark && !isLoading" class="icon is-small is-right">
       <i class="fas fa-check"></i>
@@ -37,9 +37,13 @@ export default {
       default: false,
       type: Boolean
     },
-    hasIcon: {
+    hasIconLeft: {
       default: true,
       type: Boolean
+    },
+    iconLeft: {
+      default: "fas fa-envelope",
+      type: String
     },
     size: {
       type: String

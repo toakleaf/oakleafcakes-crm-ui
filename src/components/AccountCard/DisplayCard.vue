@@ -12,6 +12,12 @@
         <span v-for="(email) in account.emails" :key="email.id + 'e'">
           <span>
             <a :href="'mailto:' + email.email">
+              <span
+                class="icon"
+                v-if="account.logins && account.logins.some(l => l.email === email.email)"
+              >
+                <i class="fas fa-sign-in-alt"></i>
+              </span>
               <span class="icon" v-if="email.is_primary">
                 <i class="fas fa-star"></i>
               </span>

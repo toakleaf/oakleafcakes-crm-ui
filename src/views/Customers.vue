@@ -2,7 +2,7 @@
   <section class="container pad-route">
     <div class="box">
       <app-search-bar/>
-      <section>
+      <section class="btab-margin-mobile">
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
           <b-tab-item label="Details" icon-pack="fas" icon="info-circle">
             <app-details/>

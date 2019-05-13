@@ -115,6 +115,9 @@ $speed-slower: 300ms !default; //tabs
       width: 100%;
     }
   }
+  .btab-margin-mobile {
+    margin: 0 -1.25em 0 -1.25em;
+  }
 }
 .has-link-danger {
   color: $danger;

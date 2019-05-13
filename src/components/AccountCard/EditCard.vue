@@ -65,15 +65,28 @@
         v-for="(email, i) in account.emails"
         :key="email.id + 'e'"
       >
-        <a class="control" @click="$emit('deleteEmail', {email: email.email})">
-          <b-tooltip label="Delete this email" type="is-danger">
+        <p
+          class="control"
+          v-if="preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email))"
+        >
+          <span class="icon">
+            <i class="fas fa-backspace fa-flip-horizontal"></i>
+          </span>
+        </p>
+        <a class="control" @click="$emit('deleteEmail', {email: email.email})" v-else>
+          <b-tooltip
+            :label=" account.logins && account.logins.some(l => l.email === email.email) ? 'CAUTION! Deleting this email will also delete the user\'s login email and could prevent access!' : 'Delete this email'"
+            type="is-danger"
+            multilined
+            position="is-right"
+          >
             <span class="icon has-link-danger">
               <i class="fas fa-backspace fa-flip-horizontal"></i>
             </span>
           </b-tooltip>
         </a>
         <div class="control">
-          <b-tooltip label="Mark this email as primary">
+          <b-tooltip label="Mark this email as primary" position="is-right">
             <app-icon-radio
               v-model="primaryEmail"
               :native-value="email.email"
@@ -82,17 +95,35 @@
             ></app-icon-radio>
           </b-tooltip>
         </div>
+
         <app-email-check
+          :iconLeft="account.logins && account.logins.some(l => l.email === email.email) ? 'fas fa-sign-in-alt' : 'fas fa-envelope'"
+          :disabled="preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email))"
           :emailAddress="email.email"
           size="is-small"
           @update:email="updateEmail(i, ...arguments)"
         />
+
+        <p
+          class="control"
+          v-if="preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email))"
+        >
+          <b-tooltip
+            label="CAUTION! Editing this email will also alter the user's login email and could prevent access!"
+            multilined
+            type="is-danger"
+          >
+            <a class="has-text-danger is-size-7" @click="preventLoginEdits = false">edit</a>
+          </b-tooltip>
+        </p>
       </div>
       <nav class="level is-marginless">
         <div class="level-left"></div>
         <div class="level-right">
           <div class="level-item">
             <a class="is-size-7" @click="$emit('addEmail')">+Add Email</a>
+            <p style="padding: 0 .5em 0 .5em"></p>
+            <a class="is-size-7" @click="$emit('addEmail')">+Add Login</a>
           </div>
         </div>
       </nav>
@@ -105,14 +136,14 @@
         :key="phone.id + 'p'"
       >
         <a class="control" @click="$emit('deletePhone', {phone: phone.phone})">
-          <b-tooltip label="Delete this phone number" type="is-danger">
+          <b-tooltip label="Delete this phone number" type="is-danger" position="is-right">
             <span class="icon has-link-danger">
               <i class="fas fa-backspace fa-flip-horizontal"></i>
             </span>
           </b-tooltip>
         </a>
         <div class="control">
-          <b-tooltip label="Mark this phone number as primary">
+          <b-tooltip label="Mark this phone number as primary" position="is-right" multilined>
             <app-icon-radio
               v-model="primaryPhone"
               :native-value="phone.phone"
@@ -170,7 +201,8 @@ export default {
       emailUpdates: [],
       primaryEmailUpdate: null,
       phoneUpdates: [],
-      primaryPhoneUpdate: null
+      primaryPhoneUpdate: null,
+      preventLoginEdits: true
     };
   },
   computed: {
