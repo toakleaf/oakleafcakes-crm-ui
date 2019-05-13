@@ -22,7 +22,7 @@ export default {
       if (mutation.type === "setStatus") {
         switch (state.status) {
           case "success":
-            if (!state.showToast) return;
+            if (!state.preferences.showToast) return;
             this.isLoading = false;
             return this.$toast.open({
               message: state.successMessage,
@@ -32,7 +32,7 @@ export default {
             });
           case "error":
             this.isLoading = false;
-            if (!state.showToast) return;
+            if (!state.preferences.showToast) return;
             return this.$toast.open({
               message: state.errorMessage,
               position: "is-bottom",
@@ -40,7 +40,7 @@ export default {
               durration: 4000
             });
           case "pending":
-            if (!state.showLoadingOverlay) return;
+            if (!state.preferences.showLoadingOverlay) return;
             return (this.isLoading = true);
         }
       }
