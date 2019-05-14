@@ -1,9 +1,9 @@
 <template>
-  <a
+  <span
     @click="disabled ? null : $emit('input', nativeValue)"
     @mouseover="disabled ? null : hover = true"
     @mouseleave="hover = false"
-    :style="disabled ? 'cursor: not-allowed': null"
+    :style="disabled ? 'cursor: not-allowed': 'cursor: pointer'"
   >
     <span
       v-if="value === nativeValue"
@@ -67,7 +67,7 @@
         }]"
       ></i>
     </span>
-  </a>
+  </span>
 </template>
 
 <script>
