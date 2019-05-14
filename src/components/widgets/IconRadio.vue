@@ -3,7 +3,7 @@
     @click="disabled ? null : $emit('input', nativeValue)"
     @mouseover="disabled ? null : hover = true"
     @mouseleave="hover = false"
-    :class="{'cursor-disabled': disabled}"
+    :style="disabled ? 'cursor: not-allowed': null"
   >
     <span
       v-if="value === nativeValue"
