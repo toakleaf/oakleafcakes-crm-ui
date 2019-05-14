@@ -5,15 +5,15 @@
         <h1 class="title">System Administration</h1>
         <div class="box">
           <h2 class="subtitle">System Security</h2>
-          <div class="field is-horizontal">
-            <div class="field-label">
+          <div class="columns">
+            <div class="column is-one-quarter">
               <button
                 class="button is-danger"
                 @click="refreshJWTs()"
                 :class="{'is-loading': submitting}"
               >Logout ALL Users</button>
             </div>
-            <div class="field-body">
+            <div class="column">
               <p>
                 By clicking, you will reset the JSON Web Token (JWT) authorizations sitewide, and ALL accounts (admins, employees,
                 and customers) will be forced to re-login to continue using site. This is disruptive to user experience, and therefore
@@ -22,9 +22,9 @@
               </p>
             </div>
           </div>
-          <div class="field is-horizontal">
-            <div class="field-label">
-              <div class="field has-addons has-addons-right">
+          <div class="columns">
+            <div class="column is-one-quarter">
+              <div class="field has-addons">
                 <p class="control">
                   <span class="select">
                     <select v-model="quantity">
@@ -44,13 +44,15 @@
                   </span>
                 </p>
               </div>
-              <button
-                class="button is-primary"
-                @click="changeSessionLength()"
-                :class="{'is-loading': submitting}"
-              >Update Session Length</button>
+              <div class="field">
+                <button
+                  class="button is-primary"
+                  @click="changeSessionLength()"
+                  :class="{'is-loading': submitting}"
+                >Update Session Length</button>
+              </div>
             </div>
-            <div class="field-body">
+            <div class="column">
               <p>
                 Session length is the amount of time an account can remain logged in before needing to re-enter
                 their credentials. Shorter lengths are more secure, but too short of lengths can be very inconvenient
