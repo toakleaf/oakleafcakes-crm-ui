@@ -126,10 +126,9 @@ const actions = {
       .catch(err => {
         console.error(err);
         dispatch(
-          'setErrorMessage',
+          'sendErrorMessage',
           'Error: Failed to gather author data. Check connection.'
         );
-        dispatch('setStatus', 'error');
       });
   },
   setAuthorData({ commit }, payload) {

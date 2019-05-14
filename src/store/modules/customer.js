@@ -126,10 +126,9 @@ const actions = {
       .catch(err => {
         console.error(err);
         dispatch(
-          'setErrorMessage',
+          'sendErrorMessage',
           'Error: Failed to gather customer data. Check connection.'
         );
-        dispatch('setStatus', 'error');
       });
   },
   setCurrentCustomer({ commit }, payload) {

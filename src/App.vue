@@ -17,27 +17,28 @@ export default {
       isLoading: false
     };
   },
+
   mounted() {
     this.$store.subscribe((mutation, state) => {
       if (mutation.type === "setStatus") {
-        switch (state.status) {
+        switch (state.notifications.status) {
           case "success":
             if (!state.preferences.showToast) return;
             this.isLoading = false;
             return this.$toast.open({
-              message: state.successMessage,
+              message: state.notifications.successMessage,
               position: "is-bottom",
               type: "is-success",
-              duration: 3000
+              duration: state.notifications.successMessageDuration
             });
           case "error":
             this.isLoading = false;
             if (!state.preferences.showToast) return;
             return this.$toast.open({
-              message: state.errorMessage,
+              message: state.notifications.errorMessage,
               position: "is-bottom",
               type: "is-danger",
-              duration: 5000
+              duration: state.notifications.errorMessageDuration
             });
           case "pending":
             if (!state.preferences.showLoadingOverlay) return;

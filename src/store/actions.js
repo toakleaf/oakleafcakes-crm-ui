@@ -1,23 +1,6 @@
 // https://www.udemy.com/vuejs-2-the-complete-guide/learn/v4/t/lecture/5976808?start=0
 import axios from '@/axiosAPI';
 
-export const setStatus = ({ commit }, payload) => {
-  if (!payload) return;
-  commit('setStatus', payload);
-  //reset messages
-  commit('setSuccessMessage');
-  commit('setErrorMessage');
-};
-export const setSuccessMessage = ({ commit }, payload) => {
-  if (!payload) return;
-  console.log(payload);
-  commit('setSuccessMessage', payload);
-};
-export const setErrorMessage = ({ commit }, payload) => {
-  if (!payload) return;
-  commit('setErrorMessage', payload);
-};
-
 export const pushAccountUpdate = ({ dispatch, getters }, payload) => {
   if (!payload && !(payload.update || payload.id))
     throw new Error('Account update info missing');
@@ -25,7 +8,7 @@ export const pushAccountUpdate = ({ dispatch, getters }, payload) => {
   axios
     .put(`/account/${payload.id}`, payload.update)
     .then(res => {
-      dispatch('setStatus', 'success');
+      dispatch('sendSuccessMessage', 'Successfully updated account!');
 
       if (getters.currentCustomerID === payload.id) {
         dispatch('fetchCurrentCustomer', payload.id);
@@ -36,7 +19,7 @@ export const pushAccountUpdate = ({ dispatch, getters }, payload) => {
     })
     .catch(err => {
       console.error(err);
-      dispatch('setStatus', 'error');
+      dispatch('sendErrorMessage', 'Failed to update account.');
     });
 };
 
@@ -49,7 +32,7 @@ export const deleteAccountEmail = ({ dispatch, getters }, payload) => {
       data: { emails: payload.emails }
     })
     .then(res => {
-      dispatch('setStatus', 'success');
+      dispatch('sendSuccessMessage', 'Email address deleted successfully!');
       if (getters.currentCustomerID === payload.id) {
         dispatch('fetchCurrentCustomer', payload.id);
       }
@@ -59,7 +42,7 @@ export const deleteAccountEmail = ({ dispatch, getters }, payload) => {
     })
     .catch(err => {
       console.error(err);
-      dispatch('setStatus', 'error');
+      dispatch('sendErrorMessage', 'Failed to delete email address.');
     });
 };
 
@@ -72,7 +55,7 @@ export const deleteAccountPhone = ({ dispatch, getters }, payload) => {
       data: { phones: payload.phones }
     })
     .then(res => {
-      dispatch('setStatus', 'success');
+      dispatch('sendSuccessMessage', 'Phone number deleted successfully!');
       if (getters.currentCustomerID === payload.id) {
         dispatch('fetchCurrentCustomer', payload.id);
       }
@@ -82,6 +65,6 @@ export const deleteAccountPhone = ({ dispatch, getters }, payload) => {
     })
     .catch(err => {
       console.error(err);
-      dispatch('setStatus', 'error');
+      dispatch('sendErrorMessage', 'Failed to delete phone number.');
     });
 };

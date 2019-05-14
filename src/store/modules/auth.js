@@ -62,10 +62,9 @@ const actions = {
       .catch(err => {
         console.error(err);
         dispatch(
-          'setErrorMessage',
+          'sendErrorMessage',
           'Login attempt failed. Please check your credentials or connection and try again.'
         );
-        dispatch('setStatus', 'error');
       });
   },
   clearAuthData({ commit }) {

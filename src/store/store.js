@@ -4,6 +4,7 @@ import auth from './modules/auth';
 import author from './modules/author';
 import customer from './modules/customer';
 import preferences from './modules/preferences';
+import notifications from './modules/notifications';
 
 import * as getters from './getters';
 import * as actions from './actions';
@@ -12,11 +13,7 @@ import * as mutations from './mutations';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    status: null,
-    successMessage: 'Request successful!',
-    errorMessage: 'Request failed.'
-  },
+  state: {},
   getters,
   actions,
   mutations,
@@ -24,6 +21,7 @@ export default new Vuex.Store({
     auth,
     author,
     customer,
-    preferences
+    preferences,
+    notifications
   }
 });

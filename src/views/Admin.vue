@@ -93,13 +93,13 @@ export default {
         .then(() => {
           this.submitting = false;
           this.$store.dispatch("logout", true);
-          this.$toast.open({
-            message: "JWT's Reset Successfully!",
-            type: "is-success"
-          });
+          this.$store.dispatch(
+            "sendSuccessMessage",
+            "JWT's Reset Successfully!"
+          );
         })
         .catch(err => {
-          alert("Failed to reset JWT's");
+          this.$store.dispatch("sendErrorMessage", "Failed to reset JWT's.");
           console.error(err);
         });
     },
@@ -116,13 +116,16 @@ export default {
         })
         .then(() => {
           this.submitting = false;
-          this.$toast.open({
-            message: "Session Length Updated Successfully!",
-            type: "is-success"
-          });
+          this.$store.dispatch(
+            "sendSuccessMessage",
+            "Session Length Updated Successfully!"
+          );
         })
         .catch(err => {
-          alert("Failed to update session lengths.");
+          this.$store.dispatch(
+            "sendErrorMessage",
+            "Failed to update session lengths."
+          );
           console.error(err);
           this.submitting = false;
         });
@@ -135,6 +138,10 @@ export default {
           this.units = res.data.expiration.slice(-1);
         })
         .catch(err => {
+          this.$store.dispatch(
+            "sendErrorMessage",
+            "Failed to fetch session lengths. Check connection."
+          );
           console.error(err);
         });
     }
