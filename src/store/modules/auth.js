@@ -13,6 +13,9 @@ const getters = {
   },
   tokenExp: state => {
     return state.tokenExp;
+  },
+  authToken: state => {
+    return state.authToken;
   }
 };
 
@@ -30,9 +33,9 @@ const mutations = {
 };
 
 const actions = {
-  setAuthHeaders: ({ commit, state }, payload) => {
+  setAuthHeaders: ({ commit, getters }, payload) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${
-      state.authToken
+      getters.authToken
     }`;
   },
   setLogoutTimer: ({ dispatch }, exp) => {
@@ -40,7 +43,7 @@ const actions = {
       dispatch('logout');
     }, parseInt(exp - Date.now() / 1000) * 1000);
   },
-  login({ commit, dispatch, state }, payload) {
+  login({ commit, dispatch, getters }, payload) {
     axios
       .post(`/account/login`, payload)
       .then(res => {
@@ -50,14 +53,19 @@ const actions = {
         commit('setAuthToken', res.headers['x-auth-token']);
         dispatch('setAuthHeaders');
         localStorage.setItem('token', res.headers['x-auth-token']);
+        dispatch('fetchAuthorData');
       })
       .then(() => router.replace('/'))
-      .then(() => dispatch('setLogoutTimer', jwt.decode(state.authToken).exp))
+      .then(() => {
+        dispatch('setLogoutTimer', jwt.decode(getters.authToken).exp);
+      })
       .catch(err => {
         console.error(err);
-        alert(
-          'Login attempt failed. Please check your credentials and try again.'
+        dispatch(
+          'setErrorMessage',
+          'Login attempt failed. Please check your credentials or connection and try again.'
         );
+        dispatch('setStatus', 'error');
       });
   },
   clearAuthData({ commit }) {

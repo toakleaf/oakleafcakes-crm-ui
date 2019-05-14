@@ -4,6 +4,18 @@ import axios from '@/axiosAPI';
 export const setStatus = ({ commit }, payload) => {
   if (!payload) return;
   commit('setStatus', payload);
+  //reset messages
+  commit('setSuccessMessage');
+  commit('setErrorMessage');
+};
+export const setSuccessMessage = ({ commit }, payload) => {
+  if (!payload) return;
+  console.log(payload);
+  commit('setSuccessMessage', payload);
+};
+export const setErrorMessage = ({ commit }, payload) => {
+  if (!payload) return;
+  commit('setErrorMessage', payload);
 };
 
 export const pushAccountUpdate = ({ dispatch, getters }, payload) => {

@@ -28,7 +28,7 @@ export default {
               message: state.successMessage,
               position: "is-bottom",
               type: "is-success",
-              durration: 3500
+              duration: 3000
             });
           case "error":
             this.isLoading = false;
@@ -37,7 +37,7 @@ export default {
               message: state.errorMessage,
               position: "is-bottom",
               type: "is-danger",
-              durration: 5000
+              duration: 5000
             });
           case "pending":
             if (!state.preferences.showLoadingOverlay) return;

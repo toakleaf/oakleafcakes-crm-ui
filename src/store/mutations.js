@@ -7,11 +7,13 @@ export const setStatus = (state, payload) => {
 };
 
 export const setSuccessMessage = (state, payload) => {
+  console.log(payload);
   if (!payload) return (state.SuccessMessage = 'Request successful!');
   state.SuccessMessage = payload;
 };
 
 export const setErrorMessage = (state, payload) => {
+  console.log(payload);
   if (!payload) return (state.errorMessage = 'Request failed.');
   state.errorMessage = payload;
 };

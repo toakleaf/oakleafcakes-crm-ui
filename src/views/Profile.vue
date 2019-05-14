@@ -144,6 +144,10 @@ export default {
         .catch(err => console.error(err));
     }
   },
+  beforeCreate() {
+    //make sure author data is fresh on each load
+    this.$store.dispatch("fetchAuthorData");
+  },
   created() {
     this.loadAuthorData();
   }

@@ -123,7 +123,14 @@ const actions = {
       .then(res => {
         commit('setCurrentCustomer', res.data);
       })
-      .catch(err => console.error('Error: ' + err));
+      .catch(err => {
+        console.error(err);
+        dispatch(
+          'setErrorMessage',
+          'Error: Failed to gather customer data. Check connection.'
+        );
+        dispatch('setStatus', 'error');
+      });
   },
   setCurrentCustomer({ commit }, payload) {
     commit('setCurrentCustomer', payload);

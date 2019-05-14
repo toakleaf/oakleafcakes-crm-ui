@@ -123,7 +123,14 @@ const actions = {
       .then(res => {
         commit('setAuthorData', res.data);
       })
-      .catch(err => console.error('Error: ' + err));
+      .catch(err => {
+        console.error(err);
+        dispatch(
+          'setErrorMessage',
+          'Error: Failed to gather author data. Check connection.'
+        );
+        dispatch('setStatus', 'error');
+      });
   },
   setAuthorData({ commit }, payload) {
     commit('setAuthorData', payload);
