@@ -20,13 +20,20 @@
     <div class="card-content">
       <div class="content has-text-centered"></div>
     </div>
-    <footer class="card-footer"></footer>
+    <footer class="card-footer">
+      <a class="card-footer-item">
+        <span class="icon">
+          <i class="fas fa-edit"></i>
+        </span>
+        <span>Edit</span>
+      </a>
+    </footer>
   </b-collapse>
 </template>
 
 <script>
 export default {
-  name: "AccountCard",
+  name: "PreferenceCard",
   data: function() {
     return {
       editing: false,
