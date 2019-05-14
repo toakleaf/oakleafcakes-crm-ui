@@ -7,7 +7,7 @@
           <app-account-card :account="$store.getters.author"/>
         </div>
         <div class="column">
-          <app-login-card :account="$store.getters.author"/>
+          <app-preference-card :account="$store.getters.author"/>
         </div>
       </div>
     </div>
@@ -17,7 +17,7 @@
 <script>
 import axios from "../axiosAPI";
 import AccountCard from "@/containers/AccountCard.vue";
-import LoginCard from "@/containers/LoginCard.vue";
+import PreferenceCard from "@/containers/PreferenceCard.vue";
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
 let PhoneNumber = require("awesome-phonenumber");
 
@@ -30,7 +30,7 @@ listRegions = listRegions.sort().filter(item => item !== "001"); //removes the 0
 export default {
   components: {
     "app-account-card": AccountCard,
-    "app-login-card": LoginCard
+    "app-preference-card": PreferenceCard
   },
   name: "profile",
   data: function() {
