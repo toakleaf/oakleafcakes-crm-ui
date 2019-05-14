@@ -5,7 +5,9 @@ const state = {
   successMessage: 'Request successful!',
   errorMessage: 'Request failed.',
   successMessageDuration: 3000,
-  errorMessageDuration: 5000
+  errorMessageDuration: 5000,
+  showLoadingOverlay: true,
+  showNotifications: true
 };
 
 const getters = {
@@ -23,6 +25,12 @@ const getters = {
   },
   errorMessageDuration: state => {
     return state.errorMessageDuration;
+  },
+  showLoadingOverlay: state => {
+    return state.showLoadingOverlay;
+  },
+  showNotifications: state => {
+    return state.showNotifications;
   }
 };
 
@@ -49,6 +57,14 @@ const mutations = {
   setErrorMessageDuration: (state, payload) => {
     if (!payload) return (state.errorMessageDuration = 5000);
     state.errorMessageDuration = payload;
+  },
+  setShowLoadingOverlay: (state, payload) => {
+    if (payload !== true) return (state.showLoadingOverlay = false);
+    state.showLoadingOverlay = true;
+  },
+  setShowNotifications: (state, payload) => {
+    if (payload !== true) return (state.showNotifications = false);
+    state.showNotifications = true;
   }
 };
 
@@ -76,6 +92,12 @@ const actions = {
   setErrorMessageDuration: ({ commit }, payload) => {
     if (!payload) return;
     commit('setErrorMessageDuration', payload);
+  },
+  setShowLoadingOverlay({ commit }, payload) {
+    commit('setShowLoadingOverlay', payload);
+  },
+  setShowNotifications({ commit }, payload) {
+    commit('setShowNotifications', payload);
   }
 };
 

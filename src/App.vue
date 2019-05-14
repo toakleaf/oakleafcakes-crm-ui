@@ -23,7 +23,7 @@ export default {
       if (mutation.type === "setStatus") {
         switch (state.notifications.status) {
           case "success":
-            if (!state.preferences.showToast) return;
+            if (!state.notifications.showNotifications) return;
             this.isLoading = false;
             return this.$toast.open({
               message: state.notifications.successMessage,
@@ -33,7 +33,7 @@ export default {
             });
           case "error":
             this.isLoading = false;
-            if (!state.preferences.showToast) return;
+            if (!state.notifications.showNotifications) return;
             return this.$toast.open({
               message: state.notifications.errorMessage,
               position: "is-bottom",
@@ -41,7 +41,7 @@ export default {
               duration: state.notifications.errorMessageDuration
             });
           case "pending":
-            if (!state.preferences.showLoadingOverlay) return;
+            if (!state.notifications.showLoadingOverlay) return;
             return (this.isLoading = true);
         }
       }

@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import auth from './modules/auth';
 import author from './modules/author';
 import customer from './modules/customer';
-import preferences from './modules/preferences';
 import notifications from './modules/notifications';
 
 import * as getters from './getters';
@@ -21,7 +20,6 @@ export default new Vuex.Store({
     auth,
     author,
     customer,
-    preferences,
     notifications
   }
 });
