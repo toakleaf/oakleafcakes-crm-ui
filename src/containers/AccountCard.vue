@@ -41,6 +41,7 @@
       @updatePassword="updatePasswordModal"
       @deleteEmail="deleteEmail"
       @deletePhone="deletePhone"
+      @lockAllLogins="lockAllLogins"
     />
     <footer
       class="card-footer"
@@ -152,6 +153,16 @@ export default {
         id: this.account.id,
         phones: [{ phone: val.phone }]
       });
+    },
+    lockAllLogins: function() {
+      if (!this.account.logins.length) return;
+      this.account.logins.forEach(l => {
+        this.$store.dispatch("pushPasswordReset", {
+          email: l.email,
+          lock: true
+        });
+      });
+      this.editing = false;
     }
   }
 };

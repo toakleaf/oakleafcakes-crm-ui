@@ -193,7 +193,7 @@
           @update:phone="updatePhone(i, ...arguments)"
         />
       </div>
-      <nav class="level">
+      <nav class="level is-marginless">
         <div class="level-left"></div>
         <div class="level-right">
           <div class="level-item">
@@ -201,6 +201,41 @@
           </div>
         </div>
       </nav>
+      <div class="field">
+        <label class="label">Account Access</label>
+      </div>
+      <div class="columns">
+        <div class="column" v-if="$store.getters.authorRole === 'ADMIN'">
+          <div class="field">
+            <div class="control">
+              <div class="select is-fullwidth is-small">
+                <select v-model="role">
+                  <option value="ADMIN">ADMIN</option>
+                  <option value="EMPLOYEE">EMPLOYEE</option>
+                  <option value="CUSTOMER">CUSTOMER</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="buttons is-centered">
+            <b-tooltip
+              label="Locking account will deactivate and reset password to a random string. To imediately block access, manually logout all users via system admin page."
+              multilined
+              type="is-danger"
+              v-if="$store.getters.authorRole === 'ADMIN' || ($store.getters.authorRole ==='EMPLOYEE' && account.role === 'CUSTOMER')"
+            >
+              <a class="button is-danger is-outlined is-small" @click="$emit('lockAllLogins')">
+                <span class="icon">
+                  <i class="fas fa-user-lock"></i>
+                </span>
+                <span>Lock All Account Logins</span>
+              </a>
+            </b-tooltip>
+          </div>
+        </div>
+      </div>
 
       <app-card-dates :created="account.created_at" :updated="account.updated_at"/>
     </div>
@@ -222,7 +257,7 @@ export default {
     "app-card-dates": CardDates
   },
   name: "EditCard",
-  props: ["account"],
+  props: ["account", "showAdmin"],
   data: function() {
     return {
       error: false,
@@ -233,7 +268,8 @@ export default {
       primaryEmailUpdate: null,
       phoneUpdates: [],
       primaryPhoneUpdate: null,
-      preventLoginEdits: true
+      preventLoginEdits: true,
+      roleUpdate: null
     };
   },
   computed: {
@@ -265,6 +301,14 @@ export default {
       },
       set: function(val) {
         this.companyNameUpdate = { company_name: val };
+      }
+    },
+    role: {
+      get: function() {
+        return this.roleUpdate ? this.roleUpdate.role : this.account.role;
+      },
+      set: function(val) {
+        this.roleUpdate = { role: val };
       }
     },
     primaryEmail: {
@@ -384,6 +428,7 @@ export default {
           ...(this.firstNameUpdate ? this.firstNameUpdate : {}),
           ...(this.lastNameUpdate ? this.lastNameUpdate : {}),
           ...(this.companyNameUpdate ? this.companyNameUpdate : {}),
+          ...(this.roleUpdate ? this.roleUpdate : {}),
           ...(this.emailUpdates.length > 0
             ? { emails: this.emailUpdates }
             : {}),
