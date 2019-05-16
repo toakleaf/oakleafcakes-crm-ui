@@ -62,7 +62,11 @@
           </template>
 
           <template slot="detail" slot-scope="props">
-            <app-employee-details :props="props" @submitted="getAccounts()"/>
+            <div class="columns is-centered">
+              <div class="column is-three-quarters-tablet">
+                <app-account-card :account="props.row"/>
+              </div>
+            </div>
           </template>
         </b-table>
       </div>
@@ -73,13 +77,13 @@
 <script>
 import axios from "../axiosAPI";
 import NewEmployeeForm from "@/components/Employees/NewEmployeeForm.vue";
-import EmployeeDetails from "@/components/Employees/EmployeeDetails.vue";
+import AccountCard from "@/containers/AccountCard.vue";
 
 export default {
   name: "employees",
   components: {
     "app-new-employee-form": NewEmployeeForm,
-    "app-employee-details": EmployeeDetails
+    "app-account-card": AccountCard
   },
   data: function() {
     return {

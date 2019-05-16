@@ -1,5 +1,5 @@
 <template>
-  <b-collapse class="card" aria-id="contentIdForA11y3" v-if="account">
+  <b-collapse class="card" aria-id="contentIdForA11y3" :open="open" v-if="account">
     <div
       slot="trigger"
       slot-scope="props"
@@ -83,7 +83,15 @@ export default {
     "app-edit-footer": EditFooter
   },
   name: "AccountCard",
-  props: ["account"],
+  props: {
+    account: {
+      type: Object
+    },
+    open: {
+      type: Boolean,
+      default: true
+    }
+  },
   data: function() {
     return {
       editing: false,
