@@ -84,22 +84,7 @@ export default {
             ]
           }
         })
-        .then(() => {
-          this.$parent.close();
-          this.$toast.open({
-            message: "Phone added successfully!",
-            position: "is-bottom",
-            type: "is-success"
-          });
-        })
-        .catch(err => {
-          this.$toast.open({
-            message: "Failed to add new phone.",
-            position: "is-bottom",
-            type: "is-danger"
-          });
-          console.error(err);
-        });
+        .then(() => this.$parent.close());
     }
   }
 };

@@ -4,8 +4,8 @@ const state = {
   status: null,
   successMessage: 'Request successful!',
   errorMessage: 'Request failed.',
-  successMessageDuration: 3000,
-  errorMessageDuration: 5000,
+  successMessageDuration: 3500,
+  errorMessageDuration: 6000,
   showLoadingOverlay: true,
   showNotifications: true
 };

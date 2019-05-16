@@ -1,11 +1,11 @@
 <template>
   <p
     class="control"
-    :class="{'is-loading': isLoading, 'has-icons-left': hasIconLeft, 'has-icons-right': hasCheckmark, 'is-small': size === 'is-small', 'is-medium': size === 'is-medium', 'is-large': size === 'is-large', 'is-expanded': expanded}"
+    :class="[size, {'is-loading': isLoading, 'has-icons-left': hasIconLeft, 'has-icons-right': hasCheckmark, 'is-expanded': expanded}]"
   >
     <input
       class="input"
-      :class="{'is-success': !$v.email.$invalid && emailAddress !== email, 'is-danger': $v.email.$error, 'is-small': size === 'is-small', 'is-medium': size === 'is-medium', 'is-large': size === 'is-large' }"
+      :class="[size, {'is-success': !$v.email.$invalid && emailAddress !== email, 'is-danger': $v.email.$error}]"
       type="text"
       :disabled="disabled"
       :readonly="readonly"

@@ -117,6 +117,14 @@
         </p>
         <p
           class="control"
+          v-if="!preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email))"
+        >
+          <b-tooltip label="Magange login password options." multilined type="is-dark">
+            <a class="is-size-7" @click="$emit('updatePassword', email.email)">Password</a>
+          </b-tooltip>
+        </p>
+        <p
+          class="control"
           v-if="!preventLoginEdits && (account.logins && account.logins.some(l => l.email === email.email && l.is_active))"
         >
           <b-tooltip
@@ -146,7 +154,7 @@
           <div class="level-item">
             <a class="is-size-7" @click="$emit('addEmail')">+Add Email</a>
             <p style="padding: 0 .5em 0 .5em"></p>
-            <a class="is-size-7" @click="$emit('addEmail')">+Add Login</a>
+            <a class="is-size-7" @click="$emit('addLogin')">+Add Login</a>
           </div>
         </div>
       </nav>

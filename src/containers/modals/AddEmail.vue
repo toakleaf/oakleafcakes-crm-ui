@@ -69,21 +69,9 @@ export default {
             ]
           }
         })
-        .then(() => {
+        .then(res => {
           this.$parent.close();
-          this.$toast.open({
-            message: "Email added successfully!",
-            position: "is-bottom",
-            type: "is-success"
-          });
-        })
-        .catch(err => {
-          this.$toast.open({
-            message: "Failed to add new email.",
-            position: "is-bottom",
-            type: "is-danger"
-          });
-          console.error(err);
+          // console.log(res);
         });
     }
   }

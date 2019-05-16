@@ -36,7 +36,9 @@
       @submitUpdates="submitUpdates"
       @update:editing="editing = false"
       @addEmail="addEmailModal"
+      @addLogin="addLoginModal"
       @addPhone="addPhoneModal"
+      @updatePassword="updatePasswordModal"
       @deleteEmail="deleteEmail"
       @deletePhone="deletePhone"
     />
@@ -68,7 +70,9 @@ import DisplayFooter from "@/components/AccountCard/DisplayFooter.vue";
 import EditCard from "@/components/AccountCard/EditCard.vue";
 import EditFooter from "@/components/AccountCard/EditFooter.vue";
 import AddEmail from "@/containers/modals/AddEmail.vue";
+import AddLogin from "@/containers/modals/AddLogin.vue";
 import AddPhone from "@/containers/modals/AddPhone.vue";
+import UpdatePassword from "@/containers/modals/UpdatePassword.vue";
 
 export default {
   components: {
@@ -111,11 +115,27 @@ export default {
         hasModalCard: true
       });
     },
+    addLoginModal: function() {
+      this.$modal.open({
+        props: { id: this.account.id },
+        parent: this,
+        component: AddLogin,
+        hasModalCard: true
+      });
+    },
     addPhoneModal: function() {
       this.$modal.open({
         props: { id: this.account.id },
         parent: this,
         component: AddPhone,
+        hasModalCard: true
+      });
+    },
+    updatePasswordModal: function(val) {
+      this.$modal.open({
+        props: { email: val, id: this.account.id },
+        parent: this,
+        component: UpdatePassword,
         hasModalCard: true
       });
     },
