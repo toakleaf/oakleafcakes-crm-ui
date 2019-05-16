@@ -32,6 +32,7 @@
     <app-edit-card
       v-if="editing"
       :account="account"
+      :author="$store.getters.author"
       @update:account="listenUpdates"
       @submitUpdates="submitUpdates"
       @update:editing="editing = false"

@@ -201,11 +201,14 @@
           </div>
         </div>
       </nav>
-      <div class="field">
+      <div
+        class="field"
+        v-if="author && (author.role === 'ADMIN' || (author.role ==='EMPLOYEE' && account.role === 'CUSTOMER'))"
+      >
         <label class="label">Account Access</label>
       </div>
       <div class="columns">
-        <div class="column" v-if="$store.getters.authorRole === 'ADMIN'">
+        <div class="column" v-if="author && author.role === 'ADMIN'">
           <div class="field">
             <div class="control">
               <div class="select is-fullwidth is-small">
@@ -224,7 +227,7 @@
               label="Locking account will deactivate and reset password to a random string. To imediately block access, manually logout all users via system admin page."
               multilined
               type="is-danger"
-              v-if="$store.getters.authorRole === 'ADMIN' || ($store.getters.authorRole ==='EMPLOYEE' && account.role === 'CUSTOMER')"
+              v-if="author && (author.role === 'ADMIN' || (author.role ==='EMPLOYEE' && account.role === 'CUSTOMER'))"
             >
               <a class="button is-danger is-outlined is-small" @click="$emit('lockAllLogins')">
                 <span class="icon">
@@ -257,7 +260,7 @@ export default {
     "app-card-dates": CardDates
   },
   name: "EditCard",
-  props: ["account", "showAdmin"],
+  props: ["account", "author"],
   data: function() {
     return {
       error: false,
