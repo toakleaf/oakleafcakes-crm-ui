@@ -6,7 +6,7 @@
       class="card-header"
       role="button"
       aria-controls="contentIdForA11y3"
-      @click="getHistory"
+      @click="isOpen ? null : getHistory(); isOpen = !isOpen"
     >
       <b-loading :is-full-page="false" :active.sync="loading" :can-cancel="false"></b-loading>
       <p class="card-header-title">
@@ -84,7 +84,8 @@ export default {
       history: [],
       defaultOpenedDetails: [],
       loading: false,
-      currentPage: null
+      currentPage: null,
+      isOpen: null
     };
   },
   computed: {},
@@ -140,10 +141,10 @@ export default {
           console.error("error: " + err);
         });
     }
+  },
+  created: function() {
+    this.isOpen = this.open;
   }
-  // created: function() {
-  //   this.getHistory();
-  // }
 };
 </script>
 
