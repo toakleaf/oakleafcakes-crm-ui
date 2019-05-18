@@ -1,54 +1,28 @@
 <template>
-  <div class="columns">
-    <div class="column is-half-tablet">
-      <app-account-card :account="currentCustomer"/>
+  <div class="columns is-multiline">
+    <div class="column is-two-thirds">
+      <app-account-card :account="$store.getters.currentCustomer"/>
     </div>
-    <div class="column"></div>
-    <div class="column">
-      <label class="label is-small">Billing Info</label>
-      <app-billing-address/>
-      <hr>
-      <label class="label is-small">Business Info</label>
-      <app-business-info/>
-      <hr>
-      <label class="label is-small">Associations</label>
-      <app-associations/>
+    <div class="column is-full">
+      <app-account-history-card :account="$store.getters.currentCustomer" :open="false"/>
     </div>
   </div>
 </template>
 <script>
-import BillingAddress from "@/components/widgets/BillingAddress.vue";
-import BusinessInfo from "@/components/Customers/Details/BusinessInfo.vue";
-import Associations from "@/components/Customers/Details/Associations.vue";
 import AccountCard from "@/containers/AccountCard.vue";
-import { mapActions } from "vuex";
-import { mapGetters } from "vuex";
+import AccountHistoryCard from "@/containers/AccountHistoryCard.vue";
 
 export default {
   name: "SecondaryInfo",
   components: {
-    "app-billing-address": BillingAddress,
-    "app-business-info": BusinessInfo,
-    "app-associations": Associations,
+    "app-account-history-card": AccountHistoryCard,
     "app-account-card": AccountCard
   },
   data: function() {
     return {};
   },
-  computed: {
-    ...mapGetters([
-      "currentCustomer",
-      "currentCustomerCreatedAt",
-      "currentCustomerUpdatedAt"
-    ])
-  },
-  methods: {
-    ...mapActions([
-      "fetchCurrentCustomer",
-      "setCurrentCustomer",
-      "clearCurrentCustomer"
-    ])
-  }
+  computed: {},
+  methods: {}
 };
 </script>
 

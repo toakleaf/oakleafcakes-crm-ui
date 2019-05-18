@@ -1,5 +1,10 @@
 <template>
-  <b-collapse class="card" aria-id="contentIdForA11y3" :open="open">
+  <b-collapse
+    class="card"
+    aria-id="contentIdForA11y3"
+    :open="open"
+    v-if="account && history.length"
+  >
     <div
       slot="trigger"
       slot-scope="props"
@@ -90,7 +95,7 @@ export default {
   computed: {},
   methods: {
     getHistory: function() {
-      if (!this.account.id) return;
+      if (!this.account || !this.account.id) return;
       this.loading = true;
       axios
         .get(`/account/history/${this.account.id}`)
