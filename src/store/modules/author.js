@@ -117,19 +117,23 @@ const mutations = {
 };
 
 const actions = {
-  fetchAuthorData({ commit }) {
-    axios
-      .get('/account')
-      .then(res => {
-        commit('setAuthorData', res.data);
-      })
-      .catch(err => {
-        console.error(err);
-        dispatch(
-          'sendErrorMessage',
-          'Error: Failed to gather author data. Check connection.'
-        );
-      });
+  fetchAuthorData({ commit, dispatch }) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get('/account')
+        .then(res => {
+          commit('setAuthorData', res.data);
+          dispatch('fetchPreferences');
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.error(err);
+          dispatch(
+            'sendErrorMessage',
+            'Error: Failed to gather author data. Check connection.'
+          );
+        });
+    });
   },
   setAuthorData({ commit }, payload) {
     commit('setAuthorData', payload);

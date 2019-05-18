@@ -6,7 +6,6 @@
       class="card-header"
       role="button"
       aria-controls="contentIdForA11y3"
-      @click="isOpen ? null : getHistory(); isOpen = !isOpen"
     >
       <b-loading :is-full-page="false" :active.sync="loading" :can-cancel="false"></b-loading>
       <p class="card-header-title">
@@ -70,7 +69,7 @@ export default {
     "app-account-card": AccountCard
   },
   props: {
-    account_id: {
+    account: {
       required: true
     },
     open: {
@@ -91,13 +90,12 @@ export default {
   computed: {},
   methods: {
     getHistory: function() {
-      if (!this.account_id) return;
+      if (!this.account.id) return;
       this.loading = true;
       axios
-        .get(`/account/history/${this.account_id}`)
+        .get(`/account/history/${this.account.id}`)
         .then(result => {
           this.loading = false;
-          // console.log(result.data);
           this.history = result.data;
           for (let i = 0; i < this.history.length; i++) {
             this.history[i].created_at = new Date(this.history[i].created_at);
@@ -144,6 +142,11 @@ export default {
   },
   created: function() {
     this.isOpen = this.open;
+  },
+  watch: {
+    account: function() {
+      this.getHistory();
+    }
   }
 };
 </script>

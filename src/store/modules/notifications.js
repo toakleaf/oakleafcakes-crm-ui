@@ -94,9 +94,11 @@ const actions = {
     commit('setErrorMessageDuration', payload);
   },
   setShowLoadingOverlays({ commit }, payload) {
+    if (!payload) return;
     commit('setShowLoadingOverlays', payload);
   },
   setShowNotifications({ commit }, payload) {
+    if (!payload) return;
     commit('setShowNotifications', payload);
   }
 };

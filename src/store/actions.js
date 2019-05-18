@@ -109,3 +109,64 @@ export const deleteAccountPhone = ({ dispatch, getters }, payload) => {
       dispatch('sendErrorMessage', 'Failed to delete phone number.');
     });
 };
+
+export const fetchPreferences = ({ commit, dispatch }) => {
+  axios
+    .get(`/account/preferences/`)
+    .then(res => {
+      if (!res.data || !res.data.preferences) return;
+      commit(
+        'setSuccessMessageDuration',
+        res.data.preferences.successMessageDuration
+      );
+      commit(
+        'setErrorMessageDuration',
+        res.data.preferences.errorMessageDuration
+      );
+      commit(
+        'setShowLoadingOverlays',
+        res.data.preferences.showLoadingOverlays
+      );
+      commit('setShowNotifications', res.data.preferences.showNotifications);
+    })
+    .catch(err => {
+      console.error(err);
+      dispatch(
+        'sendErrorMessage',
+        'Error: Failed to gather author data. Check connection.'
+      );
+    });
+};
+
+export const pushPreferences = ({ getters, commit, dispatch }) => {
+  axios
+    .post(`/account/preferences/`, {
+      successMessageDuration: getters.successMessageDuration,
+      errorMessageDuration: getters.errorMessageDuration,
+      showLoadingOverlays: getters.showLoadingOverlays,
+      showNotifications: getters.showNotifications
+    })
+    .then(res => {
+      if (!res.data || !res.data.preferences) return;
+      commit(
+        'setSuccessMessageDuration',
+        res.data.preferences.successMessageDuration
+      );
+      commit(
+        'setErrorMessageDuration',
+        res.data.preferences.errorMessageDuration
+      );
+      commit(
+        'setShowLoadingOverlays',
+        res.data.preferences.showLoadingOverlays
+      );
+      commit('setShowNotifications', res.data.preferences.showNotifications);
+    })
+    .catch(err => {
+      console.error(err);
+      dispatch(
+        'sendErrorMessage',
+        'Error: Failed to gather author data. Check connection.'
+      );
+    });
+};

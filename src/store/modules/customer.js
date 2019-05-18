@@ -117,7 +117,7 @@ const mutations = {
 };
 
 const actions = {
-  fetchCurrentCustomer({ commit }, id) {
+  fetchCurrentCustomer({ commit, dispatch }, id) {
     axios
       .get(`/account/${id}`)
       .then(res => {

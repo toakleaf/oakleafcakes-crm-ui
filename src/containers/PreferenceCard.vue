@@ -18,20 +18,53 @@
       </a>
     </div>
     <div class="card-content">
-      <div class="content has-text-centered"></div>
+      <div class="field">
+        <b-switch
+          size="is-small"
+          v-model="showNotifications"
+          @input="pushPreferences"
+        >Show Notifications</b-switch>
+      </div>
+      <div class="field has-addons" v-if="showNotifications">
+        <p class="control">
+          <a class="button is-static is-small">Message Durration</a>
+        </p>
+        <p class="control">
+          <input
+            class="input is-small"
+            type="text"
+            v-model="successMessageDuration"
+            @blur="pushPreferences"
+          >
+        </p>
+      </div>
+      <div class="field has-addons" v-if="showNotifications">
+        <p class="control">
+          <a class="button is-static is-small">Error Durration</a>
+        </p>
+        <p class="control">
+          <input
+            class="input is-small"
+            type="text"
+            v-model="errorMessageDuration"
+            @blur="pushPreferences"
+          >
+        </p>
+      </div>
+      <div class="field">
+        <b-switch
+          v-model="showLoadingOverlays"
+          size="is-small"
+          @input="pushPreferences"
+        >Show Loading Overlays</b-switch>
+      </div>
     </div>
-    <footer class="card-footer">
-      <a class="card-footer-item">
-        <span class="icon">
-          <i class="fas fa-edit"></i>
-        </span>
-        <span>Edit</span>
-      </a>
-    </footer>
   </b-collapse>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "PreferenceCard",
   data: function() {
@@ -41,8 +74,43 @@ export default {
       update: null
     };
   },
-  computed: {},
-  methods: {}
+  computed: {
+    showNotifications: {
+      get() {
+        return this.$store.getters.showNotifications;
+      },
+      set(value) {
+        this.$store.commit("setShowNotifications", value);
+      }
+    },
+    showLoadingOverlays: {
+      get() {
+        return this.$store.getters.showLoadingOverlays;
+      },
+      set(value) {
+        this.$store.commit("setShowLoadingOverlays", value);
+      }
+    },
+    successMessageDuration: {
+      get() {
+        return this.$store.getters.successMessageDuration;
+      },
+      set(value) {
+        this.$store.commit("setSuccessMessageDuration", value);
+      }
+    },
+    errorMessageDuration: {
+      get() {
+        return this.$store.getters.errorMessageDuration;
+      },
+      set(value) {
+        this.$store.commit("setErrorMessageDuration", value);
+      }
+    }
+  },
+  methods: {
+    ...mapActions(["fetchPreferences", "pushPreferences"])
+  }
 };
 </script>
 

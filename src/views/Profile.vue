@@ -7,14 +7,10 @@
           <app-account-card :account="$store.getters.author"/>
         </div>
         <div class="column">
-          <app-preference-card :account="$store.getters.author"/>
+          <app-preference-card :id="$store.getters.authorID"/>
         </div>
         <div class="column" v-if="$store.getters.author && $store.getters.author.updated_at">
-          <app-account-history-card
-            :account="$store.getters.author"
-            :account_id="$store.getters.authorID"
-            :open="false"
-          />
+          <app-account-history-card :account="$store.getters.author" :open="false"/>
         </div>
       </div>
     </div>
