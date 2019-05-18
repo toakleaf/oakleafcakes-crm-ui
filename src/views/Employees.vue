@@ -42,7 +42,7 @@
           :pagination-simple="true"
           :opened-detailed="defaultOpenedDetails"
           detailed
-          :detail-key="accounts.result"
+          :detail-key="accounts.id"
           show-detail-icon
           icon-pack="fas"
         >
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import axios from "../axiosAPI";
+import axios from "@/axiosAPI";
 import NewEmployeeForm from "@/components/Employees/NewEmployeeForm.vue";
 import AccountCard from "@/containers/AccountCard.vue";
 

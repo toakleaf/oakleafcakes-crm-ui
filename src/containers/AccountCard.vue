@@ -44,25 +44,27 @@
       @deletePhone="deletePhone"
       @lockAllLogins="lockAllLogins"
     />
-    <footer
-      class="card-footer"
-      v-if="$store.getters.authorRole !== 'ADMIN' && account.role === 'ADMIN'"
-    >
-      <!-- hide editing options if not privilaged to edit. -->
-    </footer>
-    <app-edit-footer
-      v-else-if="editing"
-      :disabled.sync="disabled"
-      :editing.sync="editing"
-      @submitUpdates="submitUpdates"
-    />
-    <app-display-footer
-      v-else
-      :disabled.sync="disabled"
-      :editing.sync="editing"
-      @addEmail="addEmailModal"
-      @addPhone="addPhoneModal"
-    />
+    <div v-if="showFooter">
+      <footer
+        class="card-footer"
+        v-if="$store.getters.authorRole !== 'ADMIN' && account.role === 'ADMIN'"
+      >
+        <!-- hide editing options if not privilaged to edit. -->
+      </footer>
+      <app-edit-footer
+        v-else-if="editing"
+        :disabled.sync="disabled"
+        :editing.sync="editing"
+        @submitUpdates="submitUpdates"
+      />
+      <app-display-footer
+        v-else
+        :disabled.sync="disabled"
+        :editing.sync="editing"
+        @addEmail="addEmailModal"
+        @addPhone="addPhoneModal"
+      />
+    </div>
   </b-collapse>
 </template>
 
@@ -89,6 +91,10 @@ export default {
       type: Object
     },
     open: {
+      type: Boolean,
+      default: true
+    },
+    showFooter: {
       type: Boolean,
       default: true
     }

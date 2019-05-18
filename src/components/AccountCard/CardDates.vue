@@ -38,5 +38,6 @@ export default {
 .card-dates {
   line-height: 90%;
   margin: 0 0 -1em 0;
+  padding: 0;
 }
 </style>
