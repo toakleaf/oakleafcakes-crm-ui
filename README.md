@@ -2,6 +2,8 @@
 
 View the accompanying API project here: (https://github.com/toakleaf/oakleafcakes-crm-api)
 
+PLEASE NOTE: project is still in development.
+
 ## Project setup
 
 Open /src/axiosAPI.js, and alter following line to point to api:
