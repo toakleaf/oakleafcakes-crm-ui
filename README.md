@@ -39,10 +39,10 @@ This shows a small bit of the user interface in action to get a feel for how it 
 
 ### Calendar View
 
-This shows the custom built calendar and date picker components that can dynamically scale to accomodate all screen sizes.
+This shows the custom built calendar and date picker components that can dynamically scale to accommodate all screen sizes.
 ![](README-GIFS/CalendarRecording.gif)
 
 ### Employee Admin
 
-Another small bit of the user interface.
+Another small bit of the user interface. Shows table view, sorting, and form field verification including email duplicate check.
 ![](README-GIFS/EmployeeAdmin.gif)
