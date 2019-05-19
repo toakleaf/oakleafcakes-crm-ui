@@ -1,5 +1,6 @@
 <template>
   <section id="app" class="has-navbar-fixed-top">
+    <img src="@/assets/img/logo_full_light.svg" class="watermark">
     <app-navbar/>
     <b-loading is-full-page :active.sync="isLoading" :can-cancel="true"></b-loading>
     <router-view/>
@@ -60,5 +61,14 @@ body {
 }
 .pad-top {
   padding-top: 72px;
+}
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  z-index: 0;
+  width: 25%;
+  transform: translate(-50%, -50%);
 }
 </style>

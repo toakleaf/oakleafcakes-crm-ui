@@ -54,8 +54,16 @@
         <template slot="detail" slot-scope="props">
           <div class="columns is-centered">
             <div class="column is-three-quarters-tablet">
-              <p class="is-size-7">State prior to alteration:</p>
-              <app-account-card :account="props.row.state" :showFooter="false"/>
+              <p
+                class="is-size-7"
+                v-if="props.row.action === 'CREATE'"
+              >In the beginning, the great and powerful {{props.row.author_name}} made the {{props.row.request.role.toLowerCase()}} {{props.row.request.first_name ? props.row.request.first_name : props.row.request.company_name}} {{props.row.request.first_name ? props.row.request.last_name : null}}. The creator, gazing upon this work could see that it was indeed good, and so rested whilst the birds of the sky and beasts of the field did rejoice.</p>
+              <p class="is-size-7" v-else>State prior to alteration:</p>
+              <app-account-card
+                :account="props.row.state"
+                :showFooter="false"
+                v-if="props.row.action !== 'CREATE'"
+              />
             </div>
           </div>
         </template>
@@ -147,6 +155,7 @@ export default {
   },
   created: function() {
     this.isOpen = this.open;
+    this.getHistory();
   },
   watch: {
     account: function() {

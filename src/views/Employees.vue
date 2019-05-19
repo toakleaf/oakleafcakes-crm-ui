@@ -4,7 +4,7 @@
       <div class="box">
         <h1 class="title">Employee Account Admin</h1>
         <h2 class="subtitle is-6">
-          <a @click="toggleAddNewModal">+ Add New</a>
+          <a @click="addAccountModal">+ Add New</a>
         </h2>
         <div class="field is-grouped is-grouped-multiline">
           <p class="control">
@@ -19,17 +19,6 @@
           <p class="control">
             <b-switch v-model="showInactive" type="is-link" @input="getAccounts()">Inactive Accounts</b-switch>
           </p>
-        </div>
-        <div class="modal" v-bind:class="{'is-active': showAddNewModal}">
-          <div class="modal-background" @click="toggleAddNewModal"></div>
-          <div class="modal-content">
-            <div class="columns is-tablet is-centered">
-              <div class="column is-half">
-                <app-new-employee-form @submitted="newAccountAdded()"/>
-              </div>
-            </div>
-          </div>
-          <button class="modal-close is-large" aria-label="close" @click="toggleAddNewModal"></button>
         </div>
         <b-table
           :data="accounts"
@@ -76,13 +65,12 @@
 
 <script>
 import axios from "@/axiosAPI";
-import NewEmployeeForm from "@/components/Employees/NewEmployeeForm.vue";
 import AccountCard from "@/containers/AccountCard.vue";
+import AddAccount from "@/containers/modals/AddAccount.vue";
 
 export default {
   name: "employees",
   components: {
-    "app-new-employee-form": NewEmployeeForm,
     "app-account-card": AccountCard
   },
   data: function() {
@@ -129,6 +117,13 @@ export default {
     newAccountAdded: function() {
       this.showAddNewModal = false;
       this.getAccounts();
+    },
+    addAccountModal: function() {
+      this.$modal.open({
+        parent: this,
+        component: AddAccount,
+        hasModalCard: true
+      });
     }
   },
   created: function() {

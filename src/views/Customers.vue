@@ -1,8 +1,8 @@
 <template>
-  <section class="container pad-route">
+  <section class="container pad-route is-fullhd">
     <div class="box">
       <app-search-bar/>
-      <section class="btab-margin-mobile">
+      <section class="btab-margin-mobile" v-if="$store.getters.currentCustomer">
         <b-tabs v-model="activeTab" size="is-small" type="is-boxed">
           <b-tab-item label="Details" icon-pack="fas" icon="info-circle">
             <app-details/>
@@ -19,7 +19,7 @@
           <b-tab-item label="Appointments" icon-pack="fas" icon="calendar-alt">
             <app-classes/>
           </b-tab-item>
-          <b-tab-item label="Paymentts" icon-pack="fas" icon="hand-holding-usd">
+          <b-tab-item label="Payments" icon-pack="fas" icon="hand-holding-usd">
             <app-classes/>
           </b-tab-item>
         </b-tabs>
