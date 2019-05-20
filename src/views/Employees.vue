@@ -122,7 +122,12 @@ export default {
       this.$modal.open({
         parent: this,
         component: AddAccount,
-        hasModalCard: true
+        hasModalCard: true,
+        events: {
+          "success-response": val => {
+            this.getAccounts();
+          }
+        }
       });
     }
   },

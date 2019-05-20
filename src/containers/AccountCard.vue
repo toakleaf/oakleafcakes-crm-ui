@@ -9,7 +9,7 @@
     >
       <p
         class="card-header-title"
-      >{{account.first_name ? (account.first_name + ' ' + account.last_name) : account.company_name ? account.company_name : null }}</p>
+      >{{account.first_name ? (account.first_name + ' ' + (account.last_name ? account.last_name : '')) : account.company_name ? account.company_name : null }}</p>
       <a class="card-header-icon is-size-7 has-text-grey">
         <span v-if="account.is_active">ACTIVE</span>
 

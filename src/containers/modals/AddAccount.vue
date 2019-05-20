@@ -64,7 +64,7 @@
         </div>
         <div class="field is-grouped">
           <p class="control">
-            <a class="button is-primary" @click="submitUpdates">
+            <a class="button is-primary" @click="submitForm" :disabled="disableSubmit">
               <span class="icon">
                 <i class="far fa-plus-square"></i>
               </span>
@@ -90,7 +90,7 @@ import axios from "@/axiosAPI";
 import EmailCheck from "@/components/Form/EmailCheck.vue";
 import PhoneCheck from "@/components/Form/PhoneCheck.vue";
 import PasswordCheck from "@/components/Form/PasswordCheck.vue";
-import { required, requiredUnless } from "vuelidate/lib/validators";
+import { required, requiredUnless, requiredIf } from "vuelidate/lib/validators";
 
 export default {
   components: {
@@ -143,20 +143,33 @@ export default {
       passwordError: true
     };
   },
-  computed: {},
+  computed: {
+    disableSubmit: function() {
+      if (
+        this.$v.$invalid ||
+        (this.email && !this.emailValid) ||
+        (this.phone && !this.phoneValid) ||
+        (this.password && this.passwordError)
+      )
+        return true;
+      return false;
+    }
+  },
   validations: {
     first_name: {
-      required: requiredUnless("companyName")
+      required: requiredUnless("company_name")
     },
     company_name: {
-      required: requiredUnless("firstName")
+      required: requiredUnless("first_name")
     },
     email: {
-      required: requiredUnless("phone")
+      required: requiredUnless("phone"),
+      required2: requiredIf("password")
     },
     phone: {
       required: requiredUnless("email")
-    }
+    },
+    password: {}
   },
   methods: {
     updateEmail: function(val) {
@@ -164,6 +177,7 @@ export default {
       this.email = val.email;
       this.emailValid = val.valid;
       this.emailError = val.error;
+      this.$v.email.$touch();
     },
     updatePhone: function(val) {
       if (!val) return;
@@ -172,29 +186,44 @@ export default {
       this.phone_country = val.phone_country;
       this.phoneValid = val.valid;
       this.phoneError = val.error;
+      this.$v.phone.$touch();
     },
     updatePassword: function(val) {
       if (!val) return;
       this.password = val.password;
       this.passwordValid = val.valid;
       this.passwordError = val.error;
+      this.$v.password.$touch();
     },
-    submitUpdates: function() {
-      if (!(this.id && this.valid && !this.error && this.email)) return;
-      this.$store
-        .dispatch("pushAccountUpdate", {
-          id: this.id,
-          update: {
-            emails: [
-              {
-                new_email: this.email
-              }
-            ]
-          }
+    submitForm: function() {
+      this.$store.dispatch("setStatus", "pending");
+      if (this.disableSubmit) return;
+      axios
+        .post(`/account/register/`, {
+          ...(this.first_name ? { first_name: this.first_name } : {}),
+          ...(this.last_name ? { last_name: this.last_name } : {}),
+          ...(this.company_name ? { company_name: this.company_name } : {}),
+          ...(this.email ? { email: this.email } : {}),
+          ...(this.phone ? { phone: this.phone } : {}),
+          ...(this.phone_type ? { phone_type: this.phone_type } : {}),
+          ...(this.phone_country ? { phone_country: this.phone_country } : {}),
+          ...(this.role ? { role: this.role } : {}),
+          ...(this.password ? { password: this.password } : {})
         })
-        .then(res => {
+        .then(result => {
+          this.$store.dispatch(
+            "sendSuccessMessage",
+            "New account created successfully!"
+          );
+          this.$emit("success-response");
           this.$parent.close();
-          // console.log(res);
+        })
+        .catch(err => {
+          console.error(err);
+          this.$store.dispatch(
+            "sendErrorMessage",
+            "Error: Failed to create new account."
+          );
         });
     }
   }
