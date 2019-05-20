@@ -5,13 +5,13 @@
       <span class="has-text-weight-bold">{{sliceText.selected}}</span>
       <span>{{sliceText.after + " "}}</span>
     </span>
-    <span v-else>{{props.option.first_name + " "}}</span>
+    <span v-else-if="props.option.first_name">{{props.option.first_name + " "}}</span>
     <span v-if="field === 'last_name'">
       <span>{{sliceText.before}}</span>
       <span class="has-text-weight-bold">{{sliceText.selected}}</span>
       <span>{{sliceText.after + " "}}</span>
     </span>
-    <span v-else>{{props.option.last_name + " "}}</span>
+    <span v-else-if="props.option.last_name">{{props.option.last_name + " "}}</span>
     <span
       v-if="props.option.company_name && !(props.option.first_name && props.option.last_name) && (field === 'first_name' || field === 'last_name')"
     >

@@ -102,7 +102,6 @@ export default {
           }&inactive=${this.showInactive}`
         )
         .then(result => {
-          // console.log(result.data);
           this.accounts = result.data;
           for (let i = 0; i < this.accounts.length; i++) {
             this.accounts[i].created_at = new Date(this.accounts[i].created_at);
