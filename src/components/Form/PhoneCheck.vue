@@ -122,7 +122,8 @@ export default {
       phone_country: null,
       phone_type: null,
       phoneInput: null,
-      error: false
+      error: false,
+      extension: " ext."
     };
   },
   computed: {
@@ -134,6 +135,16 @@ export default {
         let ayt = PhoneNumber.getAsYouType(this.phone_country);
         ayt.reset(this.phoneInput);
         if (ayt.getPhoneNumber().a.valid) {
+          if (
+            this.extension.includes(
+              this.phoneInput.replace(
+                ayt.getPhoneNumber().a.number.national,
+                ""
+              )
+            )
+          ) {
+            return this.phoneInput;
+          }
           return ayt.getPhoneNumber().a.number.national;
         }
         return this.phoneInput;
