@@ -29,7 +29,7 @@
         <p class="control">
           <a class="button is-static is-small">Message Durration</a>
         </p>
-        <p class="control">
+        <p class="control is-expanded">
           <input
             class="input is-small"
             type="text"
@@ -42,7 +42,7 @@
         <p class="control">
           <a class="button is-static is-small">Error Durration</a>
         </p>
-        <p class="control">
+        <p class="control is-expanded">
           <input
             class="input is-small"
             type="text"
