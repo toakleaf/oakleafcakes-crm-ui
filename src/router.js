@@ -3,10 +3,15 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 
+import store from './store/store';
 import axios from './axiosAPI';
 
 Vue.use(Router);
-import store from './store/store';
+
+function loadView(view) {
+  return () =>
+    import(/* webpackChunkName: "view-[request]" */ `@/views/${view}.vue`);
+}
 
 const router = new Router({
   routes: [
@@ -36,11 +41,7 @@ const router = new Router({
     {
       path: '/customers',
       name: 'customers',
-      // route level code-splitting
-      // this generates a separate chunk (forgot.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "forgot" */ './views/Customers.vue'),
+      component: loadView('Customers'),
       beforeEnter(to, from, next) {
         if (store.getters['isAuthenticated']) {
           return next();
@@ -51,29 +52,17 @@ const router = new Router({
     {
       path: '/forgot',
       name: 'forgot',
-      // route level code-splitting
-      // this generates a separate chunk (forgot.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "forgot" */ './views/Forgot.vue')
+      component: loadView('Forgot')
     },
     {
       path: '/account/reset/:id/:hash',
       name: 'reset',
-      // route level code-splitting
-      // this generates a separate chunk (forgot.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "reset" */ './views/Reset.vue')
+      component: loadView('Reset')
     },
     {
       path: '/profile',
       name: 'profile',
-      // route level code-splitting
-      // this generates a separate chunk (profile.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "profile" */ './views/Profile.vue'),
+      component: loadView('Profile'),
       beforeEnter(to, from, next) {
         if (store.getters['isAuthenticated']) {
           return next();
@@ -84,11 +73,7 @@ const router = new Router({
     {
       path: '/employees',
       name: 'employees',
-      // route level code-splitting
-      // this generates a separate chunk (admin.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "employees" */ './views/Employees.vue'),
+      component: loadView('Employees'),
       beforeEnter(to, from, next) {
         if (
           store.getters['author'] &&
@@ -105,11 +90,7 @@ const router = new Router({
     {
       path: '/admin',
       name: 'admin',
-      // route level code-splitting
-      // this generates a separate chunk (admin.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
+      component: loadView('Admin'),
       beforeEnter(to, from, next) {
         if (
           store.getters['author'] &&
@@ -126,11 +107,18 @@ const router = new Router({
     {
       path: '/calendar',
       name: 'calendar',
-      // route level code-splitting
-      // this generates a separate chunk (calendar.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "calendar" */ './views/Calendar.vue'),
+      component: loadView('Calendar'),
+      beforeEnter(to, from, next) {
+        if (store.getters['isAuthenticated']) {
+          return next();
+        }
+        next('/login');
+      }
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: loadView('Test'),
       beforeEnter(to, from, next) {
         if (store.getters['isAuthenticated']) {
           return next();
