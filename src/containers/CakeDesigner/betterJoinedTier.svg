@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" width="300px" height="300px" x="0px" y="0px" enable-background="new 0 0 300 300" version="1.1" viewBox="0 0 300 300" xml:space="preserve">
+    <path fill="none" stroke="#000000" stroke-width="2" d="
+    M39,26
+      a111,24 0 1,0 222,0
+      a111,24 0 1,0 -222,0
+      v74
+      a111,24 0 1,0 222,0
+      v-74"/>
+</svg>

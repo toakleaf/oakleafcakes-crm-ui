@@ -1,19 +1,19 @@
 <template>
   <div class="columns is-multiline">
     <div class="column is-two-thirds">
-      <app-design-display/>
+      <app-tier/>
     </div>
   </div>
 </template>
 
 <script>
 import ColorSelector from "@/containers/CakeDesigner/ColorSelector.vue";
-import DesignDisplay from "@/containers/CakeDesigner/DesignDisplay.vue";
+import Tier from "@/containers/CakeDesigner/Tier.vue";
 
 export default {
   components: {
     "app-color-selector": ColorSelector,
-    "app-design-display": DesignDisplay
+    "app-tier": Tier
   },
   name: "CakeDesigner",
   data: function() {
@@ -24,5 +24,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.colored-pencil {
+  filter: grayscale(1);
+}
 </style>
 

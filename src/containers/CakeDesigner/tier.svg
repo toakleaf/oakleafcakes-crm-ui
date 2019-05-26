@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg" class="tier" version="1.1" viewBox="0 0 300 142" xml:space="preserve">
+    <path fill="none" stroke="url(#colored-pencil)" stroke-width="2" d="
+      M2,34
+      v74
+      c
+      0,17.672
+      66.262,32
+      148,32
+      c
+      81.738,0
+      148-14.327
+      148-32
+      v-74"/>
+    <ellipse cx="150" cy="34" fill="none" stroke="url(#colored-pencil)" stroke-width="2" rx="148" ry="32"/>
+    <ellipse cx="150" cy="26" fill="none" stroke="url(#colored-pencil)" stroke-width="2" rx="111" ry="24"/>
+    <path fill="none" stroke="url(#colored-pencil)" stroke-width="2" d="
+      M39,26
+      v74
+      c
+      0,13.254
+      49.697,24
+      111,24
+      c
+      61.304,0
+      111-10.745
+      111-24
+      v-74
+	"/>
+    <ellipse cx="150" cy="18" fill="none" stroke="url(#colored-pencil)" stroke-width="2" rx="74" ry="16"/>
+    <path fill="none" stroke="url(#colored-pencil)" stroke-width="2" d="
+      M76,18
+      v74
+      c
+      0,8.836
+      33.131,16
+      74,16
+      c
+      40.869,0
+      74-7.164
+      74-16
+      v-74"/>
+    <defs>
+        <pattern id="colored-pencil" width="25" height="25" x="0" y="0" patternUnits="userSpaceOnUse">
+            <image width="25" height="25" class="colored-pencil" xlink:href="@/containers/CakeDesigner/coloredPencil.jpg"/>
+        </pattern>
+    </defs>
+    <filter id="grayscale">
+        <feColorMatrix type="saturate" values="0"/>
+        <feComponentTransfer>
+            <feFuncR :intercept="-(0.5 * 95) + 0.5" slope="70" type="linear"/>
+            <feFuncG :intercept="-(0.5 * 95) + 0.5" slope="70" type="linear"/>
+            <feFuncB :intercept="-(0.5 * 95) + 0.5" slope="70" type="linear"/>
+        </feComponentTransfer>
+    </filter>
+</svg>
