@@ -54,6 +54,25 @@ export default {
     background: {
       type: String,
       default: "white"
+    },
+    fillColor: {
+      type: String
+    },
+    fillStyle: {
+      type: String,
+      default: "hachure"
+    },
+    fillWeight: {
+      type: Number,
+      default: 1
+    },
+    fillAngle: {
+      type: Number,
+      default: -45
+    },
+    fillGap: {
+      type: Number,
+      default: 4
     }
   },
   data: function() {
@@ -83,10 +102,13 @@ export default {
         bowing: this.bowing,
         roughness: this.roughness,
         stroke: this.strokeColor,
-        strokeWidth: this.strokeWidth
-        // fill: "lightblue",
-        // fillStyle: "cross-hatch",
-        // fillWeight: 2
+        strokeWidth: this.strokeWidth,
+        // if not fill (this.fillColor) then everything below is ignored
+        fill: this.fillColor,
+        fillStyle: this.fillStyle,
+        fillWeight: this.fillWeight,
+        hachureAngle: this.fillAngle,
+        hachureGap: this.fillGap
       });
     },
     blank: function() {
