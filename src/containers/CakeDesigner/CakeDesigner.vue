@@ -23,6 +23,7 @@
             :pad="pad"
             :roughness="roughness"
             :bowing="bowing"
+            :radiusRatio="radiusRatio"
           ></app-tier>
         </svg>
       </svg>
@@ -74,23 +75,19 @@ export default {
       tiers: [
         {
           width: 18,
+          height: 0.5
+        },
+        {
+          width: 16,
           height: 4
         },
         {
-          width: 14,
-          height: 4
-        },
-        {
-          width: 12,
-          height: 4
-        },
-        {
-          width: 11,
+          width: 10,
           height: 4
         },
         {
           width: 8,
-          height: 6
+          height: 4
         },
         {
           width: 5,
@@ -126,7 +123,14 @@ export default {
       if (i === this.tiers.length - 1) return 0;
       let pos = 0;
       for (let j = this.tiers.length - 1; j > i; j--) {
-        pos += this.tiers[j].height ? this.tiers[j].height * this.inch : 0;
+        const tierGap =
+          this.tiers[j - 1] && this.tiers[j - 1].width
+            ? this.tiers[j - 1].width - this.tiers[j].width
+            : 0;
+        pos += this.tiers[j].height
+          ? this.tiers[j].height * this.inch -
+            (tierGap * this.inch) / this.radiusRatio / 2
+          : 0;
       }
       return pos;
     }
