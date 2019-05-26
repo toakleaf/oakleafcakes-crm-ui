@@ -1,46 +1,47 @@
 <template>
-  <div class="columns is-multiline">
-    <div class="column is-half">
-      <svg
-        version="1.1"
-        id="cake"
-        ref="cake"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        :viewBox="`0 0 ${cakeWidth} ${cakeHeight}`"
-      >
-        <svg
-          v-for="(tier, i) in tiers"
-          :key="i"
-          class="tier"
-          :x="(cakeWidth - (tier.width * inch)) / 2 - pad"
-          :y="getTierPosition(i)"
-        >
-          <!-- <text :y="20 * (i + 1)">{{tier.width}}</text> -->
-          <app-tier
-            :width="tier.width"
-            :height="tier.height"
-            :pad="pad"
-            :roughness="roughness"
-            :bowing="bowing"
-            :radiusRatio="radiusRatio"
-          ></app-tier>
-        </svg>
-      </svg>
-    </div>
-  </div>
+  <svg
+    version="1.1"
+    id="cake"
+    ref="cake"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    :viewBox="`0 0 ${cakeWidth} ${cakeHeight}`"
+  >
+    <svg
+      v-for="(tier, i) in tiers"
+      :key="i"
+      class="tier"
+      :x="(cakeWidth - (tier.width * inch)) / 2 - pad"
+      :y="getTierPosition(i)"
+    >
+      <!-- <text :y="20 * (i + 1)">{{tier.width}}</text> -->
+      <app-tier
+        :width="tier.width"
+        :height="tier.height"
+        :fill="tier.fill"
+        :fillStyle="tier.fillStyle"
+        :fillWeight="tier.fillWeight"
+        :fillAngle="tier.fillAngle"
+        :fillGap="tier.fillGap"
+        :pad="pad"
+        :roughness="roughness"
+        :bowing="bowing"
+        :radiusRatio="radiusRatio"
+        :strokeWidth="strokeWidth"
+        :strokeColor="strokeColor"
+      ></app-tier>
+    </svg>
+  </svg>
 </template>
 
 <script>
-import ColorSelector from "@/containers/CakeDesigner/ColorSelector.vue";
-import Tier from "@/containers/CakeDesigner/Tier.vue";
+import Tier from "@/containers/CakeBuilder/Tier.vue";
 
 export default {
   components: {
-    "app-color-selector": ColorSelector,
     "app-tier": Tier
   },
-  name: "CakeDesigner",
+  name: "Sketch",
   props: {
     minCakeWidth: {
       type: Number,
@@ -78,16 +79,26 @@ export default {
           height: 0.5
         },
         {
-          width: 16,
+          width: 14,
+          height: 4,
+          fill: "lightblue",
+          fillStyle: "cross-hatch",
+          fillWeight: 0.5,
+          fillGap: 1
+        },
+        {
+          width: 9,
           height: 4
         },
         {
-          width: 10,
+          width: 11,
           height: 4
         },
         {
           width: 8,
-          height: 4
+          height: 6,
+          fill: "lightblue",
+          fillGap: 1
         },
         {
           width: 5,

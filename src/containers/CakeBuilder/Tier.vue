@@ -55,7 +55,7 @@ export default {
       type: String,
       default: "white"
     },
-    fillColor: {
+    fill: {
       type: String
     },
     fillStyle: {
@@ -103,8 +103,8 @@ export default {
         roughness: this.roughness,
         stroke: this.strokeColor,
         strokeWidth: this.strokeWidth,
-        // if not fill (this.fillColor) then everything below is ignored
-        fill: this.fillColor,
+        // if not fill then everything below is ignored
+        fill: this.fill,
         fillStyle: this.fillStyle,
         fillWeight: this.fillWeight,
         hachureAngle: this.fillAngle,
@@ -124,6 +124,7 @@ export default {
   },
   methods: {},
   mounted: function() {
+    // console.log(this.tier);
     this.$refs.tier.appendChild(this.blank);
     this.$refs.tier.appendChild(this.tier);
   }

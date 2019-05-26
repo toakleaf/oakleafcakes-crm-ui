@@ -1,18 +1,18 @@
 <template>
   <section class="container pad-route">
     <div class="box">
-      <h1 class="title">Cake Designer</h1>
-      <app-cake-designer/>
+      <h1 class="title">Cake Builder</h1>
+      <app-cake-builder/>
     </div>
   </section>
 </template>
 
 <script>
-import CakeDesigner from "@/containers/CakeDesigner/CakeDesigner.vue";
+import CakeBuilder from "@/containers/CakeBuilder/CakeBuilder.vue";
 
 export default {
   components: {
-    "app-cake-designer": CakeDesigner
+    "app-cake-builder": CakeBuilder
   },
   name: "test",
   data: function() {
