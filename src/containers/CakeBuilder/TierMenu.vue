@@ -8,8 +8,6 @@
         <span v-else-if="!tierIndex">Top tier</span>
         <span v-else>Tier #{{tierIndex + 1}}</span>
         <span class="icon is-pulled-right is-medium">
-          <!-- <i class="fas fa-chevron-down" v-if="open"></i>
-          <i class="fas fa-chevron-up" v-else></i>-->
           <app-draw-svg-icon path="M1,299,l149,-149,l149,149,l-149,-149,l-149,149" v-show="!open"/>
           <app-draw-svg-icon path="M1,150,l149,149,l149,-149,l-149,149,l-149,-149" v-show="open"/>
         </span>
@@ -57,14 +55,9 @@
             c-1.473-28.579-2.651-57.28,8.004-84.693c7.498-19.291,17.048-25.504,37.535-25.504l10.025-0.137V57.09
             c-8.944-3.481-16.597-8.423-20.253-17.888c-5.484-14.198,1.395-30.242,15.458-36.06c13.828-5.723,29.677,0.394,36.056,13.919
             c6.527,13.839,0.91,30.154-12.785,37.03c-2.169,1.087-4.424,2.003-6.64,2.999v7.148L171.036,64.271z"
-          />&#8776;
-          <input
-            type="text"
-            :value="getServings()"
-            size="3"
-            maxnumTiers="3"
-            class="has-text-link"
-          > servings
+          />
+          <span style="position:relative;top:-0.2em; padding-right:0.4em;">&#8776;</span>
+          <input type="text" :value="getServings()" size="3" maxnumTiers="3" class="has-text-link"> servings
           <span class="is-size-7">
             <a>[+]</a> /
             <a>[–]</a>
