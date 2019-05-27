@@ -1,17 +1,25 @@
 <template>
-  <div class="menu">
-    <app-tier-menu
-      v-for="(tier, i) in tiersDesc"
-      :key="i"
-      :tier="tier"
-      :tierIndex="i"
-      :numTiers="tiers.length"
-      @update:tier="emitChanges(i, ...arguments)"
-      @delete:tier="emitDeletion(i)"
-    />
-    <div>
-      <a @click="emitAddition(0)">+ Add Tier Above</a>
-      <a class="is-pulled-right" @click="emitAddition(tiersDesc.length)">+ Add Tier Below</a>
+  <div class="menu columns is-multiline is-gapless">
+    <div class="column is-full">
+      <app-tier-menu
+        v-for="(tier, i) in tiersDesc"
+        :key="i"
+        :tier="tier"
+        :tierIndex="i"
+        :numTiers="tiers.length"
+        @update:tier="emitChanges(i, ...arguments)"
+        @delete:tier="emitDeletion(i)"
+      />
+    </div>
+    <div class="column is-half-tablet is-one-third-desktop has-text-centered">
+      <a @click="emitAddition(0)">&#8624; Add Tier Above</a>
+    </div>
+    <div class="column is-half-tablet is-one-third-desktop has-text-centered">
+      <a @click="emitAddition(tiersDesc.length)">&#8626; Add Tier Below</a>
+    </div>
+    <div class="column is-full-tablet is-one-third-desktop has-text-centered">
+      <a class="is-block" @click="emitAddition(0)">&#8624; Add Tier Above</a>
+      <a class="is-block" @click="emitAddition(tiersDesc.length)">&#8626; Add Tier Below</a>
     </div>
   </div>
 </template>
@@ -27,11 +35,14 @@ export default {
   },
   data: function() {
     return {
-      open: false
+      open: false,
+      minTierWidth: 5,
+      maxTierWidth: 18
     };
   },
   computed: {
     tiersDesc: function() {
+      if (!this.tiers.length) return [];
       return this.tiers.slice().reverse();
     }
   },
@@ -49,6 +60,34 @@ export default {
         height: 4
       }
     ) {
+      if (this.tiersDesc.length) {
+        //keep default if adding first item
+        switch (index) {
+          case 0: //top
+            newTier.width =
+              this.tiersDesc[index].width <= this.minTierWidth + 2
+                ? this.minTierWidth
+                : this.tiersDesc[index].width - 2;
+            break;
+          case this.tiersDesc.length: //bottom
+            newTier.width =
+              this.tiersDesc[index - 1].width >= this.maxTierWidth - 2
+                ? this.maxTierWidth
+                : this.tiersDesc[index - 1].width + 2;
+            break;
+
+          default:
+            //middle or > array length
+            newTier.width =
+              index >= this.tiersDesc.length
+                ? this.tiersDesc[this.tiersDesc.length].width
+                : parseInt(
+                    this.tiersDesc[index].width +
+                      this.tiersDesc[index - 1].width / 2
+                  );
+            break;
+        }
+      }
       let out = this.tiersDesc.slice();
       out.splice(index, 0, newTier);
       out.reverse();

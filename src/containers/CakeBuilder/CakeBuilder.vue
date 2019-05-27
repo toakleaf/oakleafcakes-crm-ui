@@ -1,22 +1,20 @@
 <template>
   <div class="columns is-multiline">
     <div class="column is-half">
-      <h1 class="title is-inline">Cake Design Studio</h1>
-      <h2
-        class="subtitle is-size-7 has-text-grey is-inline"
-        style="margin-left:0.75em"
-      >by Oakleaf Cakes</h2>
+      <h1 class="title">Cake Design Studio</h1>
+      <h2 class="subtitle is-size-7 has-text-grey handwriting" style="margin-left:2em">
+        <i>by</i> Oakleaf Cakes Bake Shop
+      </h2>
 
       <app-sketch
         :tiers="[...(base ? [base] : []), ...tiers]"
-        :style="'max-height:'+ windowHeight*0.75 + 'px; margin-top: 2em;'"
+        :style="'max-height:'+ windowHeight*0.75 + 'px;'"
         class="sketch"
       />
     </div>
     <div class="column">
       <h4 class="subtitle handwriting is-size-4 has-text-right">Total Servings</h4>
       <app-menu :tiers.sync="tiers"/>
-      {{windowHeight}}
     </div>
   </div>
 </template>

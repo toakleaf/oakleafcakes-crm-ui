@@ -8,8 +8,10 @@
         <span v-else-if="!tierIndex">Top tier</span>
         <span v-else>Tier #{{tierIndex + 1}}</span>
         <span class="icon is-pulled-right is-medium">
-          <i class="fas fa-chevron-down" v-if="open"></i>
-          <i class="fas fa-chevron-up" v-else></i>
+          <!-- <i class="fas fa-chevron-down" v-if="open"></i>
+          <i class="fas fa-chevron-up" v-else></i>-->
+          <app-draw-svg-icon path="M1,299,l149,-149,l149,149,l-149,-149,l-149,149" v-show="!open"/>
+          <app-draw-svg-icon path="M1,150,l149,149,l149,-149,l-149,149,l-149,-149" v-show="open"/>
         </span>
         <span class="is-size-7 is-pulled-right" style="margin:1em 1em 0 0">{{width}}" x {{height}}"</span>
       </h3>
