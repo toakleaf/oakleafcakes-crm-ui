@@ -1,6 +1,6 @@
 <template>
   <section id="app" class="has-navbar-fixed-top">
-    <img src="@/assets/img/logo_full_light.svg" class="watermark">
+    <img src="@/assets/img/logo_full_light.svg" class="watermark no-print">
     <app-navbar/>
     <b-loading is-full-page :active.sync="isLoading" :can-cancel="true"></b-loading>
     <router-view/>

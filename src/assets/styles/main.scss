@@ -100,6 +100,15 @@ $speed-slower: 300ms !default; //tabs
   .no-print * {
     display: none !important;
   }
+  .no-print-gutters {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .no-print-borders {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
 }
 .pad-route {
   padding: 4.5rem 1.5rem 1.5rem 1.5rem;

@@ -1,5 +1,9 @@
 <template>
-  <nav class="navbar is-primary is-fixed-top" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar is-primary is-fixed-top no-print"
+    role="navigation"
+    aria-label="main navigation"
+  >
     <nav-brand @toggle-menu="showMenu = !showMenu"/>
     <div v-if="auth" class="navbar-menu" :class="{'is-active' : showMenu}">
       <nav-start/>

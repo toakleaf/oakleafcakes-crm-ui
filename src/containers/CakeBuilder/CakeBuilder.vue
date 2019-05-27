@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-multiline">
     <div class="column is-half">
-      <h1 class="title">Cake Design Studio</h1>
+      <h1 class="title">Cake Sketcher</h1>
       <h2 class="subtitle is-size-7 has-text-grey handwriting" style="margin-left:2em">
         <i>by</i> Oakleaf Cakes Bake Shop
       </h2>
@@ -13,7 +13,19 @@
       />
     </div>
     <div class="column">
-      <h4 class="subtitle handwriting is-size-4 has-text-right">Total Servings</h4>
+      <div class="columns is-multiline">
+        <div class="column is-two-thirds">
+          <h4 class="subtitle handwriting is-size-3">New Cake Sketch 1</h4>
+        </div>
+        <div class="column">
+          <h4 class="subtitle handwriting is-size-6 has-text-right is-marginless">Total Servings</h4>
+          <h4 class="subtitle handwriting is-size-6 has-text-right is-marginless">$ 1 money</h4>
+        </div>
+        <div class="column is-full is-paddingless" style="margin:-0.25em 0;">
+          <app-draw-line-svg/>
+          <app-draw-line-svg style="margin:-0.65em 0;"/>
+        </div>
+      </div>
       <app-menu :tiers.sync="tiers"/>
     </div>
   </div>
@@ -22,14 +34,13 @@
 <script>
 import Sketch from "@/containers/CakeBuilder/Sketch.vue";
 import Menu from "@/containers/CakeBuilder/Menu.vue";
-import DrawFrameSVG from "@/containers/CakeBuilder/DrawFrameSVG.vue";
-import DrawFrameSVGVue from "./DrawFrameSVG.vue";
+import DrawLineSVG from "@/containers/CakeBuilder/DrawLineSVG.vue";
 
 export default {
   components: {
     "app-sketch": Sketch,
     "app-menu": Menu,
-    "app-draw-frame-svg": DrawFrameSVGVue
+    "app-draw-line-svg": DrawLineSVG
   },
   name: "CakeBuilder",
   props: {},

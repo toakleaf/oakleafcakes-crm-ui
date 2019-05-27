@@ -1,6 +1,6 @@
 <template>
-  <section class="container pad-route">
-    <div class="box">
+  <section class="container pad-route no-print-gutters">
+    <div class="box no-print-borders">
       <app-cake-builder/>
     </div>
   </section>
