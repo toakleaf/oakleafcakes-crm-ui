@@ -5,7 +5,7 @@
     ref="line"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
-    viewBox="0 0 300 2"
+    viewBox="0 0 400 2"
   ></svg>
 </template>
 
@@ -19,11 +19,11 @@ export default {
   computed: {
     line: function() {
       const rs = rough.svg(this.$refs.line);
-      return rs.line(1, 1, 299, 1, {
+      return rs.line(1, 1, 399, 1, {
         bowing: 0,
-        roughness: 3,
+        roughness: 3.5,
         stroke: "darkgrey",
-        strokeWidth: 1
+        strokeWidth: 1.5
       });
     }
   },

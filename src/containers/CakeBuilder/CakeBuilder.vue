@@ -7,11 +7,16 @@
         style="margin-left:0.75em"
       >by Oakleaf Cakes</h2>
 
-      <app-sketch :tiers="[...(base ? [base] : []), ...tiers]" style="margin-top:2em"/>
+      <app-sketch
+        :tiers="[...(base ? [base] : []), ...tiers]"
+        :style="'max-height:'+ windowHeight*0.75 + 'px; margin-top: 2em;'"
+        class="sketch"
+      />
     </div>
     <div class="column">
       <h4 class="subtitle handwriting is-size-4 has-text-right">Total Servings</h4>
       <app-menu :tiers.sync="tiers"/>
+      {{windowHeight}}
     </div>
   </div>
 </template>
@@ -32,6 +37,7 @@ export default {
   props: {},
   data: function() {
     return {
+      windowHeight: window.innerHeight,
       tiers: [
         {
           id: `${Math.floor(Math.random() * 10000)}`,
@@ -52,7 +58,12 @@ export default {
     };
   },
   computed: {},
-  methods: {}
+  methods: {},
+  mounted() {
+    window.onresize = () => {
+      this.windowHeight = window.innerHeight;
+    };
+  }
 };
 </script>
 

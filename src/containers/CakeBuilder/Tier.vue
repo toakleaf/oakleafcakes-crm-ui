@@ -63,15 +63,14 @@ export default {
     },
     fillWeight: {
       type: Number,
-      default: 1
+      default: 0.3
     },
     fillAngle: {
-      type: Number,
-      default: -45
+      type: Number
     },
     fillGap: {
       type: Number,
-      default: 4
+      default: 0.3
     }
   },
   data: function() {
@@ -106,7 +105,9 @@ export default {
         fill: this.fill,
         fillStyle: this.fillStyle,
         fillWeight: this.fillWeight,
-        hachureAngle: this.fillAngle,
+        ...(this.fillAngle
+          ? { hachureAngle: this.fillAngle }
+          : { hachureAngle: Math.random() * 360 }),
         hachureGap: this.fillGap
       });
     },
