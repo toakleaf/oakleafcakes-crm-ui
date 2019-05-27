@@ -1,7 +1,6 @@
 <template>
   <section class="container pad-route">
     <div class="box">
-      <h1 class="title">Cake Builder</h1>
       <app-cake-builder/>
     </div>
   </section>

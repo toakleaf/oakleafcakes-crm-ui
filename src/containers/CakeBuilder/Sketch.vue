@@ -9,12 +9,11 @@
   >
     <svg
       v-for="(tier, i) in tiers"
-      :key="i"
+      :key="tier.id"
       class="tier"
       :x="(cakeWidth - (tier.width * inch)) / 2 - pad"
       :y="getTierPosition(i)"
     >
-      <!-- <text :y="20 * (i + 1)">{{tier.width}}</text> -->
       <app-tier
         :width="tier.width"
         :height="tier.height"
@@ -66,45 +65,32 @@ export default {
     bowing: {
       type: Number,
       default: 7
+    },
+    tiers: {
+      validator: function(obj) {
+        return obj.every(
+          o =>
+            o.width &&
+            o.height &&
+            o.id &&
+            typeof o.width === "number" &&
+            typeof o.height === "number"
+        );
+      },
+      default: [
+        {
+          id: `${Math.floor(Math.random() * 10000)}`,
+          width: 8,
+          height: 4
+        }
+      ]
     }
   },
   data: function() {
     return {
       inch: 18.5,
       pad: 2,
-      radiusRatio: 9.25,
-      tiers: [
-        {
-          width: 18,
-          height: 0.5
-        },
-        {
-          width: 14,
-          height: 4,
-          fill: "lightblue",
-          fillStyle: "cross-hatch",
-          fillWeight: 0.5,
-          fillGap: 1
-        },
-        {
-          width: 9,
-          height: 4
-        },
-        {
-          width: 11,
-          height: 4
-        },
-        {
-          width: 8,
-          height: 6,
-          fill: "lightblue",
-          fillGap: 1
-        },
-        {
-          width: 5,
-          height: 4
-        }
-      ]
+      radiusRatio: 9.25
     };
   },
   computed: {
@@ -152,12 +138,6 @@ export default {
 <style lang="scss" scoped>
 svg {
   overflow: visible;
-}
-#cake {
-  // border: solid 2px;
-  // border-color: darkgray;
-}
-.tier {
 }
 </style>
 
